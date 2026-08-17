@@ -11,18 +11,6 @@
     "first_seen": "2026-08-17",
     "last_seen": "2026-08-17"
   },
-  "volvo-ganvadebis-shetavazeba": {
-    "slug": "volvo-ganvadebis-shetavazeba",
-    "url": "https://tbcbank.ge/ka/offers/all-offers/volvo-ganvadebis-shetavazeba",
-    "title": "Volvo – 0% განვადების შეთავაზება",
-    "brand": "Volvo",
-    "image": "https://images.eu.ctfassets.net/psnuheg7hu1m/2TWPtk98pc2ArJfoxyXCW2/48e5c8fdcab9faf3749b0411b32c40f4/volvo.png",
-    "remaining_days": 3,
-    "description": "თიბისი კონცეპტის და Volvo-ს შეთავაზებით, კონცეპტ მომხმარებლებს, შესაძლებლობა გაქვთ ისარგებლოთ განსაკუთრებული პირობით",
-    "category": "სხვა",
-    "first_seen": "2026-08-17",
-    "last_seen": "2026-08-17"
-  },
   "megatechnica-qeshbeqi": {
     "slug": "megatechnica-qeshbeqi",
     "url": "https://tbcbank.ge/ka/offers/all-offers/megatechnica-qeshbeqi",
@@ -1123,6 +1111,18 @@
     "image": "https://images.eu.ctfassets.net/psnuheg7hu1m/1MpCF1xrRBqYYOUyQjoVan/ead949d23e2e9d3e23cde9804bd668cc/X6__1__1110.jpg",
     "remaining_days": 44,
     "description": "თიბისი კონცეპტის და „ჯი თი მოტორსის“ ერთობლივი შეთავაზების ფარგლებში, შესაძლებლობა გაქვთ, ისარგებლოთ სპეციალური ფასდაკლებით BMW-ის ავტომობილებზე",
+    "category": "სხვა",
+    "first_seen": "2026-08-17",
+    "last_seen": "2026-08-17"
+  },
+  "volvo-ganvadebis-shetavazeba": {
+    "slug": "volvo-ganvadebis-shetavazeba",
+    "url": "https://tbcbank.ge/ka/offers/all-offers/volvo-ganvadebis-shetavazeba",
+    "title": "Volvo – 0% განვადების შეთავაზება",
+    "brand": "Volvo",
+    "image": "https://images.eu.ctfassets.net/psnuheg7hu1m/2TWPtk98pc2ArJfoxyXCW2/48e5c8fdcab9faf3749b0411b32c40f4/volvo.png",
+    "remaining_days": 44,
+    "description": "თიბისი კონცეპტის და Volvo-ს შეთავაზებით, კონცეპტ მომხმარებლებს, შესაძლებლობა გაქვთ ისარგებლოთ განსაკუთრებული პირობით",
     "category": "სხვა",
     "first_seen": "2026-08-17",
     "last_seen": "2026-08-17"
