@@ -1,4 +1,4 @@
-# TBC Offers Bot — free Telegram tracker for TBC Bank card offers
+# Offers Bot — free Telegram tracker for Bank card offers
 
 Checks tbcbank.ge daily for new/expired offers, sends you a Telegram
 message, and generates weekly/monthly reports with charts. Runs entirely
