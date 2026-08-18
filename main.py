@@ -17,7 +17,7 @@ import os
 from datetime import date
 
 from scraper import fetch_all_offers
-from categorize import categorize
+from categorize import categorize, extract_offer_economics
 from telegram_notify import send_message, format_new_offer_message
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
@@ -65,8 +65,9 @@ def main():
     else:
         for offer in new_offers:
             category = categorize(offer)
+            economics = extract_offer_economics(offer)
             try:
-                send_message(format_new_offer_message(offer, category))
+                send_message(format_new_offer_message(offer, category, economics))
             except Exception as e:
                 print(f"Failed to send Telegram message for {offer['slug']}: {e}")
 
@@ -86,6 +87,7 @@ def main():
         new_state[offer["slug"]] = {
             **offer,
             "category": categorize(offer),
+            **extract_offer_economics(offer),
             "first_seen": prior.get("first_seen", date.today().isoformat()),
             "last_seen": date.today().isoformat(),
         }

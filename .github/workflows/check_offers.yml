@@ -4,7 +4,7 @@ on:
   schedule:
     # Runs daily at 07:00 UTC (11:00 Tbilisi time). Adjust as you like:
     # cron fields are: minute hour day month weekday
-    - cron: "0 7 * * *"
+    - cron: "0 6 * * *"
   workflow_dispatch: {}   # lets you trigger it manually from the Actions tab
 
 permissions:

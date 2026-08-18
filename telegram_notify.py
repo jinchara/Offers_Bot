@@ -12,7 +12,6 @@ Setup (one-time, ~2 minutes, totally free):
 """
 
 import os
-import token
 try:
     import requests  # type: ignore[import-not-found]
 except ImportError:  # pragma: no cover - fallback for minimal environments
@@ -22,8 +21,6 @@ TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 API_BASE = "https://api.telegram.org"
 
-print(TOKEN)
-print(CHAT_ID)
 
 def send_message(text: str, parse_mode: str = "HTML"):
     if not TOKEN or not CHAT_ID:
@@ -54,14 +51,25 @@ def send_photo(photo_path: str, caption: str = ""):
     resp.raise_for_status()
 
 
-def format_new_offer_message(offer: dict, category: str) -> str:
+def format_new_offer_message(offer: dict, category: str, economics: dict | None = None) -> str:
     days = offer.get("remaining_days")
     days_line = f"⏳ დარჩენილი დღეები: {days}\n" if days is not None else ""
+
+    cashback_line = ""
+    if economics and economics.get("cashback_percent") is not None:
+        cashback_line = f"💰 ქეშბექი: {economics['cashback_percent']}%"
+        if economics.get("cap_unlimited"):
+            cashback_line += " (ულიმიტოდ)"
+        elif economics.get("cap_amount") is not None:
+            cashback_line += f" (მაქს. {economics['cap_amount']:g}₾)"
+        cashback_line += "\n"
+
     return (
         f"🆕 <b>ახალი შეთავაზება!</b>\n\n"
         f"🏷 {offer.get('title')}\n"
         f"🏬 {offer.get('brand') or '—'}\n"
         f"📂 კატეგორია: {category}\n"
+        f"{cashback_line}"
         f"{days_line}"
         f"🔗 {offer.get('url')}"
     )
