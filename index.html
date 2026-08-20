@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TBC შეთავაზებების მონიტორინგი — BOG Intelligence</title>
+<meta name="description" content="TBC Bank-ის შეთავაზებების ცოცხალი მონიტორინგი — Bank of Georgia-ს შიდა ანალიტიკური ხელსაწყო.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#091A2B;
+    --navy-2:#0f2740;
+    --navy-3:#15324f;
+    --orange:#ff5c0a;
+    --orange-dim:#c94708;
+    --slate:#5A6670;
+    --slate-soft:#8a939c;
+    --tan:#CDA176;
+    --white:#ffffff;
+    --paper:#f4f5f6;
+    --line:#e4e6e8;
+    --danger:#e2401f;
+    --font-body:'Noto Sans Georgian','Noto Sans',system-ui,sans-serif;
+    --font-mono:'JetBrains Mono',ui-monospace,'SFMono-Regular',Consolas,monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:var(--font-body);
+    background:var(--paper);
+    color:var(--navy);
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  ::selection{background:var(--orange);color:var(--white);}
+
+  /* ---------- top identity bar ---------- */
+  .topbar{
+    background:var(--navy);
+    color:var(--white);
+    padding:14px 24px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    border-bottom:3px solid var(--orange);
+  }
+  .brand{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    font-family:var(--font-mono);
+    letter-spacing:0.5px;
+  }
+  .brand .mark{
+    font-weight:700;
+    font-size:15px;
+    background:var(--orange);
+    color:var(--navy);
+    padding:3px 8px;
+    border-radius:3px;
+  }
+  .brand .sub{
+    font-size:12px;
+    color:var(--slate-soft);
+    text-transform:uppercase;
+  }
+  .status-pill{
+    font-family:var(--font-mono);
+    font-size:11px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    color:var(--slate-soft);
+    white-space:nowrap;
+  }
+  .topnav{
+    display:flex;
+    gap:4px;
+  }
+  .navlink{
+    font-family:var(--font-mono);
+    font-size:12.5px;
+    text-decoration:none;
+    color:var(--slate-soft);
+    padding:7px 14px;
+    border-radius:5px;
+    transition:all .15s;
+  }
+  .navlink:hover{color:var(--white);background:var(--navy-3);}
+  .navlink.active{color:var(--navy);background:var(--orange);font-weight:700;}
+  @media (max-width:640px){
+    .topnav{margin-right:0;}
+    .navlink{padding:6px 9px;font-size:11px;}
+  }
+  .status-dot{
+    width:7px;height:7px;border-radius:50%;
+    background:#38d97a;
+    box-shadow:0 0 0 0 rgba(56,217,122,.6);
+    animation:pulse 2s infinite;
+  }
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(56,217,122,.55);}
+    70%{box-shadow:0 0 0 7px rgba(56,217,122,0);}
+    100%{box-shadow:0 0 0 0 rgba(56,217,122,0);}
+  }
+
+  /* ---------- stat strip ---------- */
+  .statstrip{
+    background:var(--navy-2);
+    border-bottom:1px solid var(--navy-3);
+    display:flex;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+  .statstrip::-webkit-scrollbar{display:none;}
+  .stat{
+    flex:1 0 auto;
+    padding:14px 24px;
+    border-right:1px solid var(--navy-3);
+    min-width:150px;
+  }
+  .stat .num{
+    font-family:var(--font-mono);
+    font-size:26px;
+    font-weight:700;
+    color:var(--orange);
+    line-height:1;
+  }
+  .stat .lbl{
+    font-size:11px;
+    color:var(--slate-soft);
+    margin-top:6px;
+    text-transform:uppercase;
+    letter-spacing:0.4px;
+  }
+  .stat.tan .num{color:var(--tan);}
+
+  /* ---------- ticker ---------- */
+  .ticker-wrap{
+    background:var(--navy);
+    overflow:hidden;
+    border-bottom:1px solid var(--navy-3);
+    white-space:nowrap;
+  }
+  .ticker{
+    display:inline-block;
+    padding:8px 0;
+    font-family:var(--font-mono);
+    font-size:13px;
+    color:var(--white);
+    animation:scroll-left 90s linear infinite;
+  }
+  .ticker span.item{margin-right:40px;}
+  .ticker .up{color:var(--orange);font-weight:600;}
+  @keyframes scroll-left{
+    from{transform:translateX(0);}
+    to{transform:translateX(-50%);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .ticker{animation:none;}
+    .status-dot{animation:none;}
+  }
+
+  /* ---------- filter bar ---------- */
+  .filterbar{
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:var(--white);
+    border-bottom:1px solid var(--line);
+    padding:14px 24px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    align-items:center;
+    box-shadow:0 2px 10px rgba(9,26,43,0.04);
+  }
+  .search-box{
+    flex:1 1 240px;
+    position:relative;
+  }
+  .search-box input{
+    width:100%;
+    padding:10px 14px 10px 34px;
+    border:1.5px solid var(--line);
+    border-radius:6px;
+    font-family:var(--font-body);
+    font-size:14px;
+    background:var(--paper);
+    color:var(--navy);
+  }
+  .search-box input:focus{
+    outline:none;
+    border-color:var(--orange);
+    background:var(--white);
+  }
+  .search-box::before{
+    content:"⌕";
+    position:absolute;
+    left:12px;top:50%;
+    transform:translateY(-50%);
+    color:var(--slate-soft);
+    font-size:16px;
+  }
+  select, .toggle-btn{
+    font-family:var(--font-body);
+    font-size:13.5px;
+    padding:10px 12px;
+    border:1.5px solid var(--line);
+    border-radius:6px;
+    background:var(--white);
+    color:var(--navy);
+    cursor:pointer;
+  }
+  select:focus, .toggle-btn:focus-visible, input:focus-visible, button:focus-visible, .card:focus-visible{
+    outline:2px solid var(--orange);
+    outline-offset:2px;
+  }
+  .toggle-btn{
+    display:flex;align-items:center;gap:6px;
+    white-space:nowrap;
+    transition:background .15s,border-color .15s,color .15s;
+  }
+  .toggle-btn[aria-pressed="true"]{
+    background:var(--navy);
+    border-color:var(--navy);
+    color:var(--white);
+  }
+  .toggle-btn .dotmark{
+    width:7px;height:7px;border-radius:50%;
+    background:var(--orange);
+  }
+
+  .catrow{
+    padding:0 24px 14px;
+    display:flex;
+    gap:8px;
+    overflow-x:auto;
+    background:var(--white);
+    border-bottom:1px solid var(--line);
+    scrollbar-width:thin;
+  }
+  .pill{
+    flex:none;
+    font-family:var(--font-mono);
+    font-size:12.5px;
+    padding:7px 14px;
+    border-radius:20px;
+    border:1.5px solid var(--line);
+    background:var(--paper);
+    color:var(--slate);
+    cursor:pointer;
+    white-space:nowrap;
+    transition:all .15s;
+  }
+  .pill:hover{border-color:var(--orange);color:var(--orange-dim);}
+  .pill[aria-pressed="true"]{
+    background:var(--orange);
+    border-color:var(--orange);
+    color:var(--white);
+    font-weight:600;
+  }
+
+  /* ---------- results ---------- */
+  .resultbar{
+    max-width:1400px;
+    margin:0 auto;
+    padding:20px 24px 4px;
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    color:var(--slate);
+    font-size:13px;
+  }
+  .resultbar strong{color:var(--navy);font-family:var(--font-mono);}
+
+  .grid{
+    max-width:1400px;
+    margin:0 auto;
+    padding:12px 24px 60px;
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+    gap:16px;
+  }
+  .card{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:18px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    position:relative;
+    transition:box-shadow .18s, transform .18s, border-color .18s;
+  }
+  .card:hover{
+    box-shadow:0 10px 24px rgba(9,26,43,0.10);
+    border-color:var(--orange);
+    transform:translateY(-2px);
+  }
+  .card-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:10px;
+  }
+  .card-tags{display:flex;flex-wrap:wrap;gap:6px;}
+  .tag{
+    font-family:var(--font-mono);
+    font-size:10.5px;
+    padding:3px 8px;
+    border-radius:4px;
+    text-transform:uppercase;
+    letter-spacing:0.3px;
+  }
+  .tag.cat{background:var(--tan);color:var(--navy);font-weight:600;}
+  .tag.new{background:#e9f9ef;color:#1a8a4d;font-weight:700;}
+  .tag.ending{background:#fdeae4;color:var(--danger);font-weight:700;}
+
+  .cashback{
+    font-family:var(--font-mono);
+    font-weight:700;
+    color:var(--orange);
+    font-size:22px;
+    line-height:1;
+    text-align:right;
+    flex:none;
+  }
+  .cashback small{font-size:12px;font-weight:600;}
+  .cashback .cap{
+    display:block;
+    font-size:10px;
+    color:var(--slate-soft);
+    font-weight:500;
+    margin-top:3px;
+  }
+
+  .card img.thumb{
+    width:100%;
+    height:130px;
+    object-fit:cover;
+    border-radius:6px;
+    background:var(--paper);
+    border:1px solid var(--line);
+  }
+
+  .card .brand-name{
+    font-size:12px;
+    color:var(--slate);
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:0.3px;
+  }
+  .card .title{
+    font-size:15px;
+    font-weight:600;
+    line-height:1.35;
+    color:var(--navy);
+  }
+  .card .desc{
+    font-size:13px;
+    color:var(--slate);
+    line-height:1.5;
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .25s ease;
+  }
+  .card.expanded .desc{max-height:400px;margin-top:2px;}
+  .card-foot{
+    margin-top:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding-top:8px;
+    border-top:1px dashed var(--line);
+    font-size:12px;
+  }
+  .days-left{
+    font-family:var(--font-mono);
+    color:var(--slate);
+  }
+  .days-left.soon{color:var(--danger);font-weight:700;}
+  .card-links{display:flex;gap:14px;}
+  .card-links button, .card-links a{
+    background:none;border:none;
+    font-family:var(--font-body);
+    font-size:12.5px;
+    color:var(--slate);
+    cursor:pointer;
+    text-decoration:none;
+    padding:0;
+  }
+  .card-links a{color:var(--orange-dim);font-weight:600;}
+  .card-links a:hover{text-decoration:underline;}
+  .card-links button:hover{color:var(--navy);}
+
+  .empty-state{
+    text-align:center;
+    padding:80px 20px;
+    color:var(--slate);
+  }
+  .empty-state .big{font-family:var(--font-mono);font-size:34px;color:var(--slate-soft);margin-bottom:10px;}
+
+  .loadmore-wrap{
+    grid-column:1/-1;
+    display:flex;
+    justify-content:center;
+    padding:10px 0 20px;
+  }
+  .loadmore{
+    font-family:var(--font-mono);
+    background:var(--navy);
+    color:var(--white);
+    border:none;
+    padding:12px 26px;
+    border-radius:6px;
+    font-size:13px;
+    cursor:pointer;
+  }
+  .loadmore:hover{background:var(--orange);}
+
+  .skeleton-grid{
+    max-width:1400px;margin:0 auto;padding:20px 24px;
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;
+  }
+  .skeleton{
+    height:230px;border-radius:10px;
+    background:linear-gradient(100deg,var(--paper) 30%,#eceef0 50%,var(--paper) 70%);
+    background-size:200% 100%;
+    animation:shimmer 1.4s infinite;
+  }
+  @keyframes shimmer{to{background-position:-200% 0;}}
+
+  footer{
+    background:var(--navy);
+    color:var(--slate-soft);
+    padding:26px 24px;
+    font-size:12.5px;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  footer a{color:var(--tan);text-decoration:none;}
+  footer a:hover{text-decoration:underline;}
+
+  .error-banner{
+    max-width:1400px;margin:20px auto;padding:16px 20px;
+    background:#fdeae4;border:1px solid var(--danger);color:var(--danger);
+    border-radius:8px;font-size:13.5px;
+  }
+
+  @media (max-width:640px){
+    .topbar{padding:12px 16px;}
+    .filterbar,.catrow,.resultbar,.grid,.skeleton-grid{padding-left:16px;padding-right:16px;}
+    .brand .sub{display:none;}
+    .stat{padding:12px 16px;min-width:120px;}
+    .stat .num{font-size:20px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="mark">BOG</span>
+    <span>Offers Intelligence</span>
+    <span class="sub">/ TBC Bank Monitor</span>
+  </div>
+  <nav class="topnav">
+    <a href="index.html" class="navlink active">შეთავაზებები</a>
+    <a href="dashboard.html" class="navlink">ანალიტიკა</a>
+  </nav>
+  <div class="status-pill" id="statusPill">
+    <span class="status-dot"></span>
+    <span id="statusText">იტვირთება...</span>
+  </div>
+</header>
+
+<div class="statstrip" id="statStrip"></div>
+
+<div class="ticker-wrap" aria-hidden="true">
+  <div class="ticker" id="ticker">იტვირთება ცოცხალი მონაცემები…</div>
+</div>
+
+<div class="filterbar">
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="მოძებნე ბრენდი, სათაური ან აღწერა…" aria-label="ძებნა">
+  </div>
+  <button class="toggle-btn" id="soonToggle" aria-pressed="false">
+    <span class="dotmark"></span> მალე იწურება
+  </button>
+  <button class="toggle-btn" id="newToggle" aria-pressed="false">
+    <span class="dotmark"></span> ახალი დღეს
+  </button>
+  <select id="sortSelect" aria-label="დალაგება">
+    <option value="cashback_desc">ქეშბექი: მაღალი → დაბალი</option>
+    <option value="ending_soon">ვადა: მალე იწურება</option>
+    <option value="cap_desc">ლიმიტი: მაღალი → დაბალი</option>
+    <option value="newest">უახლესი</option>
+    <option value="az">ბრენდი: ა–ჰ</option>
+  </select>
+</div>
+
+<div class="catrow" id="catRow"></div>
+
+<div class="resultbar">
+  <div><strong id="resultCount">0</strong> შეთავაზება ნაპოვნია</div>
+  <div id="lastSync"></div>
+</div>
+
+<div id="skeletonGrid" class="skeleton-grid">
+  <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+  <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+</div>
+
+<div class="grid" id="grid" style="display:none;"></div>
+
+<footer>
+  <div>მონაცემები განახლდება ყოველდღიურად GitHub Actions-ის მეშვეობით — <a href="https://github.com/jinchara/Offers_Bot" target="_blank" rel="noopener">jinchara/Offers_Bot</a></div>
+  <div>შიდა ანალიტიკური ხელსაწყო — Bank of Georgia</div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  const DATA_PATHS = ["./data/offers.json", "data/offers.json"];
+  const HISTORY_PATHS = ["./data/history.jsonl", "data/history.jsonl"];
+  const FALLBACK_DATA = "https://raw.githubusercontent.com/jinchara/Offers_Bot/main/data/offers.json";
+  const FALLBACK_HISTORY = "https://raw.githubusercontent.com/jinchara/Offers_Bot/main/data/history.jsonl";
+
+  const grid = document.getElementById('grid');
+  const skeletonGrid = document.getElementById('skeletonGrid');
+  const resultCountEl = document.getElementById('resultCount');
+  const lastSyncEl = document.getElementById('lastSync');
+  const statusPill = document.getElementById('statusPill');
+  const statusText = document.getElementById('statusText');
+  const statStrip = document.getElementById('statStrip');
+  const ticker = document.getElementById('ticker');
+  const catRow = document.getElementById('catRow');
+  const searchInput = document.getElementById('searchInput');
+  const sortSelect = document.getElementById('sortSelect');
+  const soonToggle = document.getElementById('soonToggle');
+  const newToggle = document.getElementById('newToggle');
+
+  let ALL_OFFERS = [];
+  let LATEST_DATE = null;
+  let state = { q:'', category:'ყველა', soon:false, freshOnly:false, sort:'cashback_desc', visible:60 };
+
+  async function fetchFirst(paths, fallback){
+    for(const p of paths){
+      try{
+        const res = await fetch(p, {cache:'no-store'});
+        if(res.ok) return await res.text();
+      }catch(e){/* try next */}
+    }
+    if(fallback){
+      const res = await fetch(fallback, {cache:'no-store'});
+      if(res.ok) return await res.text();
+    }
+    throw new Error('ვერ ჩაიტვირთა მონაცემები');
+  }
+
+  function daysColor(d){ return d<=2 ? 'soon':''; }
+
+  function fmtDate(d){
+    if(!d) return '—';
+    return d;
+  }
+
+  function renderStats(offers, history){
+    const total = offers.length;
+    const endingToday = offers.filter(o=>o.remaining_days<=1).length;
+    const withCashback = offers.filter(o=>o.cashback_percent);
+    const avgCashback = withCashback.length ? Math.round(withCashback.reduce((a,o)=>a+o.cashback_percent,0)/withCashback.length) : 0;
+    const freshCount = offers.filter(o=>o.first_seen===LATEST_DATE).length;
+
+    statStrip.innerHTML = `
+      <div class="stat"><div class="num">${total}</div><div class="lbl">აქტიური შეთავაზება</div></div>
+      <div class="stat tan"><div class="num">${avgCashback}%</div><div class="lbl">საშ. ქეშბექი</div></div>
+      <div class="stat"><div class="num">${endingToday}</div><div class="lbl">იწურება 24სთ-ში</div></div>
+      <div class="stat tan"><div class="num">${freshCount}</div><div class="lbl">დღეს დამატებული</div></div>
+      <div class="stat"><div class="num">${history.length}</div><div class="lbl">სინქრონიზაცია ჩანაწერი</div></div>
+    `;
+  }
+
+  function renderTicker(offers){
+    const top = offers
+      .filter(o=>o.cashback_percent)
+      .sort((a,b)=>b.cashback_percent-a.cashback_percent)
+      .slice(0, 24);
+    const items = top.map(o=>`<span class="item">${escapeHtml(o.brand||o.title)} <span class="up">▲ ${o.cashback_percent}%</span></span>`).join('');
+    ticker.innerHTML = items + items; // duplicate for seamless loop
+  }
+
+  function renderCategoryPills(offers){
+    const counts = {};
+    offers.forEach(o=>{ const c=o.category||'სხვა'; counts[c]=(counts[c]||0)+1; });
+    const cats = Object.keys(counts).sort((a,b)=>counts[b]-counts[a]);
+    const all = [['ყველა', offers.length], ...cats.map(c=>[c,counts[c]])];
+    catRow.innerHTML = all.map(([name,count])=>
+      `<button class="pill" data-cat="${escapeAttr(name)}" aria-pressed="${name===state.category}">${escapeHtml(name)} <span style="opacity:.6">${count}</span></button>`
+    ).join('');
+    catRow.querySelectorAll('.pill').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        state.category = btn.dataset.cat;
+        state.visible = 60;
+        catRow.querySelectorAll('.pill').forEach(b=>b.setAttribute('aria-pressed', b===btn));
+        renderGrid();
+      });
+    });
+  }
+
+  function escapeHtml(s){
+    return String(s==null?'':s).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
+  function escapeAttr(s){ return escapeHtml(s); }
+
+  function matchesFilters(o){
+    if(state.category!=='ყველა' && (o.category||'სხვა')!==state.category) return false;
+    if(state.soon && !(o.remaining_days<=2)) return false;
+    if(state.freshOnly && o.first_seen!==LATEST_DATE) return false;
+    if(state.q){
+      const q = state.q.toLowerCase();
+      const hay = `${o.title||''} ${o.brand||''} ${o.description||''} ${o.category||''}`.toLowerCase();
+      if(!hay.includes(q)) return false;
+    }
+    return true;
+  }
+
+  function sortOffers(list){
+    const arr = list.slice();
+    switch(state.sort){
+      case 'cashback_desc': arr.sort((a,b)=>(b.cashback_percent||0)-(a.cashback_percent||0)); break;
+      case 'ending_soon': arr.sort((a,b)=>(a.remaining_days??999)-(b.remaining_days??999)); break;
+      case 'cap_desc': arr.sort((a,b)=>(b.cap_amount||0)-(a.cap_amount||0)); break;
+      case 'newest': arr.sort((a,b)=> (b.first_seen||'').localeCompare(a.first_seen||'')); break;
+      case 'az': arr.sort((a,b)=> (a.brand||a.title||'').localeCompare(b.brand||b.title||'', 'ka')); break;
+    }
+    return arr;
+  }
+
+  function cardHtml(o){
+    const isNew = o.first_seen===LATEST_DATE;
+    const soon = o.remaining_days<=2;
+    const capText = o.cap_unlimited ? 'ულიმიტო' : (o.cap_amount ? `მაქს. ${o.cap_amount}₾` : '');
+    return `
+      <article class="card" tabindex="0" data-slug="${escapeAttr(o.slug)}">
+        ${o.image ? `<img class="thumb" src="${escapeAttr(o.image)}" alt="" loading="lazy" onerror="this.style.display='none'">` : ''}
+        <div class="card-top">
+          <div class="card-tags">
+            <span class="tag cat">${escapeHtml(o.category||'სხვა')}</span>
+            ${isNew ? '<span class="tag new">ახალი</span>' : ''}
+            ${soon ? '<span class="tag ending">იწურება</span>' : ''}
+          </div>
+          ${o.cashback_percent ? `<div class="cashback">${o.cashback_percent}<small>%</small>${capText?`<span class="cap">${escapeHtml(capText)}</span>`:''}</div>` : ''}
+        </div>
+        <div class="brand-name">${escapeHtml(o.brand||'')}</div>
+        <div class="title">${escapeHtml(o.title||'')}</div>
+        ${o.description ? `<div class="desc">${escapeHtml(o.description)}</div>` : ''}
+        <div class="card-foot">
+          <span class="days-left ${daysColor(o.remaining_days)}">${o.remaining_days===0?'იწურება დღეს':`დარჩა ${o.remaining_days} დღე`}</span>
+          <span class="card-links">
+            ${o.description ? '<button class="expand-btn" type="button">დეტალები</button>' : ''}
+            ${o.url ? `<a href="${escapeAttr(o.url)}" target="_blank" rel="noopener">TBC-ზე ნახვა ↗</a>` : ''}
+          </span>
+        </div>
+      </article>
+    `;
+  }
+
+  function renderGrid(){
+    const filtered = sortOffers(ALL_OFFERS.filter(matchesFilters));
+    resultCountEl.textContent = filtered.length;
+
+    if(filtered.length===0){
+      grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">
+        <div class="big">∅</div>
+        შენს ფილტრებთან შესაბამისი შეთავაზება ვერ მოიძებნა
+      </div>`;
+      return;
+    }
+
+    const slice = filtered.slice(0, state.visible);
+    grid.innerHTML = slice.map(cardHtml).join('');
+
+    grid.querySelectorAll('.expand-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const card = btn.closest('.card');
+        card.classList.toggle('expanded');
+        btn.textContent = card.classList.contains('expanded') ? 'დამალვა' : 'დეტალები';
+      });
+    });
+
+    if(filtered.length > state.visible){
+      const wrap = document.createElement('div');
+      wrap.className = 'loadmore-wrap';
+      wrap.innerHTML = `<button class="loadmore" type="button">კიდევ ${Math.min(60, filtered.length-state.visible)} შეთავაზების ჩვენება</button>`;
+      wrap.querySelector('button').addEventListener('click', ()=>{
+        state.visible += 60;
+        renderGrid();
+      });
+      grid.appendChild(wrap);
+    }
+  }
+
+  function debounce(fn, ms){
+    let t;
+    return (...args)=>{ clearTimeout(t); t=setTimeout(()=>fn(...args), ms); };
+  }
+
+  searchInput.addEventListener('input', debounce(e=>{
+    state.q = e.target.value.trim();
+    state.visible = 60;
+    renderGrid();
+  }, 180));
+
+  sortSelect.addEventListener('change', e=>{
+    state.sort = e.target.value;
+    renderGrid();
+  });
+
+  soonToggle.addEventListener('click', ()=>{
+    state.soon = !state.soon;
+    soonToggle.setAttribute('aria-pressed', state.soon);
+    state.visible = 60;
+    renderGrid();
+  });
+
+  newToggle.addEventListener('click', ()=>{
+    state.freshOnly = !state.freshOnly;
+    newToggle.setAttribute('aria-pressed', state.freshOnly);
+    state.visible = 60;
+    renderGrid();
+  });
+
+  function parseHistory(text){
+    return text.split('\n').filter(Boolean).map(line=>{
+      try{ return JSON.parse(line); }catch(e){ return null; }
+    }).filter(Boolean);
+  }
+
+  async function init(){
+    try{
+      const [offersText, historyText] = await Promise.all([
+        fetchFirst(DATA_PATHS, FALLBACK_DATA),
+        fetchFirst(HISTORY_PATHS, FALLBACK_HISTORY).catch(()=> "")
+      ]);
+
+      const offersObj = JSON.parse(offersText);
+      ALL_OFFERS = Object.values(offersObj);
+      const history = historyText ? parseHistory(historyText) : [];
+
+      LATEST_DATE = ALL_OFFERS.reduce((max,o)=> (o.last_seen && o.last_seen>max) ? o.last_seen : max, '');
+
+      statusText.textContent = `ცოცხალი — ${LATEST_DATE || ''}`;
+      lastSyncEl.textContent = `ბოლო სინქრონიზაცია: ${fmtDate(LATEST_DATE)}`;
+
+      renderStats(ALL_OFFERS, history);
+      renderTicker(ALL_OFFERS);
+      renderCategoryPills(ALL_OFFERS);
+
+      skeletonGrid.style.display = 'none';
+      grid.style.display = 'grid';
+      renderGrid();
+
+    }catch(err){
+      skeletonGrid.style.display = 'none';
+      statusText.textContent = 'შეცდომა';
+      statusPill.querySelector('.status-dot').style.background = '#e2401f';
+      grid.style.display = 'grid';
+      grid.innerHTML = `<div class="error-banner" style="grid-column:1/-1;">
+        მონაცემების ჩატვირთვა ვერ მოხერხდა. დარწმუნდი, რომ ეს გვერდი განთავსებულია იმავე რეპოზიტორიაში, სადაც <code>data/offers.json</code> ფაილია (GitHub Pages), ან შეამოწმე ინტერნეტ კავშირი.<br><br>
+        დეტალები: ${escapeHtml(err.message)}
+      </div>`;
+    }
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
