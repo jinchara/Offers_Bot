@@ -149,6 +149,7 @@ def main():
 
     if not updates:
         print("No new updates.")
+        _save_offset(offset)  # ensure the file exists even on the very first run
         return
 
     state = load_state()
