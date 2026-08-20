@@ -20,20 +20,16 @@ import sys
 from collections import Counter
 from datetime import date, timedelta
 
-try:
-    import matplotlib
-    matplotlib.use("Agg")  # no display needed, just save PNGs
-    import matplotlib.pyplot as plt
-    import matplotlib.font_manager as fm
-except ImportError as e:
-    print(f"Error: matplotlib is not installed. Install it with: pip install matplotlib")
-    sys.exit(1)
+import matplotlib
+
+matplotlib.use("Agg")  # no display needed, just save PNGs
+import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
 
 from telegram_notify import send_message, send_photo
+from state_store import load_state, load_history
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
-STATE_FILE = os.path.join(DATA_DIR, "offers.json")
-HISTORY_FILE = os.path.join(DATA_DIR, "history.jsonl")
 TMP_DIR = os.path.join(DATA_DIR, "tmp")
 
 # --- Visual style ----------------------------------------------------------
@@ -67,20 +63,6 @@ plt.rcParams.update({
     "axes.spines.top": False,
     "axes.spines.right": False,
 })
-
-
-def load_state() -> dict:
-    if not os.path.exists(STATE_FILE):
-        return {}
-    with open(STATE_FILE, "r", encoding="utf-8") as f:
-        return json.load(f)
-
-
-def load_history() -> list[dict]:
-    if not os.path.exists(HISTORY_FILE):
-        return []
-    with open(HISTORY_FILE, "r", encoding="utf-8") as f:
-        return [json.loads(line) for line in f if line.strip()]
 
 
 def offers_added_since(state: dict, since: date) -> list[dict]:

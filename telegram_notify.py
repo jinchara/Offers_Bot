@@ -12,6 +12,7 @@ Setup (one-time, ~2 minutes, totally free):
 """
 
 import os
+import os
 try:
     import requests  # type: ignore[import-not-found]
 except ImportError:  # pragma: no cover - fallback for minimal environments
@@ -73,3 +74,22 @@ def format_new_offer_message(offer: dict, category: str, economics: dict | None 
         f"{days_line}"
         f"🔗 {offer.get('url')}"
     )
+
+
+def format_price_change_message(offer: dict, old_percent: int, new_percent: int) -> str:
+    direction = "📈" if new_percent > old_percent else "📉"
+    verb = "გაიზარდა" if new_percent > old_percent else "შემცირდა"
+    return (
+        f"{direction} <b>ქეშბექი {verb}!</b>\n\n"
+        f"🏷 {offer.get('title')}\n"
+        f"🔁 {old_percent}% → {new_percent}%\n"
+        f"🔗 {offer.get('url')}"
+    )
+
+
+def format_ending_soon_message(offers: list) -> str:
+    lines = ["⏳ <b>მალე სრულდება:</b>"]
+    for o in sorted(offers, key=lambda x: x.get("remaining_days", 0)):
+        days = o.get("remaining_days")
+        lines.append(f"• {o.get('title')} — დარჩენილია {days} დღე")
+    return "\n".join(lines)
