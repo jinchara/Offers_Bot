@@ -12,7 +12,9 @@ Setup (one-time, ~2 minutes, totally free):
 """
 
 import os
-import os
+
+from offer_status import days_left_label
+
 try:
     import requests  # type: ignore[import-not-found]
 except ImportError:  # pragma: no cover - fallback for minimal environments
@@ -53,8 +55,14 @@ def send_photo(photo_path: str, caption: str = ""):
 
 
 def format_new_offer_message(offer: dict, category: str, economics: dict | None = None) -> str:
-    days = offer.get("remaining_days")
-    days_line = f"⏳ დარჩენილი დღეები: {days}\n" if days is not None else ""
+    # Must read the derived status, never `remaining_days`. That field can
+    # be negative for a finished offer, which used to render as the
+    # nonsense line "დარჩენილი დღეები: -4".
+    if offer.get("status") == "upcoming":
+        days_line = f"🗓 იწყება: {offer.get('start_date', '')[:10]}\n"
+    else:
+        label = days_left_label(offer.get("days_left"))
+        days_line = f"⏳ {label}\n"
 
     cashback_line = ""
     if economics and economics.get("cashback_percent") is not None:
@@ -88,8 +96,23 @@ def format_price_change_message(offer: dict, old_percent: int, new_percent: int)
 
 
 def format_ending_soon_message(offers: list) -> str:
+    """
+    Digest of offers about to finish.
+
+    Callers must pass live offers only. "დარჩენილია 0 დღე" was both ugly
+    and ambiguous — it read the same for "last day" and "already over" —
+    so the wording now comes from days_left_label.
+    """
     lines = ["⏳ <b>მალე სრულდება:</b>"]
-    for o in sorted(offers, key=lambda x: x.get("remaining_days", 0)):
-        days = o.get("remaining_days")
-        lines.append(f"• {o.get('title')} — დარჩენილია {days} დღე")
+    for o in sorted(offers, key=lambda x: x.get("days_left") or 0):
+        lines.append(f"• {o.get('title')} — {days_left_label(o.get('days_left'))}")
+    return "\n".join(lines)
+
+
+def format_upcoming_message(offers: list) -> str:
+    """Announced but not yet running — worth knowing about in advance."""
+    lines = ["🗓 <b>დაანონსებული შეთავაზებები:</b>"]
+    for o in sorted(offers, key=lambda x: x.get("days_until_start") or 0):
+        starts = (o.get("start_date") or "")[:10]
+        lines.append(f"• {o.get('title')} — {starts}")
     return "\n".join(lines)

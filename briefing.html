@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>დღის ბრიფინგი — TBC Offers Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#091A2B; --orange:#ff5c0a; --tan:#CDA176;
+    --slate:#5A6670; --slate-soft:#8b959c;
+    --line:#e4e7e9; --bg:#f4f6f7; --card:#ffffff;
+    --danger:#e2401f; --good:#1f8a4c;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--navy);
+    font-family:'Noto Sans Georgian',system-ui,-apple-system,sans-serif;
+    font-size:14px; line-height:1.55;
+  }
+  code{font-family:'JetBrains Mono',monospace;}
+
+  .topbar{
+    background:var(--navy); color:#fff; padding:14px 24px;
+    display:flex; align-items:center; gap:18px; flex-wrap:wrap;
+  }
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;}
+  .brand .mark{
+    background:var(--orange); color:#fff; padding:3px 8px;
+    border-radius:5px; font-family:'JetBrains Mono',monospace; font-size:12px;
+  }
+  .brand .sub{color:var(--tan);font-weight:400;font-size:12.5px;}
+  .topnav{display:flex;gap:6px;margin-left:auto;}
+  .navlink{
+    color:#cfd6db;text-decoration:none;padding:6px 12px;
+    border-radius:6px;font-size:13px;
+  }
+  .navlink:hover{background:#ffffff18;color:#fff;}
+  .navlink.active{background:var(--orange);color:#fff;}
+
+  main{max-width:1240px;margin:0 auto;padding:26px 24px 60px;}
+
+  .headline{
+    display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
+    margin-bottom:6px;
+  }
+  .headline h1{font-size:26px;margin:0;letter-spacing:-.3px;}
+  .headline .date{
+    font-family:'JetBrains Mono',monospace;color:var(--slate);font-size:13px;
+  }
+  .lede{color:var(--slate);margin:0 0 26px;max-width:76ch;}
+
+  .schema-banner{
+    margin:0 0 20px;padding:14px 18px;
+    background:#fff6e5;border:1px solid #e0a33a;color:#7a5312;
+    border-radius:8px;font-size:13.5px;line-height:1.6;
+  }
+  .schema-banner code{background:#00000010;padding:1px 5px;border-radius:4px;}
+
+  h2.sec{
+    font-size:12px;text-transform:uppercase;letter-spacing:1.4px;
+    color:var(--slate-soft);margin:34px 0 14px;font-weight:700;
+    padding-bottom:8px;border-bottom:1px solid var(--line);
+  }
+
+  /* --- movement strip --- */
+  .moves{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;}
+  .move{
+    background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:14px 16px;
+  }
+  .move .n{
+    font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700;
+    line-height:1.1;
+  }
+  .move .l{font-size:12px;color:var(--slate);margin-top:3px;}
+  .move.up .n{color:var(--good);}
+  .move.down .n{color:var(--danger);}
+  .move.hot .n{color:var(--orange);}
+
+  /* --- signal cards --- */
+  .signals{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;}
+  .signal{
+    background:var(--card);border:1px solid var(--line);border-left:3px solid var(--slate-soft);
+    border-radius:10px;padding:15px 17px;
+  }
+  .signal.alert{border-left-color:var(--danger);}
+  .signal.watch{border-left-color:var(--orange);}
+  .signal.info{border-left-color:var(--tan);}
+  .signal h3{margin:0 0 4px;font-size:14.5px;}
+  .signal .why{color:var(--slate);font-size:12.5px;margin-bottom:9px;}
+  .signal ul{margin:0;padding-left:17px;font-size:13px;}
+  .signal li{margin-bottom:3px;}
+  .signal .none{color:var(--slate-soft);font-size:13px;font-style:italic;}
+
+  /* --- calendar --- */
+  .cal{
+    background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:8px 4px;overflow-x:auto;
+  }
+  .calrow{
+    display:grid;grid-template-columns:96px 1fr;gap:12px;
+    padding:9px 14px;border-bottom:1px solid var(--line);align-items:start;
+  }
+  .calrow:last-child{border-bottom:none;}
+  .calrow.today{background:#fff6f1;}
+  .caldate{
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--slate);
+    padding-top:2px;
+  }
+  .calrow.today .caldate{color:var(--orange);font-weight:700;}
+  .calitems{display:flex;flex-wrap:wrap;gap:6px;}
+  .chip{
+    font-size:11.5px;padding:3px 9px;border-radius:20px;
+    border:1px solid var(--line);background:#fbfcfc;
+  }
+  .chip.start{background:#eaf6ee;border-color:#bfe0ca;color:#1f6b3d;}
+  .chip.end{background:#fdeeea;border-color:#f3c9bd;color:#a8371c;}
+  .calempty{color:var(--slate-soft);font-size:12.5px;}
+
+  /* --- pressure table --- */
+  table.grid{width:100%;border-collapse:collapse;background:var(--card);
+    border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:13px;}
+  table.grid th{
+    text-align:left;padding:10px 14px;background:#fafbfb;
+    font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:var(--slate);
+    border-bottom:1px solid var(--line);
+  }
+  table.grid td{padding:9px 14px;border-bottom:1px solid var(--line);}
+  table.grid tr:last-child td{border-bottom:none;}
+  td.num{font-family:'JetBrains Mono',monospace;text-align:right;}
+  .bar{
+    display:inline-block;height:7px;border-radius:4px;background:var(--orange);
+    vertical-align:middle;min-width:2px;
+  }
+  .muted{color:var(--slate-soft);}
+
+  /* --- copy block --- */
+  .copywrap{position:relative;}
+  .copyblock{
+    background:var(--navy);color:#dbe2e7;border-radius:10px;
+    padding:18px 20px;font-family:'JetBrains Mono',monospace;font-size:12.5px;
+    line-height:1.75;white-space:pre-wrap;word-break:break-word;
+    max-height:420px;overflow:auto;
+  }
+  .copybtn{
+    position:absolute;top:12px;right:12px;
+    background:var(--orange);color:#fff;border:none;border-radius:6px;
+    padding:7px 14px;font-size:12.5px;cursor:pointer;
+    font-family:'Noto Sans Georgian',sans-serif;
+  }
+  .copybtn:hover{filter:brightness(1.08);}
+  .copybtn:focus-visible{outline:2px solid #fff;outline-offset:2px;}
+
+  .loading{padding:60px 0;text-align:center;color:var(--slate-soft);}
+  .error-banner{
+    padding:16px 20px;background:#fdeae4;border:1px solid var(--danger);
+    color:var(--danger);border-radius:8px;
+  }
+  footer{
+    border-top:1px solid var(--line);margin-top:40px;padding:22px 24px;
+    color:var(--slate-soft);font-size:12.5px;text-align:center;
+  }
+  footer a{color:var(--tan);}
+
+  @media (max-width:600px){
+    main{padding:18px 14px 40px;}
+    .headline h1{font-size:21px;}
+    .calrow{grid-template-columns:74px 1fr;}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="mark">BOG</span>
+    <span>Offers Intelligence</span>
+    <span class="sub">/ TBC Bank Monitor</span>
+  </div>
+  <nav class="topnav">
+    <a href="briefing.html" class="navlink active">ბრიფინგი</a>
+    <a href="dashboard.html" class="navlink">ანალიტიკა</a>
+    <a href="index.html" class="navlink">შეთავაზებები</a>
+  </nav>
+</header>
+
+<main>
+  <div id="loading" class="loading">ბრიფინგი მზადდება…</div>
+  <div id="content" style="display:none;">
+
+    <div class="headline">
+      <h1>დღის ბრიფინგი</h1>
+      <span class="date" id="asOf"></span>
+    </div>
+    <p class="lede" id="lede"></p>
+
+    <h2 class="sec">მოძრაობა — ბოლო 7 დღე</h2>
+    <div class="moves" id="moves"></div>
+
+    <h2 class="sec">სიგნალები</h2>
+    <div class="signals" id="signals"></div>
+
+    <h2 class="sec">კალენდარი — მომდევნო 14 დღე</h2>
+    <div class="cal" id="calendar"></div>
+
+    <h2 class="sec">სად აწვება თიბისი</h2>
+    <table class="grid" id="pressure">
+      <thead><tr>
+        <th>კატეგორია</th><th>აქტიური</th><th>საშ. ქეშბექი</th>
+        <th>მაქს.</th><th>ბრენდი</th><th style="width:130px">წონა</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+
+    <h2 class="sec">გასაზიარებელი შეჯამება</h2>
+    <div class="copywrap">
+      <button class="copybtn" id="copyBtn" type="button">კოპირება</button>
+      <div class="copyblock" id="copyBlock"></div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  მონაცემები ავტომატურად ნახლდება —
+  <a href="https://github.com/jinchara/Offers_Bot" target="_blank" rel="noopener">jinchara/Offers_Bot</a>
+  · შიდა ანალიტიკური ხელსაწყო, Bank of Georgia
+</footer>
+
+<script src="offers-core.js"></script>
+<script>
+/*
+ * briefing.html
+ *
+ * The other two pages answer "what does TBC have?". This one answers the
+ * question an analyst actually opens a tab for: "what changed, and does it
+ * need a response today?"
+ *
+ * Everything here is a DIFF or a DECISION, never a catalogue. Nothing is
+ * shown that doesn't imply an action or a judgement — no offer wall, no
+ * merchant browsing. If it duplicates TBC's own site, it doesn't belong.
+ */
+(function(){
+  "use strict";
+
+  var C = window.OffersCore;
+  var el = function(id){ return document.getElementById(id); };
+
+  // A merchant offering this or more is being unusually aggressive and is
+  // worth a human look rather than a line in a table.
+  var AGGRESSIVE_CASHBACK = 30;
+  var FLASH_MAX_DAYS = 3;
+  var CALENDAR_DAYS = 14;
+
+  function fmtDate(d){
+    return d.toISOString().slice(0,10);
+  }
+  function addDays(d, n){
+    return new Date(d.getTime() + n*86400000);
+  }
+  function daysBetween(a, b){
+    return Math.round((a - b) / 86400000);
+  }
+
+  /* --- movement --------------------------------------------------------
+     Launches and endings inside the trailing window. An offer with no
+     published start date falls back to when we first saw it, except for
+     the initial backfill batch — those all share one first_seen and would
+     otherwise register as one enormous launch day. */
+  function movement(offers, days, today){
+    var since = addDays(today, -days);
+    var seenDates = offers.map(function(o){ return o.first_seen; }).filter(Boolean);
+    var backfill = seenDates.length ? seenDates.sort()[0] : null;
+
+    var launched = 0, ended = 0;
+    offers.forEach(function(o){
+      var start = C.parseDate(o.start_date);
+      if(!start && o.first_seen !== backfill) start = C.parseDate(o.first_seen);
+      var end = C.parseDate(o.end_date);
+      if(start && start >= since && start <= today) launched++;
+      if(end && end >= since && end <= today) ended++;
+    });
+    return { launched: launched, ended: ended, net: launched - ended };
+  }
+
+  function renderMoves(all, live, today){
+    var mv = movement(all, 7, today);
+    var endingSoon = live.filter(function(o){ return o.status === 'ending_soon'; }).length;
+    var upcoming = all.filter(function(o){ return o.status === 'upcoming'; }).length;
+    var conceptOnly = live.filter(function(o){ return o.concept_only; }).length;
+
+    var items = [
+      { n: '+' + mv.launched, l: 'გაშვებული (7 დღე)', cls: mv.launched ? 'up' : '' },
+      { n: '−' + mv.ended,    l: 'დასრულებული (7 დღე)', cls: mv.ended ? 'down' : '' },
+      { n: (mv.net >= 0 ? '+' : '') + mv.net, l: 'სუფთა ცვლილება', cls: mv.net < 0 ? 'down' : 'up' },
+      { n: endingSoon,        l: 'იწურება ' + C.ENDING_SOON_DAYS + ' დღეში', cls: 'hot' },
+      { n: upcoming,          l: 'დაანონსებული', cls: '' },
+      { n: conceptOnly,       l: 'მხოლოდ კონცეპტი', cls: conceptOnly ? 'hot' : '' }
+    ];
+    el('moves').innerHTML = items.map(function(i){
+      return '<div class="move ' + i.cls + '"><div class="n">' + i.n +
+             '</div><div class="l">' + i.l + '</div></div>';
+    }).join('');
+    return mv;
+  }
+
+  /* --- signals ---------------------------------------------------------
+     Each signal states WHY it is on the page. A number without a reason to
+     care is decoration, and decoration is what makes people stop reading a
+     daily report. */
+  function buildSignals(all, live, merchant, today){
+    var signals = [];
+
+    var aggressive = merchant
+      .filter(function(o){ return o.cashback_percent >= AGGRESSIVE_CASHBACK; })
+      .sort(function(a,b){ return b.cashback_percent - a.cashback_percent; });
+    signals.push({
+      cls: 'alert',
+      title: 'აგრესიული ქეშბექი (' + AGGRESSIVE_CASHBACK + '%+)',
+      why: 'ამ დონეზე თიბისი იხდის მოცულობისთვის — ღირს შემოწმება, ვართ თუ არა დაფარული ამავე ვერტიკალში.',
+      items: aggressive.slice(0,6).map(function(o){
+        return (o.brand || o.title) + ' — <b>' + o.cashback_percent + '%</b>' +
+               (o.cap_unlimited ? ' ულიმიტო' : (o.cap_amount ? ' მაქს. ' + o.cap_amount + '₾' : '')) +
+               ' <span class="muted">' + (o.category || '') + '</span>';
+      }),
+      empty: 'ამჟამად ' + AGGRESSIVE_CASHBACK + '%+ შეთავაზება არ არის.'
+    });
+
+    var conceptOnly = live.filter(function(o){ return o.concept_only; })
+      .sort(function(a,b){ return (b.cashback_percent||0) - (a.cashback_percent||0); });
+    signals.push({
+      cls: 'watch',
+      title: 'მხოლოდ კონცეპტისთვის',
+      why: 'პრემიუმ სეგმენტის შენარჩუნების სვლა, არა მასობრივი მოზიდვა — სხვა ტიპის პასუხს მოითხოვს.',
+      items: conceptOnly.slice(0,6).map(function(o){
+        return (o.brand || o.title) +
+               (o.cashback_percent ? ' — <b>' + o.cashback_percent + '%</b>' : '') +
+               ' <span class="muted">' + (o.category || '') + '</span>';
+      }),
+      empty: 'კონცეპტ-ექსკლუზივი შეთავაზება არ არის (ან სეგმენტები ჯერ არ არის დატეგილი).'
+    });
+
+    var flash = live.filter(function(o){
+      return o.duration_days && o.duration_days <= FLASH_MAX_DAYS;
+    }).sort(function(a,b){ return (a.days_left||0) - (b.days_left||0); });
+    signals.push({
+      cls: 'watch',
+      title: 'ფლეშ-კამპანიები (≤' + FLASH_MAX_DAYS + ' დღე)',
+      why: 'მოკლე ფანჯარა ნიშნავს, რომ რეაქციაზე დრო არ არის — ეს ტაქტიკა წინასწარ უნდა დაიგეგმოს, არა რეაქციულად.',
+      items: flash.slice(0,6).map(function(o){
+        return (o.brand || o.title) + ' — ' + o.duration_days + ' დღე, ' + o.days_left_label;
+      }),
+      empty: 'მოკლევადიანი კამპანია ამჟამად არ მიმდინარეობს.'
+    });
+
+    /* A partner appearing for the first time is a new commercial
+       relationship, not just another row. */
+    var seenDates = all.map(function(o){ return o.first_seen; }).filter(Boolean).sort();
+    var backfill = seenDates.length ? seenDates[0] : null;
+    var freshBrands = {};
+    all.forEach(function(o){
+      if(!o.brand || o.bank_product) return;
+      if(!o.first_seen || o.first_seen === backfill) return;
+      if(daysBetween(today, C.parseDate(o.first_seen)) > 14) return;
+      freshBrands[o.brand] = o.first_seen;
+    });
+    var freshList = Object.keys(freshBrands).sort(function(a,b){
+      return freshBrands[b].localeCompare(freshBrands[a]);
+    });
+    signals.push({
+      cls: 'info',
+      title: 'ახალი პარტნიორები (14 დღე)',
+      why: 'ახალი ბრენდი თიბისის კედელზე — შესაძლოა ექსკლუზივზე მოლაპარაკება მიმდინარეობდეს.',
+      items: freshList.slice(0,8).map(function(b){
+        return b + ' <span class="muted">' + freshBrands[b] + '</span>';
+      }),
+      empty: 'ბოლო 2 კვირაში ახალი პარტნიორი არ დაფიქსირებულა.'
+    });
+
+    el('signals').innerHTML = signals.map(function(s){
+      var body = s.items.length
+        ? '<ul>' + s.items.map(function(i){ return '<li>' + i + '</li>'; }).join('') + '</ul>'
+        : '<div class="none">' + C.escapeHtml(s.empty) + '</div>';
+      return '<div class="signal ' + s.cls + '"><h3>' + C.escapeHtml(s.title) + '</h3>' +
+             '<div class="why">' + C.escapeHtml(s.why) + '</div>' + body + '</div>';
+    }).join('');
+
+    return { aggressive: aggressive, conceptOnly: conceptOnly, flash: flash, freshBrands: freshList };
+  }
+
+  /* --- calendar --------------------------------------------------------
+     Two weeks of starts and ends on one axis. This is the piece TBC's own
+     site cannot give you: they show one offer's dates, never the shape of
+     the whole schedule. Seeing three campaigns end on the same Friday is
+     what lets you time a response instead of reacting to it. */
+  function renderCalendar(all, today){
+    var byDay = {};
+    for(var i = 0; i <= CALENDAR_DAYS; i++){
+      byDay[fmtDate(addDays(today, i))] = { starts: [], ends: [] };
+    }
+    all.forEach(function(o){
+      var name = o.brand || o.title || '';
+      var start = C.parseDate(o.start_date);
+      var end = C.parseDate(o.end_date);
+      if(start){
+        var sk = fmtDate(start);
+        if(byDay[sk]) byDay[sk].starts.push(name);
+      }
+      if(end){
+        var ek = fmtDate(end);
+        if(byDay[ek]) byDay[ek].ends.push(name);
+      }
+    });
+
+    var weekday = ['კვი','ორშ','სამ','ოთხ','ხუთ','პარ','შაბ'];
+    var rows = Object.keys(byDay).sort().map(function(key, idx){
+      var day = byDay[key];
+      var d = C.parseDate(key);
+      var chips = day.starts.map(function(n){
+          return '<span class="chip start">▶ ' + C.escapeHtml(C.truncate(n, 24)) + '</span>';
+        }).concat(day.ends.map(function(n){
+          return '<span class="chip end">■ ' + C.escapeHtml(C.truncate(n, 24)) + '</span>';
+        }));
+      var label = key.slice(5) + ' ' + weekday[d.getUTCDay()];
+      return '<div class="calrow' + (idx === 0 ? ' today' : '') + '">' +
+        '<div class="caldate">' + label + (idx === 0 ? ' • დღეს' : '') + '</div>' +
+        '<div class="calitems">' +
+          (chips.length ? chips.join('') : '<span class="calempty">—</span>') +
+        '</div></div>';
+    });
+    el('calendar').innerHTML = rows.join('');
+  }
+
+  /* --- category pressure ----------------------------------------------
+     "Weight" combines depth and generosity: a category with 40 offers at
+     5% is a different competitive fact from one with 4 offers at 40%.
+     Ranking on count alone hides the second. */
+  function renderPressure(merchant){
+    var byCat = {};
+    merchant.forEach(function(o){
+      var c = o.category || 'სხვა';
+      if(!byCat[c]) byCat[c] = { offers: [], brands: {} };
+      byCat[c].offers.push(o);
+      if(o.brand) byCat[c].brands[o.brand] = 1;
+    });
+
+    var rows = Object.keys(byCat).map(function(cat){
+      var bucket = byCat[cat];
+      var cbs = bucket.offers.filter(function(o){ return o.cashback_percent; })
+                             .map(function(o){ return o.cashback_percent; });
+      var avg = cbs.length ? C.mean(cbs) : 0;
+      return {
+        cat: cat,
+        count: bucket.offers.length,
+        avg: avg,
+        max: cbs.length ? Math.max.apply(null, cbs) : 0,
+        brands: Object.keys(bucket.brands).length,
+        weight: bucket.offers.length * Math.max(avg, 1)
+      };
+    }).sort(function(a,b){ return b.weight - a.weight; });
+
+    var maxWeight = rows.length ? rows[0].weight : 1;
+    el('pressure').querySelector('tbody').innerHTML = rows.map(function(r){
+      var pct = Math.max(2, Math.round(100 * r.weight / maxWeight));
+      return '<tr><td>' + C.escapeHtml(r.cat) + '</td>' +
+        '<td class="num">' + r.count + '</td>' +
+        '<td class="num">' + (r.avg ? r.avg.toFixed(1) + '%' : '<span class="muted">—</span>') + '</td>' +
+        '<td class="num">' + (r.max ? r.max + '%' : '<span class="muted">—</span>') + '</td>' +
+        '<td class="num">' + r.brands + '</td>' +
+        '<td><span class="bar" style="width:' + pct + '%"></span></td></tr>';
+    }).join('');
+    return rows;
+  }
+
+  /* --- shareable summary ----------------------------------------------
+     Plain text, because the last mile of this tool is somebody pasting it
+     into Slack. A dashboard nobody can quote doesn't travel. */
+  function renderCopyBlock(today, mv, live, merchant, sig, pressure){
+    var cbs = merchant.filter(function(o){ return o.cashback_percent; })
+                      .map(function(o){ return o.cashback_percent; });
+    var lines = [];
+    lines.push('TBC შეთავაზებები — ' + fmtDate(today));
+    lines.push('');
+    lines.push('აქტიური: ' + live.length + ' (პარტნიორული: ' + merchant.length + ')');
+    lines.push('ბოლო 7 დღე: +' + mv.launched + ' გაშვებული / −' + mv.ended +
+               ' დასრულებული (სუფთა ' + (mv.net >= 0 ? '+' : '') + mv.net + ')');
+    if(cbs.length){
+      lines.push('ქეშბექი: საშ. ' + C.mean(cbs).toFixed(1) + '%, მედიანა ' +
+                 C.median(cbs) + '%, მაქს. ' + Math.max.apply(null, cbs) + '%');
+    }
+    lines.push('');
+    if(sig.aggressive.length){
+      lines.push('ყველაზე აგრესიული:');
+      sig.aggressive.slice(0,5).forEach(function(o){
+        lines.push('  • ' + (o.brand || o.title) + ' — ' + o.cashback_percent + '%' +
+                   (o.cap_unlimited ? ' ულიმიტო' : (o.cap_amount ? ' მაქს. ' + o.cap_amount + '₾' : '')));
+      });
+      lines.push('');
+    }
+    if(sig.conceptOnly.length){
+      lines.push('კონცეპტ-ექსკლუზივი: ' +
+                 sig.conceptOnly.slice(0,5).map(function(o){ return o.brand || o.title; }).join(', '));
+      lines.push('');
+    }
+    if(sig.freshBrands.length){
+      lines.push('ახალი პარტნიორები: ' + sig.freshBrands.slice(0,8).join(', '));
+      lines.push('');
+    }
+    lines.push('ყველაზე დატვირთული კატეგორიები:');
+    pressure.slice(0,5).forEach(function(r){
+      lines.push('  • ' + r.cat + ': ' + r.count + ' შეთავაზება, საშ. ' +
+                 (r.avg ? r.avg.toFixed(1) + '%' : 'n/a'));
+    });
+    lines.push('');
+    lines.push('კატეგორიები დათვლილია ავტომატურად — ციფრები საორიენტაციოა.');
+
+    el('copyBlock').textContent = lines.join('\n');
+  }
+
+  el('copyBtn').addEventListener('click', function(){
+    var text = el('copyBlock').textContent;
+    var done = function(){
+      el('copyBtn').textContent = 'დაკოპირდა ✓';
+      setTimeout(function(){ el('copyBtn').textContent = 'კოპირება'; }, 1800);
+    };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done, done);
+    } else {
+      // Older browsers and non-secure origins have no clipboard API;
+      // selecting the text still lets the person copy it manually.
+      var range = document.createRange();
+      range.selectNodeContents(el('copyBlock'));
+      var sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+      done();
+    }
+  });
+
+  C.loadAll().then(function(data){
+    var today = C.todayUTC();
+    var all = data.offers;
+    var live = C.live(all);
+    var merchant = C.merchantsOnly(live);
+
+    el('asOf').textContent = fmtDate(today);
+    el('lede').textContent =
+      'თიბისის შეთავაზებების ყოველდღიური მიმოხილვა BOG-ის გუნდისთვის. ' +
+      'აქ მხოლოდ ცვლილებები და გადაწყვეტილებებია — სრული კატალოგი „შეთავაზებების“ გვერდზეა.';
+
+    C.renderSchemaWarning(el('content'), data);
+
+    var mv = renderMoves(all, live, today);
+    var sig = buildSignals(all, live, merchant, today);
+    renderCalendar(all, today);
+    var pressure = renderPressure(merchant);
+    renderCopyBlock(today, mv, live, merchant, sig, pressure);
+
+    el('loading').style.display = 'none';
+    el('content').style.display = 'block';
+  }).catch(function(err){
+    el('loading').style.display = 'none';
+    el('content').style.display = 'block';
+    el('content').innerHTML = '<div class="error-banner">მონაცემები ვერ ჩაიტვირთა. ' +
+      'გვერდი უნდა იყოს იმავე რეპოზიტორიაში, სადაც <code>data/offers.json</code>.<br><br>' +
+      'დეტალები: ' + C.escapeHtml(err.message) + '</div>';
+  });
+})();
+</script>
+</body>
+</html>

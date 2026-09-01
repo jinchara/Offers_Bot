@@ -1,0 +1,31 @@
+{
+  "_readme": [
+    "Manual category corrections. This file always wins over every other",
+    "rule, so it is the fastest way to fix a wrong category without",
+    "touching Python.",
+    "",
+    "by_slug  overrides a single offer, keyed by its slug (see the offer URL).",
+    "by_brand overrides every offer from a merchant. Prefer this one.",
+    "",
+    "Valid categories (TBC's own 19, exactly as they spell them):",
+    "  შოპინგი, ტრანსპორტი, განათლება, დასვენება, აქსესუარები, ტანსაცმელი,",
+    "  ონლაინ პარტნიორები, კაფე და რესტორანი, ტექნიკა, სახლი,",
+    "  ჯანმრთელობა და სილამაზე, ავტო, სურსათი, საბავშვო, გართობა,",
+    "  ყვავილები, დეველოპერები, პარფიუმერია, მოგზაურობა",
+    "",
+    "Brand names are matched case-insensitively with punctuation ignored,",
+    "so 'Jack & Jones' and 'jack jones' both work.",
+    "",
+    "Workflow: open the dashboard, look at the 'მონაცემების ხარისხი' panel",
+    "at the bottom, and add anything listed there as uncategorised."
+  ],
+
+  "_example": {
+    "by_brand": { "მეტრომარტი": "ტექნიკა" },
+    "by_slug": { "metromart-ganatsileba": "ტექნიკა" }
+  },
+
+  "by_brand": {},
+
+  "by_slug": {}
+}

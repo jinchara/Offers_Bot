@@ -1,0 +1,267 @@
+{
+  "resolved": {
+    "Category": {},
+    "ProductType": {},
+    "OfferType": {},
+    "CardType": {}
+  },
+  "baseline": 514,
+  "unresolved": [
+    {
+      "facet": "Category",
+      "label": "Shopping",
+      "tried": [
+        "Shopping"
+      ]
+    },
+    {
+      "facet": "Category",
+      "label": "Transport",
+      "tried": [
+        "Transport",
+        "Transportation"
+      ]
+    },
+    {
+      "facet": "Category",
+      "label": "Education",
+      "tried": [
+        "Education"
+      ]
+    },
+    {
+      "facet": "Category",
+      "label": "Leisure",
+      "tried": [
+        "Leisure",
+        "Recreation",
+        "Rest"
+      ]
+    },
+    {
+      "facet": "Category",
+      "label": "Accessories",
+      "tried": [
+        "Accessories"
+      ]
+    },
+    {
+      "facet": "Category",
+      "label": "Clothes",
+      "tried": [
+        "Clothes",
+        "Clothing",
+        "Apparel"
+      ]
+    },
+    {
+      "facet": "Category",
+      "label": "Online Partners",
+      "tried": [
+        "OnlinePartners",
+        "Online",
+        "OnlinePartner"
+      ]
+    },
+    {
+      "facet": "Category",
+      "label": "Cafe and Restaurant",
+      "tried": [
+        "CafeAndRestaurant",
+        "CafeRestaurant",
+        "Restaurant",
+        "CafeRestaurants"
+      ]
+    },
+    {
+      "facet": "Category",
+      "label": "Electronics",
+      "tried": [
+        "Electronics",
+        "Technics",
+        "Technique"
+      ]
+    },
+    {
+      "facet": "Category",
+      "label": "Home",
+      "tried": [
+        "Home"
+      ]
+    },
+    {
+      "facet": "Category",
+      "label": "Beauty & Health",
+      "tried": [
+        "BeautyHealth",
+        "BeautyAndHealth",
+        "HealthBeauty",
+        "HealthAndBeauty",
+        "Beauty"
+      ]
+    },
+    {
+      "facet": "Category",
+      "label": "Auto",
+      "tried": [
+        "Auto"
+      ]
+    },
+    {
+      "facet": "Category",
+      "label": "Groceries",
+      "tried": [
+        "Groceries",
+        "Grocery",
+        "Food"
+      ]
+    },
+    {
+      "facet": "Category",
+      "label": "For Kids",
+      "tried": [
+        "ForKids",
+        "Kids",
+        "Children"
+      ]
+    },
+    {
+      "facet": "Category",
+      "label": "Entertainment",
+      "tried": [
+        "Entertainment",
+        "Fun"
+      ]
+    },
+    {
+      "facet": "Category",
+      "label": "Flowers",
+      "tried": [
+        "Flowers"
+      ]
+    },
+    {
+      "facet": "Category",
+      "label": "Developers",
+      "tried": [
+        "Developers",
+        "Developer"
+      ]
+    },
+    {
+      "facet": "Category",
+      "label": "Perfume",
+      "tried": [
+        "Perfume",
+        "Perfumery"
+      ]
+    },
+    {
+      "facet": "Category",
+      "label": "Travel",
+      "tried": [
+        "Travel"
+      ]
+    },
+    {
+      "facet": "ProductType",
+      "label": "TBC Card",
+      "tried": [
+        "TBCCard"
+      ]
+    },
+    {
+      "facet": "ProductType",
+      "label": "Travel Card",
+      "tried": [
+        "TravelCard"
+      ]
+    },
+    {
+      "facet": "ProductType",
+      "label": "TBC Concept Card",
+      "tried": [
+        "TBCConceptCard",
+        "ConceptCard"
+      ]
+    },
+    {
+      "facet": "ProductType",
+      "label": "Credit Card",
+      "tried": [
+        "CreditCard"
+      ]
+    },
+    {
+      "facet": "ProductType",
+      "label": "Pupil's Card",
+      "tried": [
+        "PupilCard",
+        "PupilsCard",
+        "StudentCard"
+      ]
+    },
+    {
+      "facet": "ProductType",
+      "label": "Pay Later",
+      "tried": [
+        "PayLater",
+        "Ganatsileba"
+      ]
+    },
+    {
+      "facet": "ProductType",
+      "label": "Installment",
+      "tried": [
+        "Installment",
+        "Installments"
+      ]
+    },
+    {
+      "facet": "ProductType",
+      "label": "Crypto",
+      "tried": [
+        "Crypto"
+      ]
+    },
+    {
+      "facet": "OfferType",
+      "label": "Discount",
+      "tried": [
+        "Discount"
+      ]
+    },
+    {
+      "facet": "OfferType",
+      "label": "Cashback",
+      "tried": [
+        "Cashback"
+      ]
+    },
+    {
+      "facet": "OfferType",
+      "label": "Partner Offers",
+      "tried": [
+        "PartnerOffers",
+        "PartnerOffer",
+        "Partner"
+      ]
+    },
+    {
+      "facet": "CardType",
+      "label": "Visa / Credit Card",
+      "tried": [
+        "Visa",
+        "CreditCard"
+      ]
+    },
+    {
+      "facet": "CardType",
+      "label": "MasterCard",
+      "tried": [
+        "MasterCard",
+        "Mastercard"
+      ]
+    }
+  ]
+}

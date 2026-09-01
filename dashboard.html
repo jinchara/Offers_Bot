@@ -215,6 +215,18 @@
     font-size:13px;
   }
 
+  .schema-banner{
+    margin:0 0 18px;padding:14px 18px;
+    background:#fff6e5;border:1px solid #e0a33a;color:#7a5312;
+    border-radius:8px;font-size:13.5px;line-height:1.6;
+  }
+  .schema-banner code{background:#00000010;padding:1px 5px;border-radius:4px;}
+  .scope-note{max-width:1400px;margin:0 auto 4px;padding:0 24px;font-size:12.5px;color:var(--slate-soft);}
+  .panel.wide{grid-column:1/-1;}
+  .quality-grid{display:flex;flex-wrap:wrap;gap:18px;font-size:13px;}
+  .quality-grid .q{background:#f6f7f8;border-radius:8px;padding:10px 14px;min-width:150px;}
+  .quality-grid .q b{display:block;font-size:18px;font-family:'JetBrains Mono',monospace;}
+  .unresolved{margin-top:14px;font-size:12.5px;color:var(--slate-soft);line-height:1.7;}
   .error-banner{
     padding:16px 20px;
     background:#fdeae4;border:1px solid var(--danger);color:var(--danger);
@@ -250,8 +262,9 @@
     <span class="sub">/ TBC Bank Monitor</span>
   </div>
   <nav class="topnav">
-    <a href="index.html" class="navlink">შეთავაზებები</a>
+    <a href="briefing.html" class="navlink">ბრიფინგი</a>
     <a href="dashboard.html" class="navlink active">ანალიტიკა</a>
+    <a href="index.html" class="navlink">შეთავაზებები</a>
   </nav>
   <div class="status-pill" id="statusPill">
     <span class="status-dot"></span>
@@ -264,21 +277,22 @@
   <div id="content" style="display:none;">
 
     <div class="kpi-row" id="kpiRow"></div>
+    <div class="scope-note" id="scopeNote"></div>
 
     <div class="section-head">
-      <h2>შეთავაზებები კატეგორიების მიხედვით</h2>
-      <span class="note">count per category</span>
+      <h2>ბაზრის სურათი დღეს</h2>
+      <span class="note">მხოლოდ აქტიური შეთავაზებები</span>
     </div>
     <div class="panel-grid">
       <div class="panel">
         <h3>კატეგორიების განაწილება</h3>
-        <div class="panel-sub">რამდენი აქტიური შეთავაზებაა თითოეულ კატეგორიაში</div>
+        <div class="panel-sub">რამდენი აქტიური შეთავაზებაა თითოეულ კატეგორიაში (პარტნიორები, თიბისის საკუთარი პროდუქტების გარეშე)</div>
         <div id="catChart" class="chart-holder"></div>
       </div>
       <div class="panel">
-        <h3>ლიმიტის ტიპი</h3>
-        <div class="panel-sub">ულიმიტო vs. ლიმიტირებული ქეშბექი</div>
-        <div id="capChart" class="chart-holder chart-holder-sm"></div>
+        <h3>სტატუსი</h3>
+        <div class="panel-sub">აქტიური, დაანონსებული და დასრულებული</div>
+        <div id="statusChart" class="chart-holder chart-holder-sm"></div>
       </div>
     </div>
 
@@ -289,53 +303,111 @@
     <div class="panel-grid">
       <div class="panel">
         <h3>ქეშბექის განაწილება (%)</h3>
-        <div class="panel-sub">რამდენი შეთავაზება მოდის თითოეულ ქეშბექის დიაპაზონზე</div>
+        <div class="panel-sub">რამდენი აქტიური შეთავაზება მოდის თითოეულ დიაპაზონზე</div>
         <div id="cashbackHist" class="chart-holder"></div>
       </div>
       <div class="panel">
         <h3>საშ. ქეშბექი კატეგორიის მიხედვით</h3>
-        <div class="panel-sub">ტოპ 10 კატეგორია საშუალო ქეშბექით</div>
+        <div class="panel-sub">სად არის თიბისი ყველაზე აგრესიული</div>
         <div id="avgCbChart" class="chart-holder"></div>
       </div>
     </div>
 
+    <div class="panel-grid">
+      <div class="panel">
+        <h3>ლიმიტის ტიპი</h3>
+        <div class="panel-sub">ულიმიტო vs. ლიმიტირებული ქეშბექი</div>
+        <div id="capChart" class="chart-holder chart-holder-sm"></div>
+      </div>
+      <div class="panel">
+        <h3>შეთავაზების ტიპი</h3>
+        <div class="panel-sub">ქეშბექი, ფასდაკლება თუ განვადება</div>
+        <div id="typeChart" class="chart-holder chart-holder-sm"></div>
+      </div>
+    </div>
+
     <div class="section-head">
-      <h2>ტენდენცია და ვადები</h2>
+      <h2>კამპანიების ტაქტიკა</h2>
+      <span class="note">როგორ უშვებს თიბისი აქციებს</span>
+    </div>
+    <div class="panel-grid">
+      <div class="panel">
+        <h3>კამპანიის ხანგრძლივობა</h3>
+        <div class="panel-sub">რამდენი დღე გრძელდება ერთი აქცია</div>
+        <div id="durationChart" class="chart-holder"></div>
+      </div>
+      <div class="panel">
+        <h3>გაშვება კვირის დღეების მიხედვით</h3>
+        <div class="panel-sub">რომელ დღეს იწყება ყველაზე მეტი კამპანია</div>
+        <div id="weekdayChart" class="chart-holder"></div>
+      </div>
+    </div>
+
+    <div class="section-head">
+      <h2>ტენდენცია და პარტნიორები</h2>
       <span class="note">history.jsonl</span>
     </div>
     <div class="panel-grid">
       <div class="panel">
-        <h3>შეთავაზებების რაოდენობა დროში</h3>
-        <div class="panel-sub">სინქრონიზაციის ისტორია — რამდენი შეთავაზება იყო თითოეულ განახლებაზე</div>
+        <h3>აქტიური შეთავაზებები დროში</h3>
+        <div class="panel-sub">სინქრონიზაციის ისტორია — მხოლოდ აქტიური</div>
         <div id="trendChart" class="chart-holder"></div>
       </div>
       <div class="panel">
-        <h3>ტოპ ბრენდები</h3>
-        <div class="panel-sub">ყველაზე მეტი აქტიური შეთავაზების მქონე ბრენდები</div>
+        <h3>ტოპ პარტნიორები</h3>
+        <div class="panel-sub">ყველაზე მეტი შეთავაზების მქონე ბრენდები (მთელი ისტორია)</div>
         <div id="brandChart" class="chart-holder"></div>
       </div>
     </div>
 
     <div class="section-head">
-      <h2>რას ინახავს ქეშბექის უახლოეს დღეებში</h2>
-      <span class="note">top 10 by cashback, urgency ranked</span>
+      <h2>სამოქმედო სია</h2>
+      <span class="note">watchlist</span>
     </div>
-    <div class="panel-grid thirds">
+    <div class="panel-grid">
       <div class="panel">
         <h3>უახლოეს დღეებში იწურება</h3>
-        <div class="panel-sub">ვადა ≤ 3 დღე, დალაგებული სისწრაფის მიხედვით</div>
+        <div class="panel-sub">ვადა ≤ 7 დღე — მხოლოდ ნამდვილად აქტიური</div>
         <table class="rank-table" id="endingTable">
           <thead><tr><th>ბრენდი</th><th>ქეშბექი</th><th>ვადა</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
       <div class="panel">
+        <h3>დაანონსებული — მალე დაიწყება</h3>
+        <div class="panel-sub">უკვე გამოქვეყნებული, ჯერ არ ამოქმედებული აქციები</div>
+        <table class="rank-table" id="startingTable">
+          <thead><tr><th>ბრენდი</th><th>ქეშბექი</th><th>დაწყება</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel-grid">
+      <div class="panel">
         <h3>ყველაზე მაღალი ქეშბექი</h3>
-        <div class="panel-sub">ტოპ 10 შეთავაზება პროცენტის მიხედვით</div>
+        <div class="panel-sub">ტოპ 10 აქტიური შეთავაზება</div>
         <table class="rank-table" id="topCashbackTable">
           <thead><tr><th>ბრენდი</th><th>ქეშბექი</th><th>ლიმიტი</th></tr></thead>
           <tbody></tbody>
         </table>
+      </div>
+      <div class="panel">
+        <h3>სუსტი კატეგორიები</h3>
+        <div class="panel-sub">სად აქვს თიბისის ყველაზე ცოტა აქტიური შეთავაზება — შესაძლო შესაძლებლობა</div>
+        <div id="coveragePanel" class="chart-holder"></div>
+      </div>
+    </div>
+
+    <div class="section-head">
+      <h2>მონაცემების ხარისხი</h2>
+      <span class="note">რამდენად ვენდობით ციფრებს</span>
+    </div>
+    <div class="panel-grid">
+      <div class="panel wide">
+        <h3>კატეგორიზაციის სანდოობა</h3>
+        <div class="panel-sub">კატეგორიები დათვლილია ევრისტიკით — თიბისი მათ ცალკე ველად არ აქვეყნებს</div>
+        <div id="qualityPanel" class="chart-holder"></div>
       </div>
     </div>
 
@@ -347,367 +419,473 @@
   <div>შიდა ანალიტიკური ხელსაწყო — Bank of Georgia</div>
 </footer>
 
+<script src="offers-core.js"></script>
 <script>
 (function(){
   "use strict";
 
-  const DATA_PATHS = ["./data/offers.json", "data/offers.json"];
-  const HISTORY_PATHS = ["./data/history.jsonl", "data/history.jsonl"];
-  const FALLBACK_DATA = "https://raw.githubusercontent.com/jinchara/Offers_Bot/main/data/offers.json";
-  const FALLBACK_HISTORY = "https://raw.githubusercontent.com/jinchara/Offers_Bot/main/data/history.jsonl";
-
-  const NAVY = '#091A2B', ORANGE = '#ff5c0a', SLATE = '#5A6670', TAN = '#CDA176';
-
-  async function fetchFirst(paths, fallback){
-    for(const p of paths){
-      try{
-        const res = await fetch(p, {cache:'no-store'});
-        if(res.ok) return await res.text();
-      }catch(e){/* try next */}
-    }
-    if(fallback){
-      const res = await fetch(fallback, {cache:'no-store'});
-      if(res.ok) return await res.text();
-    }
-    throw new Error('ვერ ჩაიტვირთა მონაცემები');
-  }
-
-  function parseHistory(text){
-    return text.split('\n').filter(Boolean).map(line=>{
-      try{ return JSON.parse(line); }catch(e){ return null; }
-    }).filter(Boolean);
-  }
-
-  function escapeHtml(s){
-    return String(s==null?'':s).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-  }
-
-  function truncate(s, n){
-    s = String(s||'');
-    return s.length>n ? s.slice(0,n-1)+'…' : s;
-  }
+  var C = window.OffersCore;
+  var NAVY = '#091A2B', ORANGE = '#ff5c0a', SLATE = '#5A6670', TAN = '#CDA176';
+  var MUTED = '#dcdfe2';
 
   /* ---------------------------------------------------------------
      Small hand-rolled SVG chart library — no external dependencies,
-     so nothing here can be blocked by a network/firewall policy.
+     so nothing here can be blocked by a network policy.
   --------------------------------------------------------------- */
 
   function horizontalBarChart(el, items, opts){
     opts = opts || {};
-    const color = opts.color || ORANGE;
-    const labelW = opts.labelW || 150;
-    const rowH = 26, gap = 8;
-    const w = 560, chartW = w - labelW - 46;
-    const h = items.length * (rowH + gap) + gap;
-    const max = Math.max(1, ...items.map(i=>i.value));
+    var color = opts.color || ORANGE;
+    var labelW = opts.labelW || 150;
+    var rowH = 26, gap = 8;
+    var w = 560, chartW = w - labelW - 46;
+    var h = items.length * (rowH + gap) + gap;
+    var max = Math.max.apply(null, [1].concat(items.map(function(i){ return i.value; })));
 
     if(!items.length){ el.innerHTML = '<div class="chart-empty">მონაცემები არ არის</div>'; return; }
 
-    let bars = '';
-    items.forEach((item, i)=>{
-      const y = gap + i*(rowH+gap);
-      const bw = Math.max(2, (item.value/max)*chartW);
-      bars += `
-        <text class="bar-label" x="${labelW-8}" y="${y+rowH/2+4}" text-anchor="end">
-          <title>${escapeHtml(item.label)}</title>${escapeHtml(truncate(item.label, 20))}
-        </text>
-        <rect x="${labelW}" y="${y}" width="${bw}" height="${rowH}" rx="4" fill="${color}"></rect>
-        <text class="bar-value" x="${labelW+bw+8}" y="${y+rowH/2+4}" fill="${NAVY}">${item.value}${opts.suffix||''}</text>
-      `;
+    var bars = '';
+    items.forEach(function(item, i){
+      var y = gap + i*(rowH+gap);
+      var bw = Math.max(2, (item.value/max)*chartW);
+      bars += '<text class="bar-label" x="' + (labelW-8) + '" y="' + (y+rowH/2+4) + '" text-anchor="end">' +
+                '<title>' + C.escapeHtml(item.label) + '</title>' + C.escapeHtml(C.truncate(item.label, 20)) +
+              '</text>' +
+              '<rect x="' + labelW + '" y="' + y + '" width="' + bw + '" height="' + rowH +
+                '" rx="4" fill="' + (item.color || color) + '"></rect>' +
+              '<text class="bar-value" x="' + (labelW+bw+8) + '" y="' + (y+rowH/2+4) +
+                '" fill="' + NAVY + '">' + item.value + (opts.suffix||'') + '</text>';
     });
-
-    el.innerHTML = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${escapeHtml(opts.ariaLabel||'')}">${bars}</svg>`;
+    el.innerHTML = '<svg viewBox="0 0 ' + w + ' ' + h + '" role="img" aria-label="' +
+                   C.escapeHtml(opts.ariaLabel||'') + '">' + bars + '</svg>';
   }
 
   function verticalBarChart(el, items, opts){
     opts = opts || {};
-    const color = opts.color || TAN;
-    const w = 560, h = 260;
-    const padL = 34, padB = 34, padT = 14, padR = 10;
-    const chartW = w - padL - padR, chartH = h - padT - padB;
-    const max = Math.max(1, ...items.map(i=>i.value));
-    const barW = chartW / items.length;
-    const gap = barW * 0.28;
+    var color = opts.color || TAN;
+    var w = 560, h = 260, padL = 34, padB = 34, padT = 14, padR = 10;
+    var chartW = w - padL - padR, chartH = h - padT - padB;
 
     if(!items.length){ el.innerHTML = '<div class="chart-empty">მონაცემები არ არის</div>'; return; }
 
-    let gridlines = '';
-    const ticks = 4;
-    for(let t=0; t<=ticks; t++){
-      const y = padT + chartH - (chartH*t/ticks);
-      const val = Math.round(max*t/ticks);
-      gridlines += `<line class="axis-line" x1="${padL}" x2="${w-padR}" y1="${y}" y2="${y}"></line>
-        <text class="bar-value" x="${padL-6}" y="${y+3}" text-anchor="end" fill="${SLATE}" font-size="10">${val}</text>`;
+    var max = Math.max.apply(null, [1].concat(items.map(function(i){ return i.value; })));
+    var barW = chartW / items.length, gap = barW * 0.28;
+
+    var gridlines = '', ticks = 4;
+    for(var t=0; t<=ticks; t++){
+      var gy = padT + chartH - (chartH*t/ticks);
+      gridlines += '<line class="axis-line" x1="' + padL + '" x2="' + (w-padR) +
+                   '" y1="' + gy + '" y2="' + gy + '"></line>' +
+                   '<text class="bar-value" x="' + (padL-6) + '" y="' + (gy+3) +
+                   '" text-anchor="end" fill="' + SLATE + '" font-size="10">' +
+                   Math.round(max*t/ticks) + '</text>';
     }
 
-    let bars = '';
-    items.forEach((item, i)=>{
-      const bh = (item.value/max)*chartH;
-      const x = padL + i*barW + gap/2;
-      const bw = barW - gap;
-      const y = padT + chartH - bh;
-      bars += `
-        <rect x="${x}" y="${y}" width="${bw}" height="${bh}" rx="3" fill="${color}"></rect>
-        <text class="bar-value" x="${x+bw/2}" y="${padT+chartH+15}" text-anchor="middle" fill="${SLATE}" font-size="10.5">${item.label}</text>
-        <text class="bar-value" x="${x+bw/2}" y="${y-6}" text-anchor="middle" fill="${NAVY}" font-size="10.5">${item.value}</text>
-      `;
+    var bars = '';
+    items.forEach(function(item, i){
+      var bh = (item.value/max)*chartH;
+      var x = padL + i*barW + gap/2, bw = barW - gap, y = padT + chartH - bh;
+      bars += '<rect x="' + x + '" y="' + y + '" width="' + bw + '" height="' + bh +
+                '" rx="3" fill="' + color + '"></rect>' +
+              '<text class="bar-value" x="' + (x+bw/2) + '" y="' + (padT+chartH+15) +
+                '" text-anchor="middle" fill="' + SLATE + '" font-size="10.5">' +
+                C.escapeHtml(item.label) + '</text>' +
+              '<text class="bar-value" x="' + (x+bw/2) + '" y="' + (y-6) +
+                '" text-anchor="middle" fill="' + NAVY + '" font-size="10.5">' + item.value + '</text>';
     });
-
-    el.innerHTML = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${escapeHtml(opts.ariaLabel||'')}">${gridlines}${bars}</svg>`;
+    el.innerHTML = '<svg viewBox="0 0 ' + w + ' ' + h + '" role="img" aria-label="' +
+                   C.escapeHtml(opts.ariaLabel||'') + '">' + gridlines + bars + '</svg>';
   }
 
   function lineChart(el, points, opts){
     opts = opts || {};
-    const w = 560, h = 260;
-    const padL = 40, padB = 30, padT = 16, padR = 16;
-    const chartW = w - padL - padR, chartH = h - padT - padB;
+    var w = 560, h = 260, padL = 40, padB = 30, padT = 16, padR = 16;
+    var chartW = w - padL - padR, chartH = h - padT - padB;
 
     if(!points.length){ el.innerHTML = '<div class="chart-empty">მონაცემები არ არის</div>'; return; }
 
-    const max = Math.max(1, ...points.map(p=>p.value));
-    const min = 0;
-    const stepX = points.length>1 ? chartW/(points.length-1) : 0;
-
-    const coords = points.map((p,i)=>{
-      const x = padL + i*stepX;
-      const y = padT + chartH - ((p.value-min)/(max-min||1))*chartH;
-      return {x,y,...p};
+    var max = Math.max.apply(null, [1].concat(points.map(function(p){ return p.value; })));
+    var stepX = points.length > 1 ? chartW/(points.length-1) : 0;
+    var coords = points.map(function(p,i){
+      return { x: padL + i*stepX, y: padT + chartH - (p.value/max)*chartH, label: p.label, value: p.value };
     });
 
-    let gridlines = '';
-    const ticks = 4;
-    for(let t=0; t<=ticks; t++){
-      const y = padT + chartH - (chartH*t/ticks);
-      const val = Math.round(max*t/ticks);
-      gridlines += `<line class="axis-line" x1="${padL}" x2="${w-padR}" y1="${y}" y2="${y}"></line>
-        <text class="bar-value" x="${padL-6}" y="${y+3}" text-anchor="end" fill="${SLATE}" font-size="10">${val}</text>`;
+    var gridlines = '', ticks = 4;
+    for(var t=0; t<=ticks; t++){
+      var gy = padT + chartH - (chartH*t/ticks);
+      gridlines += '<line class="axis-line" x1="' + padL + '" x2="' + (w-padR) +
+                   '" y1="' + gy + '" y2="' + gy + '"></line>' +
+                   '<text class="bar-value" x="' + (padL-6) + '" y="' + (gy+3) +
+                   '" text-anchor="end" fill="' + SLATE + '" font-size="10">' +
+                   Math.round(max*t/ticks) + '</text>';
     }
 
-    const linePath = coords.map((c,i)=> (i===0?'M':'L') + c.x.toFixed(1) + ' ' + c.y.toFixed(1)).join(' ');
-    const areaPath = linePath + ` L ${coords[coords.length-1].x.toFixed(1)} ${padT+chartH} L ${coords[0].x.toFixed(1)} ${padT+chartH} Z`;
+    var linePath = coords.map(function(c,i){
+      return (i===0?'M':'L') + c.x.toFixed(1) + ' ' + c.y.toFixed(1);
+    }).join(' ');
+    var areaPath = linePath + ' L ' + coords[coords.length-1].x.toFixed(1) + ' ' + (padT+chartH) +
+                   ' L ' + coords[0].x.toFixed(1) + ' ' + (padT+chartH) + ' Z';
 
-    let labels = '';
-    let dots = '';
-    coords.forEach((c,i)=>{
-      const showLabel = points.length<=8 || i%Math.ceil(points.length/8)===0;
-      if(showLabel){
-        labels += `<text class="bar-value" x="${c.x}" y="${padT+chartH+16}" text-anchor="middle" fill="${SLATE}" font-size="9.5">${c.label}</text>`;
+    var labels = '', dots = '';
+    coords.forEach(function(c,i){
+      if(points.length <= 8 || i % Math.ceil(points.length/8) === 0){
+        labels += '<text class="bar-value" x="' + c.x + '" y="' + (padT+chartH+16) +
+                  '" text-anchor="middle" fill="' + SLATE + '" font-size="9.5">' + c.label + '</text>';
       }
-      dots += `<circle cx="${c.x}" cy="${c.y}" r="3.2" fill="${NAVY}"><title>${escapeHtml(c.label)}: ${c.value}</title></circle>`;
+      dots += '<circle cx="' + c.x + '" cy="' + c.y + '" r="3.2" fill="' + NAVY + '">' +
+              '<title>' + C.escapeHtml(c.label) + ': ' + c.value + '</title></circle>';
     });
 
-    el.innerHTML = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${escapeHtml(opts.ariaLabel||'')}">
-      ${gridlines}
-      <path d="${areaPath}" fill="${ORANGE}" opacity="0.12" stroke="none"></path>
-      <path d="${linePath}" fill="none" stroke="${ORANGE}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"></path>
-      ${dots}
-      ${labels}
-    </svg>`;
+    el.innerHTML = '<svg viewBox="0 0 ' + w + ' ' + h + '" role="img" aria-label="' +
+      C.escapeHtml(opts.ariaLabel||'') + '">' + gridlines +
+      '<path d="' + areaPath + '" fill="' + ORANGE + '" opacity="0.12"></path>' +
+      '<path d="' + linePath + '" fill="none" stroke="' + ORANGE +
+      '" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"></path>' +
+      dots + labels + '</svg>';
   }
 
   function donutChart(el, items, opts){
     opts = opts || {};
-    const size = 180, cx = size/2, cy = size/2, r = 68, sw = 26;
-    const total = items.reduce((a,i)=>a+i.value, 0);
+    var size = 180, cx = size/2, cy = size/2, r = 68, sw = 26;
+    var total = items.reduce(function(a,i){ return a + i.value; }, 0);
 
-    let circles = '';
-    if(total<=0){
-      circles = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#dcdfe2" stroke-width="${sw}"></circle>`;
+    var circles = '';
+    if(total <= 0){
+      circles = '<circle cx="' + cx + '" cy="' + cy + '" r="' + r +
+                '" fill="none" stroke="' + MUTED + '" stroke-width="' + sw + '"></circle>';
     } else {
-      const circumference = 2*Math.PI*r;
-      let offset = 0;
-      items.forEach(item=>{
-        const frac = item.value/total;
-        const dash = frac*circumference;
-        circles += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${item.color}"
-          stroke-width="${sw}" stroke-dasharray="${dash} ${circumference-dash}"
-          stroke-dashoffset="${-offset}" transform="rotate(-90 ${cx} ${cy})">
-          <title>${escapeHtml(item.label)}: ${item.value}</title>
-        </circle>`;
+      var circumference = 2*Math.PI*r, offset = 0;
+      items.forEach(function(item){
+        var dash = (item.value/total)*circumference;
+        circles += '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="' +
+          item.color + '" stroke-width="' + sw + '" stroke-dasharray="' + dash + ' ' +
+          (circumference-dash) + '" stroke-dashoffset="' + (-offset) +
+          '" transform="rotate(-90 ' + cx + ' ' + cy + ')"><title>' +
+          C.escapeHtml(item.label) + ': ' + item.value + '</title></circle>';
         offset += dash;
       });
     }
 
-    const svg = `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" role="img" aria-label="${escapeHtml(opts.ariaLabel||'')}">
-      ${circles}
-      <text x="${cx}" y="${cy+5}" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-weight="700" font-size="20" fill="${NAVY}">${total}</text>
-    </svg>`;
+    var svg = '<svg viewBox="0 0 ' + size + ' ' + size + '" width="' + size + '" height="' + size +
+      '" role="img" aria-label="' + C.escapeHtml(opts.ariaLabel||'') + '">' + circles +
+      '<text x="' + cx + '" y="' + (cy+5) + '" text-anchor="middle" ' +
+      'font-family="\'JetBrains Mono\',monospace" font-weight="700" font-size="20" fill="' +
+      NAVY + '">' + total + '</text></svg>';
 
-    const legend = `<div class="donut-legend">${items.map(item=>`
-      <div class="row"><span class="swatch" style="background:${item.color}"></span>${escapeHtml(item.label)}<span class="n">${item.value}</span></div>
-    `).join('')}</div>`;
+    var legend = '<div class="donut-legend">' + items.map(function(item){
+      return '<div class="row"><span class="swatch" style="background:' + item.color + '"></span>' +
+             C.escapeHtml(item.label) + '<span class="n">' + item.value + '</span></div>';
+    }).join('') + '</div>';
 
-    el.innerHTML = `<div style="display:flex;justify-content:center;">${svg}</div>${legend}`;
+    el.innerHTML = '<div style="display:flex;justify-content:center;">' + svg + '</div>' + legend;
   }
 
   /* ---------------------------------------------------------------
-     Data rendering
+     Rendering
+
+     Scope rule, and the thing the previous dashboard got wrong:
+     every "right now" number counts LIVE offers only. Ended campaigns
+     stay in the data — they're needed for trends and for the partner
+     history — but they never inflate a current average again.
   --------------------------------------------------------------- */
 
-  function renderKpis(offers){
-    const total = offers.length;
-    const withCb = offers.filter(o=>o.cashback_percent);
-    const avgCb = withCb.length ? (withCb.reduce((a,o)=>a+o.cashback_percent,0)/withCb.length) : 0;
-    const unlimited = offers.filter(o=>o.cap_unlimited).length;
-    const cats = new Set(offers.map(o=>o.category||'სხვა')).size;
-    const endingSoon = offers.filter(o=>o.remaining_days<=3).length;
-    const avgCap = offers.filter(o=>o.cap_amount).reduce((a,o,_,arr)=>a+o.cap_amount/arr.length,0);
+  function el(id){ return document.getElementById(id); }
 
-    const items = [
-      [total, 'სულ აქტიური შეთავაზება', false],
-      [avgCb.toFixed(1)+'%', 'საშ. ქეშბექი', true],
-      [cats, 'კატეგორია', false],
-      [endingSoon, 'იწურება 3 დღეში', true],
+  function renderKpis(all, live, merchant){
+    var cashbacks = merchant.filter(function(o){ return o.cashback_percent; })
+                            .map(function(o){ return o.cashback_percent; });
+    var caps = merchant.filter(function(o){ return o.cap_amount; })
+                       .map(function(o){ return o.cap_amount; });
+    var unlimited = merchant.filter(function(o){ return o.cap_unlimited; }).length;
+    var endingSoon = live.filter(function(o){ return o.status === 'ending_soon'; }).length;
+    var categories = {};
+    merchant.forEach(function(o){ categories[o.category || 'სხვა'] = 1; });
+
+    var items = [
+      [live.length, 'აქტიური შეთავაზება', false],
+      [cashbacks.length ? C.mean(cashbacks).toFixed(1) + '%' : '—', 'საშ. ქეშბექი', true],
+      [cashbacks.length ? C.median(cashbacks) + '%' : '—', 'მედიანა ქეშბექი', false],
+      [endingSoon, 'იწურება ' + C.ENDING_SOON_DAYS + ' დღეში', true],
       [unlimited, 'ულიმიტო ქეშბექით', false],
-      [Math.round(avgCap)+'₾', 'საშ. ლიმიტი (როცა არსებობს)', true],
+      [caps.length ? Math.round(C.median(caps)) + '₾' : '—', 'მედიანა ლიმიტი', true]
     ];
-    document.getElementById('kpiRow').innerHTML = items.map(([num,lbl,tan])=>`
-      <div class="kpi ${tan?'tan':''}">
-        <div class="num">${num}</div>
-        <div class="lbl">${lbl}</div>
-      </div>
-    `).join('');
+    el('kpiRow').innerHTML = items.map(function(it){
+      return '<div class="kpi ' + (it[2] ? 'tan' : '') + '"><div class="num">' + it[0] +
+             '</div><div class="lbl">' + it[1] + '</div></div>';
+    }).join('');
+
+    var ended = all.filter(function(o){ return o.status === 'ended'; }).length;
+    var upcoming = all.filter(function(o){ return o.status === 'upcoming'; }).length;
+    el('scopeNote').textContent =
+      'ბაზა: ' + all.length + ' ჩანაწერი — ' + live.length + ' აქტიური, ' +
+      upcoming + ' დაანონსებული, ' + ended + ' დასრულებული (არქივი). ' +
+      'ზემოთ მოცემული მაჩვენებლები მხოლოდ აქტიურ პარტნიორულ შეთავაზებებს ეხება.';
   }
 
-  function renderCatChart(offers){
-    const counts = {};
-    offers.forEach(o=>{ const c=o.category||'სხვა'; counts[c]=(counts[c]||0)+1; });
-    const entries = Object.entries(counts).sort((a,b)=>b[1]-a[1])
-      .map(([label,value])=>({label,value}));
-    horizontalBarChart(document.getElementById('catChart'), entries, { color: ORANGE, ariaLabel:'შეთავაზებები კატეგორიების მიხედვით' });
+  function renderCatChart(merchant){
+    var counts = {};
+    merchant.forEach(function(o){
+      var c = o.category || 'სხვა';
+      counts[c] = (counts[c]||0) + 1;
+    });
+    var entries = Object.keys(counts).map(function(k){ return {label:k, value:counts[k]}; })
+      .sort(function(a,b){ return b.value - a.value; });
+    horizontalBarChart(el('catChart'), entries, { color: ORANGE, ariaLabel:'შეთავაზებები კატეგორიების მიხედვით' });
   }
 
-  function renderCapChart(offers){
-    const unlimited = offers.filter(o=>o.cap_unlimited).length;
-    const capped = offers.filter(o=>!o.cap_unlimited && o.cap_amount).length;
-    const none = offers.length - unlimited - capped;
-    donutChart(document.getElementById('capChart'), [
+  function renderStatusChart(all){
+    var counts = { active:0, ending_soon:0, evergreen:0, upcoming:0, ended:0 };
+    all.forEach(function(o){ counts[o.status] = (counts[o.status]||0) + 1; });
+    donutChart(el('statusChart'), [
+      {label:'აქტიური', value:counts.active, color:NAVY},
+      {label:'მუდმივი', value:counts.evergreen, color:'#3d6b8a'},
+      {label:'მალე იწურება', value:counts.ending_soon, color:ORANGE},
+      {label:'დაანონსებული', value:counts.upcoming, color:TAN},
+      {label:'დასრულებული', value:counts.ended, color:MUTED}
+    ], { ariaLabel:'სტატუსის განაწილება' });
+  }
+
+  function renderCapChart(merchant){
+    var unlimited = merchant.filter(function(o){ return o.cap_unlimited; }).length;
+    var capped = merchant.filter(function(o){ return !o.cap_unlimited && o.cap_amount; }).length;
+    donutChart(el('capChart'), [
       {label:'ლიმიტირებული', value:capped, color:NAVY},
       {label:'ულიმიტო', value:unlimited, color:ORANGE},
-      {label:'მიუთითებელი', value:none, color:'#dcdfe2'},
+      {label:'მიუთითებელი', value:merchant.length - unlimited - capped, color:MUTED}
     ], { ariaLabel:'ლიმიტის ტიპი' });
   }
 
-  function renderCashbackHist(offers){
-    const buckets = [0,0,0,0,0,0]; // 0-10,10-20,20-30,30-40,40-50,50+
-    offers.forEach(o=>{
-      const c = o.cashback_percent;
-      if(!c) return;
-      const idx = c>=50?5:Math.floor(c/10);
-      buckets[idx]++;
+  function renderTypeChart(merchant){
+    var labels = { cashback:'ქეშბექი', discount:'ფასდაკლება', installment:'განვადება/განაწილება', other:'სხვა' };
+    var colors = { cashback:ORANGE, discount:NAVY, installment:TAN, other:MUTED };
+    var counts = {};
+    merchant.forEach(function(o){
+      var t = o.offer_type || 'other';
+      counts[t] = (counts[t]||0) + 1;
     });
-    const labels = ['0–10','10–20','20–30','30–40','40–50','50+'];
-    const items = buckets.map((v,i)=>({label:labels[i], value:v}));
-    verticalBarChart(document.getElementById('cashbackHist'), items, { color: TAN, ariaLabel:'ქეშბექის განაწილება' });
+    donutChart(el('typeChart'), Object.keys(labels).map(function(k){
+      return { label: labels[k], value: counts[k] || 0, color: colors[k] };
+    }), { ariaLabel:'შეთავაზების ტიპი' });
   }
 
-  function renderAvgCbChart(offers){
-    const byCat = {};
-    offers.forEach(o=>{
+  function renderCashbackHist(merchant){
+    var buckets = [0,0,0,0,0,0];
+    merchant.forEach(function(o){
       if(!o.cashback_percent) return;
-      const c = o.category||'სხვა';
-      (byCat[c] = byCat[c]||[]).push(o.cashback_percent);
+      buckets[o.cashback_percent >= 50 ? 5 : Math.floor(o.cashback_percent/10)]++;
     });
-    const entries = Object.entries(byCat)
-      .map(([cat,arr])=>({label:cat, value: +(arr.reduce((a,b)=>a+b,0)/arr.length).toFixed(1)}))
-      .sort((a,b)=>b.value-a.value)
-      .slice(0,10);
-    horizontalBarChart(document.getElementById('avgCbChart'), entries, { color: NAVY, suffix:'%', ariaLabel:'საშ. ქეშბექი კატეგორიის მიხედვით' });
+    var labels = ['0–10','10–20','20–30','30–40','40–50','50+'];
+    verticalBarChart(el('cashbackHist'), buckets.map(function(v,i){
+      return { label: labels[i], value: v };
+    }), { color: TAN, ariaLabel:'ქეშბექის განაწილება' });
+  }
+
+  function renderAvgCbChart(merchant){
+    var byCat = {};
+    merchant.forEach(function(o){
+      if(!o.cashback_percent) return;
+      var c = o.category || 'სხვა';
+      (byCat[c] = byCat[c] || []).push(o.cashback_percent);
+    });
+    var entries = Object.keys(byCat).map(function(cat){
+      return { label: cat, value: +C.mean(byCat[cat]).toFixed(1) };
+    }).sort(function(a,b){ return b.value - a.value; }).slice(0,10);
+    horizontalBarChart(el('avgCbChart'), entries, { color: NAVY, suffix:'%', ariaLabel:'საშ. ქეშბექი კატეგორიის მიხედვით' });
+  }
+
+  function renderDurationChart(all){
+    /* Open-ended offers are excluded — they have no duration to bucket,
+       and lumping them in as "very long" would be a fabrication. */
+    var buckets = { '1–3': 0, '4–7': 0, '8–14': 0, '15–30': 0, '31+': 0 };
+    all.forEach(function(o){
+      var d = o.duration_days;
+      if(!d) return;
+      if(d <= 3) buckets['1–3']++;
+      else if(d <= 7) buckets['4–7']++;
+      else if(d <= 14) buckets['8–14']++;
+      else if(d <= 30) buckets['15–30']++;
+      else buckets['31+']++;
+    });
+    verticalBarChart(el('durationChart'), Object.keys(buckets).map(function(k){
+      return { label: k + ' დღე', value: buckets[k] };
+    }), { color: ORANGE, ariaLabel:'კამპანიის ხანგრძლივობა' });
+  }
+
+  function renderWeekdayChart(all){
+    var names = ['კვი','ორშ','სამ','ოთხ','ხუთ','პარ','შაბ'];
+    var counts = [0,0,0,0,0,0,0];
+    all.forEach(function(o){
+      var start = C.parseDate(o.start_date);
+      if(start) counts[start.getUTCDay()]++;
+    });
+    /* Reordered to start on Monday, which is how a marketing week reads. */
+    var order = [1,2,3,4,5,6,0];
+    verticalBarChart(el('weekdayChart'), order.map(function(i){
+      return { label: names[i], value: counts[i] };
+    }), { color: NAVY, ariaLabel:'გაშვება კვირის დღეების მიხედვით' });
   }
 
   function renderTrendChart(history){
-    const sorted = history.slice().sort((a,b)=> (a.date||'').localeCompare(b.date||''));
-    const points = sorted.map(h=>({ label: (h.date||'').slice(5), value: h.offer_count||0 }));
-    lineChart(document.getElementById('trendChart'), points, { ariaLabel:'შეთავაზებების ტენდენცია დროში' });
+    var sorted = history.slice().sort(function(a,b){
+      return (a.date||'').localeCompare(b.date||'');
+    });
+    lineChart(el('trendChart'), sorted.map(function(h){
+      return {
+        label: (h.date||'').slice(5),
+        /* Older rows only have offer_count; newer rows split it by status. */
+        value: (h.live !== undefined ? h.live : h.offer_count) || 0
+      };
+    }), { ariaLabel:'აქტიური შეთავაზებები დროში' });
   }
 
-  function renderBrandChart(offers){
-    const counts = {};
-    offers.forEach(o=>{ const b=o.brand||o.title||'—'; counts[b]=(counts[b]||0)+1; });
-    const entries = Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,10)
-      .map(([label,value])=>({label,value}));
-    horizontalBarChart(document.getElementById('brandChart'), entries, { color: SLATE, ariaLabel:'ტოპ ბრენდები' });
+  function renderBrandChart(all){
+    var counts = {};
+    all.forEach(function(o){
+      if(o.bank_product) return;
+      var b = o.brand || o.title || '—';
+      counts[b] = (counts[b]||0) + 1;
+    });
+    var entries = Object.keys(counts).map(function(k){ return {label:k, value:counts[k]}; })
+      .sort(function(a,b){ return b.value - a.value; }).slice(0,10);
+    horizontalBarChart(el('brandChart'), entries, { color: SLATE, ariaLabel:'ტოპ პარტნიორები' });
   }
 
-  function renderEndingTable(offers){
-    const rows = offers
-      .filter(o=>o.remaining_days<=3)
-      .sort((a,b)=>a.remaining_days-b.remaining_days)
-      .slice(0,10);
-    const tbody = document.querySelector('#endingTable tbody');
-    tbody.innerHTML = rows.length ? rows.map(o=>`
-      <tr>
-        <td>${escapeHtml(o.brand||o.title||'')}</td>
-        <td class="num">${o.cashback_percent?o.cashback_percent+'%':'—'}</td>
-        <td class="days ${o.remaining_days<=1?'soon':''}">${o.remaining_days===0?'დღეს':o.remaining_days+' დღე'}</td>
-      </tr>
-    `).join('') : `<tr><td colspan="3" style="color:var(--slate-soft)">უახლოეს დღეებში არაფერი იწურება</td></tr>`;
+  function renderEndingTable(live){
+    var rows = live.filter(function(o){
+      return o.days_left !== null && o.days_left >= 0 && o.days_left <= 7;
+    }).sort(function(a,b){ return a.days_left - b.days_left; }).slice(0,10);
+
+    el('endingTable').querySelector('tbody').innerHTML = rows.length
+      ? rows.map(function(o){
+          return '<tr><td>' + C.escapeHtml(o.brand || o.title || '') + '</td>' +
+                 '<td class="num">' + (o.cashback_percent ? o.cashback_percent + '%' : '—') + '</td>' +
+                 '<td class="days' + (o.days_left <= 1 ? ' soon' : '') + '">' +
+                 C.escapeHtml(o.days_left_label) + '</td></tr>';
+        }).join('')
+      : '<tr><td colspan="3" style="color:var(--slate-soft)">უახლოეს კვირაში არაფერი იწურება</td></tr>';
   }
 
-  function renderTopCashbackTable(offers){
-    const rows = offers
-      .filter(o=>o.cashback_percent)
-      .sort((a,b)=>b.cashback_percent-a.cashback_percent)
-      .slice(0,10);
-    const tbody = document.querySelector('#topCashbackTable tbody');
-    tbody.innerHTML = rows.map(o=>`
-      <tr>
-        <td>${escapeHtml(o.brand||o.title||'')}</td>
-        <td class="num">${o.cashback_percent}%</td>
-        <td>${o.cap_unlimited?'ულიმიტო':(o.cap_amount?o.cap_amount+'₾':'—')}</td>
-      </tr>
-    `).join('');
+  function renderStartingTable(all){
+    var rows = all.filter(function(o){ return o.status === 'upcoming'; })
+      .sort(function(a,b){ return a.days_until_start - b.days_until_start; }).slice(0,10);
+
+    el('startingTable').querySelector('tbody').innerHTML = rows.length
+      ? rows.map(function(o){
+          return '<tr><td>' + C.escapeHtml(o.brand || o.title || '') + '</td>' +
+                 '<td class="num">' + (o.cashback_percent ? o.cashback_percent + '%' : '—') + '</td>' +
+                 '<td class="days">' + C.escapeHtml(o.days_left_label) + '</td></tr>';
+        }).join('')
+      : '<tr><td colspan="3" style="color:var(--slate-soft)">დაანონსებული აქცია ამჟამად არ არის</td></tr>';
   }
 
-  async function init(){
-    try{
-      const [offersText, historyText] = await Promise.all([
-        fetchFirst(DATA_PATHS, FALLBACK_DATA),
-        fetchFirst(HISTORY_PATHS, FALLBACK_HISTORY).catch(()=> "")
-      ]);
-
-      const offersObj = JSON.parse(offersText);
-      const offers = Object.values(offersObj);
-      const history = historyText ? parseHistory(historyText) : [];
-      const latest = offers.reduce((max,o)=> (o.last_seen && o.last_seen>max) ? o.last_seen : max, '');
-
-      document.getElementById('statusText').textContent = `ცოცხალი — ${latest || ''}`;
-
-      renderKpis(offers);
-      renderCatChart(offers);
-      renderCapChart(offers);
-      renderCashbackHist(offers);
-      renderAvgCbChart(offers);
-      renderTrendChart(history);
-      renderBrandChart(offers);
-      renderEndingTable(offers);
-      renderTopCashbackTable(offers);
-
-      document.getElementById('loadingMsg').style.display = 'none';
-      document.getElementById('content').style.display = 'block';
-    }catch(err){
-      document.getElementById('statusText').textContent = 'შეცდომა';
-      document.querySelector('.status-dot').style.background = '#e2401f';
-      document.getElementById('loadingMsg').style.display = 'none';
-      document.getElementById('content').style.display = 'block';
-      document.getElementById('content').innerHTML = `<div class="error-banner">
-        მონაცემების ჩატვირთვა ვერ მოხერხდა. დარწმუნდი, რომ ეს გვერდი განთავსებულია იმავე რეპოზიტორიაში, სადაც <code>data/offers.json</code> ფაილია, ან შეამოწმე ინტერნეტ კავშირი.<br><br>
-        დეტალები: ${escapeHtml(err.message)}
-      </div>`;
-    }
+  function renderTopCashbackTable(merchant){
+    var rows = merchant.filter(function(o){ return o.cashback_percent; })
+      .sort(function(a,b){ return b.cashback_percent - a.cashback_percent; }).slice(0,10);
+    el('topCashbackTable').querySelector('tbody').innerHTML = rows.map(function(o){
+      return '<tr><td>' + C.escapeHtml(o.brand || o.title || '') + '</td>' +
+             '<td class="num">' + o.cashback_percent + '%</td><td>' +
+             (o.cap_unlimited ? 'ულიმიტო' : (o.cap_amount ? o.cap_amount + '₾' : '—')) +
+             '</td></tr>';
+    }).join('');
   }
 
-  init();
+  var TBC_CATEGORIES = ['შოპინგი','ტრანსპორტი','განათლება','დასვენება','აქსესუარები',
+    'ტანსაცმელი','ონლაინ პარტნიორები','კაფე და რესტორანი','ტექნიკა','სახლი',
+    'ჯანმრთელობა და სილამაზე','ავტო','სურსათი','საბავშვო','გართობა','ყვავილები',
+    'დეველოპერები','პარფიუმერია','მოგზაურობა'];
 
-  // Safety net: if something throws outside the try/catch above, don't leave
-  // the page stuck on "loading" forever.
+  function renderCoverage(merchant){
+    var counts = {};
+    merchant.forEach(function(o){ counts[o.category] = (counts[o.category]||0) + 1; });
+    var entries = TBC_CATEGORIES.map(function(cat){
+      return { label: cat, value: counts[cat] || 0 };
+    }).sort(function(a,b){ return a.value - b.value; }).slice(0,8);
+    entries.forEach(function(e){ e.color = e.value === 0 ? MUTED : TAN; });
+    horizontalBarChart(el('coveragePanel'), entries, { ariaLabel:'სუსტი კატეგორიები' });
+  }
+
+  function renderQuality(all){
+    var sources = {}, unresolved = [];
+    all.forEach(function(o){
+      var src = o.category_source || 'unknown';
+      sources[src] = (sources[src]||0) + 1;
+      if((o.category || 'სხვა') === 'სხვა') unresolved.push(o);
+    });
+    var labels = {
+      override: 'ხელით შესწორებული', api: 'თიბისის ტეგი',
+      brand: 'ბრენდის ცნობარი', keywords: 'საკვანძო სიტყვები',
+      fallback: 'ვერ დადგინდა', unknown: 'უცნობი'
+    };
+    var pct = Math.round(100 * (all.length - unresolved.length) / (all.length || 1));
+
+    var cards = '<div class="quality-grid">' +
+      '<div class="q"><b>' + pct + '%</b>კატეგორიზებული</div>' +
+      Object.keys(sources).map(function(k){
+        return '<div class="q"><b>' + sources[k] + '</b>' + (labels[k] || k) + '</div>';
+      }).join('') + '</div>';
+
+    var sample = unresolved.slice(0, 24).map(function(o){
+      return C.escapeHtml(o.brand || o.title || o.slug);
+    }).join(' · ');
+
+    el('qualityPanel').innerHTML = cards +
+      (unresolved.length
+        ? '<div class="unresolved"><strong>ჯერ დაუკატეგორიზებელი (' + unresolved.length + '):</strong><br>' +
+          sample + (unresolved.length > 24 ? ' …' : '') +
+          '<br><br>ამის გასასწორებლად დაამატე ბრენდი <code>data/category_overrides.json</code>-ში ' +
+          'ან <code>categorize.py</code>-ის ცნობარში.</div>'
+        : '');
+  }
+
+  C.loadAll().then(function(data){
+    var all = data.offers;
+    var live = C.live(all);
+    var merchant = C.merchantsOnly(live);
+    var latest = all.reduce(function(max,o){
+      return (o.last_seen && o.last_seen > max) ? o.last_seen : max;
+    }, '');
+
+    el('statusText').textContent = 'ცოცხალი — ' + (latest || '');
+
+    C.renderSchemaWarning(el('content'), data);
+    renderKpis(all, live, merchant);
+    renderCatChart(merchant);
+    renderStatusChart(all);
+    renderCapChart(merchant);
+    renderTypeChart(merchant);
+    renderCashbackHist(merchant);
+    renderAvgCbChart(merchant);
+    renderDurationChart(all);
+    renderWeekdayChart(all);
+    renderTrendChart(data.history);
+    renderBrandChart(all);
+    renderEndingTable(live);
+    renderStartingTable(all);
+    renderTopCashbackTable(merchant);
+    renderCoverage(merchant);
+    renderQuality(all);
+
+    el('loadingMsg').style.display = 'none';
+    el('content').style.display = 'block';
+  }).catch(function(err){
+    el('statusText').textContent = 'შეცდომა';
+    document.querySelector('.status-dot').style.background = '#e2401f';
+    el('loadingMsg').style.display = 'none';
+    el('content').style.display = 'block';
+    el('content').innerHTML = '<div class="error-banner">მონაცემები ვერ ჩაიტვირთა. ' +
+      'გვერდი უნდა იყოს იმავე რეპოზიტორიაში, სადაც <code>data/offers.json</code>, ' +
+      'ან შეამოწმე ინტერნეტ კავშირი.<br><br>დეტალები: ' + C.escapeHtml(err.message) + '</div>';
+  });
+
+  /* Safety net: never leave the page stuck on "loading". */
   window.addEventListener('error', function(e){
-    const loadingMsg = document.getElementById('loadingMsg');
-    if(loadingMsg && loadingMsg.style.display !== 'none'){
-      loadingMsg.style.display = 'none';
-      const content = document.getElementById('content');
+    var loading = document.getElementById('loadingMsg');
+    if(loading && loading.style.display !== 'none'){
+      loading.style.display = 'none';
+      var content = document.getElementById('content');
       content.style.display = 'block';
-      content.innerHTML = `<div class="error-banner">გვერდზე მოხდა შეცდომა: ${escapeHtml(e.message||'უცნობი შეცდომა')}</div>`;
+      content.innerHTML = '<div class="error-banner">გვერდზე მოხდა შეცდომა: ' +
+        C.escapeHtml(e.message || 'უცნობი შეცდომა') + '</div>';
     }
   });
 })();

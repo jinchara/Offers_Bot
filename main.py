@@ -1,139 +1,298 @@
 """
 main.py
-Run this once a day (via GitHub Actions). It:
-  1. Fetches all current offers from TBC's site.
-  2. Compares against data/offers.json (state from the previous run).
-  3. Sends a Telegram message for every NEW offer, and a note for
-     offers that disappeared (expired/ended).
-  4. Detects cashback % changes on offers that already existed
-     (e.g. a merchant bumping their rate from 15% to 25%).
-  5. Sends an "ending soon" digest for offers expiring within a couple days.
-  6. Appends today's snapshot to data/history.jsonl for weekly/monthly reports.
-  7. Overwrites data/offers.json with the current state.
+The daily job. Run by .github/workflows/check_offers.yml.
 
-Designed to be safe to re-run: if it fails partway, nothing is corrupted
-because we only write files at the very end.
+  1. Fetch every offer from TBC's API.
+  2. Optionally read TBC's own category tags (see scraper.fetch_category_map).
+  3. Enrich each offer: category, channel, economics, live status.
+  4. Diff against the previous run and notify on what actually changed.
+  5. Merge into state WITHOUT deleting anything — offers TBC drops are
+     archived, not forgotten.
+  6. Rebuild data/insights.json and append a status-aware history row.
+
+Safe to re-run: all writes happen at the end and are atomic.
+
+CHANGES THAT MATTER
+-------------------
+* "Expired" used to mean "disappeared from the API". It now means "its end
+  date has passed", which is what the word actually means and what the
+  dashboard needs. Disappearing from the listing is tracked separately as
+  delisting.
+* The ending-soon digest no longer includes offers that already ended —
+  the bug where finished campaigns sat under "მალე იწურება" with 0 days.
+* Offers that haven't started yet are announced as upcoming rather than
+  silently counted as live.
 """
 
+import os
 from datetime import date
 
-from scraper import fetch_all_offers
-from categorize import categorize, extract_offer_economics
+import requests
+
+from analytics import build_insights, print_report
+from categorize import classify, extract_offer_economics
+from offer_status import ENDING_SOON_DAYS, compute_status
+from scraper import (
+    fetch_all_offers,
+    fetch_facet_tags,
+    fetch_segment_membership,
+    resolve_facet_values,
+)
+from state_store import (
+    append_history,
+    load_state,
+    prune_archive,
+    save_insights,
+    save_state,
+)
 from telegram_notify import (
-    send_message,
+    format_ending_soon_message,
     format_new_offer_message,
     format_price_change_message,
-    format_ending_soon_message,
+    format_upcoming_message,
+    send_message,
 )
-from state_store import load_state, save_state, append_history
 
-# Offers with this many days or fewer left get included in the
-# "ending soon" digest.
-ENDING_SOON_THRESHOLD = 2
-
-# Keep at most this many cashback-history entries per offer, so
-# data/offers.json doesn't grow unbounded over months of runs.
+# Keep at most this many cashback-history entries per offer so offers.json
+# doesn't grow without bound over months of runs.
 MAX_CASHBACK_HISTORY = 20
+
+# TBC's own filter facets give exact categories instead of inferred ones.
+# Costs ~35 extra paginated requests a day. Set USE_TBC_CATEGORIES=0 to
+# skip it and fall back to categorize.py's keyword layer.
+USE_TBC_CATEGORIES = os.environ.get("USE_TBC_CATEGORIES", "1") != "0"
+
+# Notifications are skipped entirely when Telegram isn't configured, so the
+# scraper is still usable as a pure data pipeline.
+TELEGRAM_READY = bool(
+    os.environ.get("TELEGRAM_BOT_TOKEN") and os.environ.get("TELEGRAM_CHAT_ID")
+)
+
+
+def notify(text: str, context: str) -> None:
+    """Sends a message, but never lets a Telegram outage fail the data run."""
+    if not TELEGRAM_READY:
+        return
+    try:
+        send_message(text)
+    except Exception as e:
+        print(f"Telegram send failed ({context}): {e}")
+
+
+def enrich(offer: dict, facet_tags: dict, segments: list, prior: dict,
+           today: date) -> dict:
+    """Builds the full stored record for one offer."""
+    facet_tags = facet_tags or {}
+    api_categories = facet_tags.get("Category") or None
+    classification = classify(offer, api_categories)
+    economics = extract_offer_economics(offer)
+    status = compute_status(offer, today)
+
+    history = list(prior.get("cashback_history") or [])
+    latest = history[-1]["percent"] if history else None
+    if latest != economics["cashback_percent"]:
+        history.append({
+            "date": today.isoformat(),
+            "percent": economics["cashback_percent"],
+        })
+    history = history[-MAX_CASHBACK_HISTORY:]
+
+    # TBC's own tags, when we have them, are authoritative and are stored
+    # separately from our inferred fields so the two never get confused.
+    return {
+        **offer,
+        **classification,
+        **economics,
+        **status,
+        "tbc_categories": facet_tags.get("Category") or [],
+        "product_types": facet_tags.get("ProductType") or [],
+        "tbc_offer_types": facet_tags.get("OfferType") or [],
+        "card_types": facet_tags.get("CardType") or [],
+        "segments": segments or [],
+        "concept_only": segments == ["Concept"],
+        "cashback_history": history,
+        "first_seen": prior.get("first_seen", today.isoformat()),
+        "last_seen": today.isoformat(),
+        "still_listed": True,
+        "delisted_on": None,
+    }
 
 
 def main():
-    print("Fetching current offers from TBC...")
-    current_offers = fetch_all_offers()
-    print(f"Found {len(current_offers)} offers.")
+    today = date.today()
 
-    previous_state = load_state()
-    previous_slugs = set(previous_state.keys())
-    current_slugs = {o["slug"] for o in current_offers}
+    print("Fetching offers from TBC...")
+    try:
+        current = fetch_all_offers()
+    except requests.RequestException as e:
+        # Nothing has been written yet, so the previous good offers.json is
+        # untouched. Exit non-zero so the Actions run is visibly red rather
+        # than quietly committing nothing.
+        print(f"ERROR: could not reach TBC's API: {e}")
+        print("Existing data left unchanged. This is usually a transient "
+              "outage or a block on the runner's IP — check by running "
+              "`python scraper.py` locally.")
+        raise SystemExit(1)
 
-    new_slugs = current_slugs - previous_slugs
-    expired_slugs = previous_slugs - current_slugs
-    existing_slugs = current_slugs & previous_slugs
+    if not current:
+        print("ERROR: the API returned zero offers. Refusing to overwrite "
+              "existing data with an empty set — this is almost always an "
+              "API shape change, not TBC ending every campaign at once.")
+        raise SystemExit(1)
 
-    new_offers = [o for o in current_offers if o["slug"] in new_slugs]
+    print(f"  {len(current)} offers returned.")
 
-    if not previous_state:
-        print("No previous state found — first run, skipping notifications "
-              "for the initial batch to avoid spamming you with everything at once.")
+    facet_tags, segment_membership = {}, {}
+    if USE_TBC_CATEGORIES:
+        print("\nReading TBC's own filter tags...")
+        try:
+            resolved = resolve_facet_values(verbose=False)
+            facet_tags = fetch_facet_tags(resolved)
+            segment_membership = fetch_segment_membership()
+        except Exception as e:
+            # Never fatal. Losing exact tags costs accuracy, not the run.
+            print(f"  Facet tagging failed, falling back to keywords: {e}")
+
+    if facet_tags:
+        tagged = sum(1 for t in facet_tags.values() if t.get("Category"))
+        print(f"  Exact categories for {tagged}/{len(current)} offers "
+              f"({100 * tagged // max(len(current), 1)}%).")
     else:
-        # --- brand-new offers ---
-        for offer in new_offers:
-            category = categorize(offer)
-            economics = extract_offer_economics(offer)
-            try:
-                send_message(format_new_offer_message(offer, category, economics))
-            except Exception as e:
-                print(f"Failed to send Telegram message for {offer['slug']}: {e}")
+        print("  No facet tags — categories will be inferred from text.")
 
-        # --- expired offers ---
-        if expired_slugs:
-            names = [previous_state[s].get("title", s) for s in expired_slugs]
-            try:
-                send_message(
-                    "⌛️ დასრულებული შეთავაზებები:\n" + "\n".join(f"• {n}" for n in names)
-                )
-            except Exception as e:
-                print(f"Failed to send expiry notice: {e}")
+    previous = load_state()
+    first_run = not previous
 
-        # --- cashback % changes on offers that already existed ---
-        for offer in current_offers:
-            if offer["slug"] not in existing_slugs:
-                continue
-            prior = previous_state[offer["slug"]]
-            new_economics = extract_offer_economics(offer)
-            old_percent = prior.get("cashback_percent")
-            new_percent = new_economics.get("cashback_percent")
-            if (
-                old_percent is not None
-                and new_percent is not None
-                and old_percent != new_percent
-            ):
-                try:
-                    send_message(format_price_change_message(offer, old_percent, new_percent))
-                except Exception as e:
-                    print(f"Failed to send price-change message for {offer['slug']}: {e}")
+    current_by_slug = {o["slug"]: o for o in current if o.get("slug")}
+    new_slugs = set(current_by_slug) - set(previous)
+    delisted_slugs = set(previous) - set(current_by_slug)
 
-        # --- ending-soon digest ---
-        ending_soon = [
-            o for o in current_offers
-            if o.get("remaining_days") is not None
-            and o["remaining_days"] <= ENDING_SOON_THRESHOLD
-        ]
-        if ending_soon:
-            try:
-                send_message(format_ending_soon_message(ending_soon))
-            except Exception as e:
-                print(f"Failed to send ending-soon digest: {e}")
+    # --- build the new state ---------------------------------------------
+    state = {}
 
-    # Build new state, preserving first_seen dates and cashback history
-    new_state = {}
-    for offer in current_offers:
-        prior = previous_state.get(offer["slug"], {})
-        economics = extract_offer_economics(offer)
+    for slug, offer in current_by_slug.items():
+        state[slug] = enrich(
+            offer,
+            facet_tags.get(slug),
+            segment_membership.get(slug, ["All"] if not segment_membership else []),
+            previous.get(slug, {}),
+            today,
+        )
 
-        cashback_history = prior.get("cashback_history", [])
-        latest_recorded = cashback_history[-1]["percent"] if cashback_history else None
-        if latest_recorded != economics.get("cashback_percent"):
-            cashback_history = cashback_history + [{
-                "date": date.today().isoformat(),
-                "percent": economics.get("cashback_percent"),
-            }]
-        cashback_history = cashback_history[-MAX_CASHBACK_HISTORY:]
+    # Offers TBC removed from the listing: keep them, mark them, and refresh
+    # their status so an archived record still reports "ended" correctly.
+    for slug in delisted_slugs:
+        archived = dict(previous[slug])
+        archived.update(compute_status(archived, today))
+        if archived.get("still_listed", True):
+            archived["delisted_on"] = today.isoformat()
+        archived["still_listed"] = False
+        state[slug] = archived
 
-        new_state[offer["slug"]] = {
-            **offer,
-            "category": categorize(offer),
-            **economics,
-            "cashback_history": cashback_history,
-            "first_seen": prior.get("first_seen", date.today().isoformat()),
-            "last_seen": date.today().isoformat(),
-        }
+    state = prune_archive(state, today)
 
-    save_state(new_state)
-    append_history(len(current_offers))
-    print(
-        f"Done. {len(new_slugs)} new, {len(expired_slugs)} expired, "
-        f"{len(existing_slugs)} existing offers checked for changes."
+    # --- work out what to shout about -------------------------------------
+    live = [o for o in state.values() if o["is_live"]]
+    newly_added = [state[s] for s in new_slugs if s in state]
+
+    just_ended = [
+        state[s] for s in previous
+        if s in state
+        and state[s]["status"] == "ended"
+        and previous[s].get("status") not in (None, "ended")
+    ]
+
+    just_started = [
+        state[s] for s in state
+        if previous.get(s, {}).get("status") == "upcoming"
+        and state[s]["status"] in ("active", "ending_soon")
+    ]
+
+    ending_soon = sorted(
+        (o for o in live
+         if o["days_left"] is not None and 0 <= o["days_left"] <= ENDING_SOON_DAYS),
+        key=lambda o: o["days_left"],
     )
+
+    rate_changes = []
+    for slug, offer in state.items():
+        prior = previous.get(slug)
+        if not prior:
+            continue
+        old, new = prior.get("cashback_percent"), offer.get("cashback_percent")
+        if old is not None and new is not None and old != new:
+            rate_changes.append((offer, old, new))
+
+    # --- notify ------------------------------------------------------------
+    if first_run:
+        print("First run — skipping notifications so you don't get "
+              f"{len(current)} messages at once.")
+    elif not TELEGRAM_READY:
+        print("Telegram not configured — data written, notifications skipped.")
+    else:
+        # A newly *discovered* offer is not necessarily a newly *live* one.
+        # TBC's listing includes finished and not-yet-started campaigns, so
+        # announcing an already-ended offer as "🆕 ახალი შეთავაზება" would
+        # be wrong. Split them by status.
+        for offer in newly_added:
+            if offer["status"] == "ended":
+                continue          # discovered late; it belongs in the archive
+            if offer["status"] == "upcoming":
+                continue          # covered by the digest below
+            notify(
+                format_new_offer_message(offer, offer["category"], offer),
+                offer["slug"],
+            )
+
+        newly_upcoming = [o for o in newly_added if o["status"] == "upcoming"]
+        if newly_upcoming:
+            notify(format_upcoming_message(newly_upcoming), "upcoming")
+
+        if just_started:
+            notify(
+                "▶️ <b>დაიწყო:</b>\n"
+                + "\n".join(f"• {o.get('title')}" for o in just_started[:30]),
+                "started",
+            )
+
+        if just_ended:
+            notify(
+                "⌛️ <b>დასრულებული შეთავაზებები:</b>\n"
+                + "\n".join(f"• {o.get('title')}" for o in just_ended[:30]),
+                "ended",
+            )
+
+        for offer, old, new in rate_changes:
+            notify(format_price_change_message(offer, old, new), offer["slug"])
+
+        if ending_soon:
+            notify(format_ending_soon_message(ending_soon), "ending-soon")
+
+    # --- persist -----------------------------------------------------------
+    save_state(state)
+
+    status_counts = {}
+    for offer in state.values():
+        status_counts[offer["status"]] = status_counts.get(offer["status"], 0) + 1
+
+    append_history({
+        "total_known": len(state),
+        "live": len(live),
+        "upcoming": status_counts.get("upcoming", 0),
+        "ended": status_counts.get("ended", 0),
+        "evergreen": status_counts.get("evergreen", 0),
+        "new_today": len(newly_added),
+        "delisted_today": len(delisted_slugs),
+        # Kept so older history rows and the trend chart stay comparable.
+        "offer_count": len(live),
+    })
+
+    insights = build_insights(state, today)
+    save_insights(insights)
+    print_report(insights)
+
+    print(f"\nDone. {len(newly_added)} new, {len(just_ended)} newly ended, "
+          f"{len(delisted_slugs)} delisted, {len(rate_changes)} rate changes.")
 
 
 if __name__ == "__main__":

@@ -25,6 +25,11 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      # Cheap guard: if a parsing rule regressed, fail here rather than
+      # committing bad data over a known-good offers.json.
+      - name: Run tests
+        run: python test_parse.py
+
       - name: Run daily offer check
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
@@ -35,6 +40,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/offers.json data/history.jsonl
+          git add data/offers.json data/history.jsonl data/insights.json data/facet_map.json
           git diff --cached --quiet || git commit -m "Update offers data [skip ci]"
           git push

@@ -448,6 +448,21 @@
   footer a{color:var(--tan);text-decoration:none;}
   footer a:hover{text-decoration:underline;}
 
+  .schema-banner{
+    max-width:1400px;margin:14px auto;padding:14px 18px;
+    background:#fff6e5;border:1px solid #e0a33a;color:#7a5312;
+    border-radius:8px;font-size:13.5px;line-height:1.6;
+  }
+  .schema-banner code{background:#00000010;padding:1px 5px;border-radius:4px;}
+  .pill.status-on{background:var(--navy);color:#fff;border-color:var(--navy);}
+  .tag.concept{background:#f3ecff;color:#5b2f9e;}
+  .tag.ended{background:#eceff1;color:#5A6670;}
+  .tag.upcoming{background:#e8f1fb;color:#0b4f9e;}
+  .tag.evergreen{background:#eef7ee;color:#2b6b39;}
+  .card.is-ended{opacity:.62;}
+  .card.is-ended .thumb{filter:grayscale(1);}
+  .cat-src{font-size:10.5px;color:var(--slate-soft);margin-left:6px;}
+
   .error-banner{
     max-width:1400px;margin:20px auto;padding:16px 20px;
     background:#fdeae4;border:1px solid var(--danger);color:var(--danger);
@@ -472,8 +487,9 @@
     <span class="sub">/ TBC Bank Monitor</span>
   </div>
   <nav class="topnav">
-    <a href="index.html" class="navlink active">შეთავაზებები</a>
+    <a href="briefing.html" class="navlink">ბრიფინგი</a>
     <a href="dashboard.html" class="navlink">ანალიტიკა</a>
+    <a href="index.html" class="navlink active">შეთავაზებები</a>
   </nav>
   <div class="status-pill" id="statusPill">
     <span class="status-dot"></span>
@@ -501,10 +517,17 @@
     <option value="cashback_desc">ქეშბექი: მაღალი → დაბალი</option>
     <option value="ending_soon">ვადა: მალე იწურება</option>
     <option value="cap_desc">ლიმიტი: მაღალი → დაბალი</option>
+    <option value="duration">ხანგრძლივობა: გრძელი → მოკლე</option>
     <option value="newest">უახლესი</option>
     <option value="az">ბრენდი: ა–ჰ</option>
   </select>
 </div>
+
+<div id="bannerHost"></div>
+
+<div class="catrow" id="segmentRow" aria-label="სეგმენტი"></div>
+
+<div class="catrow" id="statusRow" aria-label="სტატუსი"></div>
 
 <div class="catrow" id="catRow"></div>
 
@@ -525,183 +548,340 @@
   <div>შიდა ანალიტიკური ხელსაწყო — Bank of Georgia</div>
 </footer>
 
+<script src="offers-core.js"></script>
 <script>
 (function(){
   "use strict";
 
-  const DATA_PATHS = ["./data/offers.json", "data/offers.json"];
-  const HISTORY_PATHS = ["./data/history.jsonl", "data/history.jsonl"];
-  const FALLBACK_DATA = "https://raw.githubusercontent.com/jinchara/Offers_Bot/main/data/offers.json";
-  const FALLBACK_HISTORY = "https://raw.githubusercontent.com/jinchara/Offers_Bot/main/data/history.jsonl";
+  var C = window.OffersCore;
 
-  const grid = document.getElementById('grid');
-  const skeletonGrid = document.getElementById('skeletonGrid');
-  const resultCountEl = document.getElementById('resultCount');
-  const lastSyncEl = document.getElementById('lastSync');
-  const statusPill = document.getElementById('statusPill');
-  const statusText = document.getElementById('statusText');
-  const statStrip = document.getElementById('statStrip');
-  const ticker = document.getElementById('ticker');
-  const catRow = document.getElementById('catRow');
-  const searchInput = document.getElementById('searchInput');
-  const sortSelect = document.getElementById('sortSelect');
-  const soonToggle = document.getElementById('soonToggle');
-  const newToggle = document.getElementById('newToggle');
+  var grid = document.getElementById('grid');
+  var skeletonGrid = document.getElementById('skeletonGrid');
+  var resultCountEl = document.getElementById('resultCount');
+  var lastSyncEl = document.getElementById('lastSync');
+  var statusPill = document.getElementById('statusPill');
+  var statusText = document.getElementById('statusText');
+  var statStrip = document.getElementById('statStrip');
+  var ticker = document.getElementById('ticker');
+  var catRow = document.getElementById('catRow');
+  var statusRow = document.getElementById('statusRow');
+  var segmentRow = document.getElementById('segmentRow');
+  var searchInput = document.getElementById('searchInput');
+  var sortSelect = document.getElementById('sortSelect');
+  var soonToggle = document.getElementById('soonToggle');
+  var newToggle = document.getElementById('newToggle');
 
-  let ALL_OFFERS = [];
-  let LATEST_DATE = null;
-  let state = { q:'', category:'ყველა', soon:false, freshOnly:false, sort:'cashback_desc', visible:60 };
+  var ALL_OFFERS = [];
+  var LATEST_DATE = null;
 
-  async function fetchFirst(paths, fallback){
-    for(const p of paths){
-      try{
-        const res = await fetch(p, {cache:'no-store'});
-        if(res.ok) return await res.text();
-      }catch(e){/* try next */}
+  /*
+   * Default view is live offers only. This is the fix for the original
+   * complaint: finished campaigns used to sit in the grid labelled
+   * "მალე იწურება" with 0 days left, and they were counted in every
+   * average. Ended offers are still reachable — they're one filter away —
+   * because month-over-month analysis needs them.
+   */
+  var state = {
+    q: '',
+    category: 'ყველა',
+    statusFilter: 'live',
+    segment: 'All',
+    soon: false,
+    freshOnly: false,
+    sort: 'cashback_desc',
+    visible: 60
+  };
+
+  var STATUS_FILTERS = [
+    { key: 'live',        label: 'აქტიური' },
+    { key: 'ending_soon', label: 'მალე იწურება' },
+    { key: 'upcoming',    label: 'ჯერ არ დაწყებულა' },
+    { key: 'ended',       label: 'დასრულებული' },
+    { key: 'all',         label: 'ყველა (არქივთან ერთად)' }
+  ];
+
+  /*
+   * TBC splits its offer wall by audience: All, Concept (their premium
+   * tier) and ForYouth. The same merchant can appear in one, two or all
+   * three, and an offer that runs ONLY in Concept is a retention play for
+   * high-value customers rather than a mass-market push — worth being able
+   * to isolate.
+   *
+   * Offers scraped before segment tracking have no `segments`, so they're
+   * treated as belonging to All rather than being hidden.
+   */
+  var SEGMENTS = [
+    { key: 'All',      label: 'ყველა შეთავაზება' },
+    { key: 'Concept',  label: 'კონცეპტი' },
+    { key: 'ForYouth', label: 'ახალი თაობისთვის' }
+  ];
+
+  function offerSegments(o){
+    return (o.segments && o.segments.length) ? o.segments : ['All'];
+  }
+
+  function matchesSegment(o){
+    return offerSegments(o).indexOf(state.segment) !== -1;
+  }
+
+  function renderSegmentPills(){
+    var counts = {};
+    SEGMENTS.forEach(function(seg){
+      counts[seg.key] = ALL_OFFERS.filter(function(o){
+        return offerSegments(o).indexOf(seg.key) !== -1;
+      }).length;
+    });
+    /* Hide the control entirely when nothing has been segment-tagged yet —
+       three buttons all reading the same number is just noise. */
+    if(counts.Concept === 0 && counts.ForYouth === 0){
+      segmentRow.style.display = 'none';
+      return;
     }
-    if(fallback){
-      const res = await fetch(fallback, {cache:'no-store'});
-      if(res.ok) return await res.text();
-    }
-    throw new Error('ვერ ჩაიტვირთა მონაცემები');
-  }
-
-  function daysColor(d){ return d<=2 ? 'soon':''; }
-
-  function fmtDate(d){
-    if(!d) return '—';
-    return d;
-  }
-
-  function renderStats(offers, history){
-    const total = offers.length;
-    const endingToday = offers.filter(o=>o.remaining_days<=1).length;
-    const withCashback = offers.filter(o=>o.cashback_percent);
-    const avgCashback = withCashback.length ? Math.round(withCashback.reduce((a,o)=>a+o.cashback_percent,0)/withCashback.length) : 0;
-    const freshCount = offers.filter(o=>o.first_seen===LATEST_DATE).length;
-
-    statStrip.innerHTML = `
-      <div class="stat"><div class="num">${total}</div><div class="lbl">აქტიური შეთავაზება</div></div>
-      <div class="stat tan"><div class="num">${avgCashback}%</div><div class="lbl">საშ. ქეშბექი</div></div>
-      <div class="stat"><div class="num">${endingToday}</div><div class="lbl">იწურება 24სთ-ში</div></div>
-      <div class="stat tan"><div class="num">${freshCount}</div><div class="lbl">დღეს დამატებული</div></div>
-      <div class="stat"><div class="num">${history.length}</div><div class="lbl">სინქრონიზაცია ჩანაწერი</div></div>
-    `;
-  }
-
-  function renderTicker(offers){
-    const top = offers
-      .filter(o=>o.cashback_percent)
-      .sort((a,b)=>b.cashback_percent-a.cashback_percent)
-      .slice(0, 24);
-    const items = top.map(o=>`<span class="item">${escapeHtml(o.brand||o.title)} <span class="up">▲ ${o.cashback_percent}%</span></span>`).join('');
-    ticker.innerHTML = items + items; // duplicate for seamless loop
-  }
-
-  function renderCategoryPills(offers){
-    const counts = {};
-    offers.forEach(o=>{ const c=o.category||'სხვა'; counts[c]=(counts[c]||0)+1; });
-    const cats = Object.keys(counts).sort((a,b)=>counts[b]-counts[a]);
-    const all = [['ყველა', offers.length], ...cats.map(c=>[c,counts[c]])];
-    catRow.innerHTML = all.map(([name,count])=>
-      `<button class="pill" data-cat="${escapeAttr(name)}" aria-pressed="${name===state.category}">${escapeHtml(name)} <span style="opacity:.6">${count}</span></button>`
-    ).join('');
-    catRow.querySelectorAll('.pill').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        state.category = btn.dataset.cat;
+    segmentRow.innerHTML = SEGMENTS.map(function(seg){
+      var on = seg.key === state.segment;
+      return '<button class="pill' + (on ? ' status-on' : '') + '" data-seg="' + seg.key + '"' +
+             ' aria-pressed="' + on + '">' + C.escapeHtml(seg.label) +
+             ' <span style="opacity:.6">' + counts[seg.key] + '</span></button>';
+    }).join('');
+    segmentRow.querySelectorAll('.pill').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        state.segment = btn.dataset.seg;
+        state.category = 'ყველა';
         state.visible = 60;
-        catRow.querySelectorAll('.pill').forEach(b=>b.setAttribute('aria-pressed', b===btn));
+        renderSegmentPills();
+        renderStatusPills();
+        renderCategoryPills();
         renderGrid();
       });
     });
   }
 
-  function escapeHtml(s){
-    return String(s==null?'':s).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  function matchesStatus(o){
+    switch(state.statusFilter){
+      case 'live':        return o.is_live;
+      case 'ending_soon': return o.status === 'ending_soon';
+      case 'upcoming':    return o.status === 'upcoming';
+      case 'ended':       return o.status === 'ended';
+      default:            return true;
+    }
   }
-  function escapeAttr(s){ return escapeHtml(s); }
+
+  /* The pool the current status filter is looking at, before the category,
+     search and toggle filters narrow it further. */
+  function statusPool(){
+    return ALL_OFFERS.filter(function(o){ return matchesStatus(o) && matchesSegment(o); });
+  }
+
+  function renderStats(offers){
+    var liveOffers = C.live(offers);
+    var merchant = C.merchantsOnly(liveOffers);
+    var endingSoon = liveOffers.filter(function(o){ return o.status === 'ending_soon'; });
+    var upcoming = offers.filter(function(o){ return o.status === 'upcoming'; });
+    var withCashback = merchant
+      .filter(function(o){ return o.cashback_percent; })
+      .map(function(o){ return o.cashback_percent; });
+    var freshCount = offers.filter(function(o){ return o.first_seen === LATEST_DATE; }).length;
+
+    statStrip.innerHTML =
+      '<div class="stat"><div class="num">' + liveOffers.length + '</div>' +
+        '<div class="lbl">აქტიური შეთავაზება</div></div>' +
+      '<div class="stat tan"><div class="num">' + Math.round(C.mean(withCashback)) + '%</div>' +
+        '<div class="lbl">საშ. ქეშბექი (აქტიური)</div></div>' +
+      '<div class="stat"><div class="num">' + endingSoon.length + '</div>' +
+        '<div class="lbl">იწურება ' + C.ENDING_SOON_DAYS + ' დღეში</div></div>' +
+      '<div class="stat tan"><div class="num">' + upcoming.length + '</div>' +
+        '<div class="lbl">დაანონსებული</div></div>' +
+      '<div class="stat"><div class="num">' + freshCount + '</div>' +
+        '<div class="lbl">დღეს დამატებული</div></div>';
+  }
+
+  function renderTicker(offers){
+    var top = C.merchantsOnly(C.live(offers))
+      .filter(function(o){ return o.cashback_percent; })
+      .sort(function(a,b){ return b.cashback_percent - a.cashback_percent; })
+      .slice(0, 24);
+    var items = top.map(function(o){
+      return '<span class="item">' + C.escapeHtml(o.brand || o.title) +
+             ' <span class="up">▲ ' + o.cashback_percent + '%</span></span>';
+    }).join('');
+    ticker.innerHTML = items + items;   // duplicated for a seamless loop
+  }
+
+  function renderStatusPills(){
+    var pool = ALL_OFFERS.filter(matchesSegment);
+    var counts = {
+      live: pool.filter(function(o){ return o.is_live; }).length,
+      ending_soon: pool.filter(function(o){ return o.status === 'ending_soon'; }).length,
+      upcoming: pool.filter(function(o){ return o.status === 'upcoming'; }).length,
+      ended: pool.filter(function(o){ return o.status === 'ended'; }).length,
+      all: pool.length
+    };
+    statusRow.innerHTML = STATUS_FILTERS.map(function(f){
+      var on = f.key === state.statusFilter;
+      return '<button class="pill' + (on ? ' status-on' : '') + '" data-status="' + f.key + '"' +
+             ' aria-pressed="' + on + '">' + C.escapeHtml(f.label) +
+             ' <span style="opacity:.6">' + counts[f.key] + '</span></button>';
+    }).join('');
+    statusRow.querySelectorAll('.pill').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        state.statusFilter = btn.dataset.status;
+        state.category = 'ყველა';
+        state.visible = 60;
+        renderStatusPills();
+        renderCategoryPills();
+        renderGrid();
+      });
+    });
+  }
+
+  function renderCategoryPills(){
+    var pool = statusPool();
+    var counts = {};
+    pool.forEach(function(o){
+      var c = o.category || 'სხვა';
+      counts[c] = (counts[c] || 0) + 1;
+    });
+    var cats = Object.keys(counts).sort(function(a,b){ return counts[b] - counts[a]; });
+    var all = [['ყველა', pool.length]].concat(cats.map(function(c){ return [c, counts[c]]; }));
+    catRow.innerHTML = all.map(function(pair){
+      return '<button class="pill" data-cat="' + C.escapeHtml(pair[0]) + '"' +
+             ' aria-pressed="' + (pair[0] === state.category) + '">' +
+             C.escapeHtml(pair[0]) + ' <span style="opacity:.6">' + pair[1] + '</span></button>';
+    }).join('');
+    catRow.querySelectorAll('.pill').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        state.category = btn.dataset.cat;
+        state.visible = 60;
+        catRow.querySelectorAll('.pill').forEach(function(b){
+          b.setAttribute('aria-pressed', b === btn);
+        });
+        renderGrid();
+      });
+    });
+  }
 
   function matchesFilters(o){
-    if(state.category!=='ყველა' && (o.category||'სხვა')!==state.category) return false;
-    if(state.soon && !(o.remaining_days<=2)) return false;
-    if(state.freshOnly && o.first_seen!==LATEST_DATE) return false;
+    if(!matchesStatus(o)) return false;
+    if(!matchesSegment(o)) return false;
+    if(state.category !== 'ყველა' && (o.category || 'სხვა') !== state.category) return false;
+    if(state.soon && o.status !== 'ending_soon') return false;
+    if(state.freshOnly && o.first_seen !== LATEST_DATE) return false;
     if(state.q){
-      const q = state.q.toLowerCase();
-      const hay = `${o.title||''} ${o.brand||''} ${o.description||''} ${o.category||''}`.toLowerCase();
-      if(!hay.includes(q)) return false;
+      var q = state.q.toLowerCase();
+      var hay = ((o.title||'') + ' ' + (o.brand||'') + ' ' +
+                 (o.description||'') + ' ' + (o.category||'')).toLowerCase();
+      if(hay.indexOf(q) === -1) return false;
     }
     return true;
   }
 
   function sortOffers(list){
-    const arr = list.slice();
+    var arr = list.slice();
     switch(state.sort){
-      case 'cashback_desc': arr.sort((a,b)=>(b.cashback_percent||0)-(a.cashback_percent||0)); break;
-      case 'ending_soon': arr.sort((a,b)=>(a.remaining_days??999)-(b.remaining_days??999)); break;
-      case 'cap_desc': arr.sort((a,b)=>(b.cap_amount||0)-(a.cap_amount||0)); break;
-      case 'newest': arr.sort((a,b)=> (b.first_seen||'').localeCompare(a.first_seen||'')); break;
-      case 'az': arr.sort((a,b)=> (a.brand||a.title||'').localeCompare(b.brand||b.title||'', 'ka')); break;
+      case 'cashback_desc':
+        arr.sort(function(a,b){ return (b.cashback_percent||0) - (a.cashback_percent||0); });
+        break;
+      case 'ending_soon':
+        /* Offers with no end date sort last rather than first — an
+           open-ended offer is not "ending soonest". */
+        arr.sort(function(a,b){
+          var av = a.days_left === null || a.days_left === undefined ? 99999 : a.days_left;
+          var bv = b.days_left === null || b.days_left === undefined ? 99999 : b.days_left;
+          return av - bv;
+        });
+        break;
+      case 'cap_desc':
+        arr.sort(function(a,b){ return (b.cap_amount||0) - (a.cap_amount||0); });
+        break;
+      case 'duration':
+        arr.sort(function(a,b){ return (b.duration_days||0) - (a.duration_days||0); });
+        break;
+      case 'newest':
+        arr.sort(function(a,b){ return (b.first_seen||'').localeCompare(a.first_seen||''); });
+        break;
+      case 'az':
+        arr.sort(function(a,b){
+          return (a.brand||a.title||'').localeCompare(b.brand||b.title||'', 'ka');
+        });
+        break;
     }
     return arr;
   }
 
+  var STATUS_TAG_CLASS = {
+    ending_soon: 'ending',
+    ended: 'ended',
+    upcoming: 'upcoming',
+    evergreen: 'evergreen'
+  };
+
   function cardHtml(o){
-    const isNew = o.first_seen===LATEST_DATE;
-    const soon = o.remaining_days<=2;
-    const capText = o.cap_unlimited ? 'ულიმიტო' : (o.cap_amount ? `მაქს. ${o.cap_amount}₾` : '');
-    return `
-      <article class="card" tabindex="0" data-slug="${escapeAttr(o.slug)}">
-        ${o.image ? `<img class="thumb" src="${escapeAttr(o.image)}" alt="" loading="lazy" onerror="this.style.display='none'">` : ''}
-        <div class="card-top">
-          <div class="card-tags">
-            <span class="tag cat">${escapeHtml(o.category||'სხვა')}</span>
-            ${isNew ? '<span class="tag new">ახალი</span>' : ''}
-            ${soon ? '<span class="tag ending">იწურება</span>' : ''}
-          </div>
-          ${o.cashback_percent ? `<div class="cashback">${o.cashback_percent}<small>%</small>${capText?`<span class="cap">${escapeHtml(capText)}</span>`:''}</div>` : ''}
-        </div>
-        <div class="brand-name">${escapeHtml(o.brand||'')}</div>
-        <div class="title">${escapeHtml(o.title||'')}</div>
-        ${o.description ? `<div class="desc">${escapeHtml(o.description)}</div>` : ''}
-        <div class="card-foot">
-          <span class="days-left ${daysColor(o.remaining_days)}">${o.remaining_days===0?'იწურება დღეს':`დარჩა ${o.remaining_days} დღე`}</span>
-          <span class="card-links">
-            ${o.description ? '<button class="expand-btn" type="button">დეტალები</button>' : ''}
-            ${o.url ? `<a href="${escapeAttr(o.url)}" target="_blank" rel="noopener">TBC-ზე ნახვა ↗</a>` : ''}
-          </span>
-        </div>
-      </article>
-    `;
+    var isNew = o.first_seen === LATEST_DATE;
+    var capText = o.cap_unlimited ? 'ულიმიტო' : (o.cap_amount ? 'მაქს. ' + o.cap_amount + '₾' : '');
+    var tagClass = STATUS_TAG_CLASS[o.status];
+    var statusTag = tagClass
+      ? '<span class="tag ' + tagClass + '">' + C.escapeHtml(o.status_label) + '</span>' : '';
+    /* Categories are inferred, so show where each one came from on hover
+       rather than presenting a guess as fact. */
+    var srcTitle = 'წყარო: ' + (o.category_source || 'unknown') +
+                   ' / სანდოობა: ' + (o.category_confidence || '—');
+
+    return '<article class="card' + (o.status === 'ended' ? ' is-ended' : '') +
+             '" tabindex="0" data-slug="' + C.escapeHtml(o.slug) + '">' +
+      (o.image ? '<img class="thumb" src="' + C.escapeHtml(o.image) +
+        '" alt="" loading="lazy" onerror="this.style.display=\'none\'">' : '') +
+      '<div class="card-top"><div class="card-tags">' +
+        '<span class="tag cat" title="' + C.escapeHtml(srcTitle) + '">' +
+          C.escapeHtml(o.category || 'სხვა') + '</span>' +
+        (isNew ? '<span class="tag new">ახალი</span>' : '') +
+        (o.concept_only ? '<span class="tag concept">კონცეპტი</span>' : '') +
+        statusTag +
+      '</div>' +
+      (o.cashback_percent ? '<div class="cashback">' + o.cashback_percent + '<small>%</small>' +
+        (capText ? '<span class="cap">' + C.escapeHtml(capText) + '</span>' : '') + '</div>' : '') +
+      '</div>' +
+      '<div class="brand-name">' + C.escapeHtml(o.brand || '') + '</div>' +
+      '<div class="title">' + C.escapeHtml(o.title || '') + '</div>' +
+      (o.description ? '<div class="desc">' + C.escapeHtml(o.description) + '</div>' : '') +
+      '<div class="card-foot">' +
+        '<span class="days-left' + (o.status === 'ending_soon' ? ' soon' : '') + '">' +
+          C.escapeHtml(o.days_left_label) + '</span>' +
+        '<span class="card-links">' +
+          (o.description ? '<button class="expand-btn" type="button">დეტალები</button>' : '') +
+          (o.url ? '<a href="' + C.escapeHtml(o.url) +
+            '" target="_blank" rel="noopener">TBC-ზე ნახვა ↗</a>' : '') +
+        '</span>' +
+      '</div></article>';
   }
 
   function renderGrid(){
-    const filtered = sortOffers(ALL_OFFERS.filter(matchesFilters));
+    var filtered = sortOffers(ALL_OFFERS.filter(matchesFilters));
     resultCountEl.textContent = filtered.length;
 
-    if(filtered.length===0){
-      grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">
-        <div class="big">∅</div>
-        შენს ფილტრებთან შესაბამისი შეთავაზება ვერ მოიძებნა
-      </div>`;
+    if(filtered.length === 0){
+      grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;">' +
+        '<div class="big">∅</div>ამ ფილტრებით შეთავაზება არ მოიძებნა. ' +
+        'სცადე სტატუსის შეცვლა ან ძებნის გასუფთავება.</div>';
       return;
     }
 
-    const slice = filtered.slice(0, state.visible);
-    grid.innerHTML = slice.map(cardHtml).join('');
+    grid.innerHTML = filtered.slice(0, state.visible).map(cardHtml).join('');
 
-    grid.querySelectorAll('.expand-btn').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        const card = btn.closest('.card');
+    grid.querySelectorAll('.expand-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var card = btn.closest('.card');
         card.classList.toggle('expanded');
         btn.textContent = card.classList.contains('expanded') ? 'დამალვა' : 'დეტალები';
       });
     });
 
     if(filtered.length > state.visible){
-      const wrap = document.createElement('div');
+      var wrap = document.createElement('div');
       wrap.className = 'loadmore-wrap';
-      wrap.innerHTML = `<button class="loadmore" type="button">კიდევ ${Math.min(60, filtered.length-state.visible)} შეთავაზების ჩვენება</button>`;
-      wrap.querySelector('button').addEventListener('click', ()=>{
+      var more = Math.min(60, filtered.length - state.visible);
+      wrap.innerHTML = '<button class="loadmore" type="button">კიდევ ' + more +
+                       ' შეთავაზების ჩვენება</button>';
+      wrap.querySelector('button').addEventListener('click', function(){
         state.visible += 60;
         renderGrid();
       });
@@ -710,78 +890,68 @@
   }
 
   function debounce(fn, ms){
-    let t;
-    return (...args)=>{ clearTimeout(t); t=setTimeout(()=>fn(...args), ms); };
+    var t;
+    return function(){
+      var args = arguments;
+      clearTimeout(t);
+      t = setTimeout(function(){ fn.apply(null, args); }, ms);
+    };
   }
 
-  searchInput.addEventListener('input', debounce(e=>{
+  searchInput.addEventListener('input', debounce(function(e){
     state.q = e.target.value.trim();
     state.visible = 60;
     renderGrid();
   }, 180));
 
-  sortSelect.addEventListener('change', e=>{
+  sortSelect.addEventListener('change', function(e){
     state.sort = e.target.value;
     renderGrid();
   });
 
-  soonToggle.addEventListener('click', ()=>{
+  soonToggle.addEventListener('click', function(){
     state.soon = !state.soon;
     soonToggle.setAttribute('aria-pressed', state.soon);
     state.visible = 60;
     renderGrid();
   });
 
-  newToggle.addEventListener('click', ()=>{
+  newToggle.addEventListener('click', function(){
     state.freshOnly = !state.freshOnly;
     newToggle.setAttribute('aria-pressed', state.freshOnly);
     state.visible = 60;
     renderGrid();
   });
 
-  function parseHistory(text){
-    return text.split('\n').filter(Boolean).map(line=>{
-      try{ return JSON.parse(line); }catch(e){ return null; }
-    }).filter(Boolean);
-  }
+  C.loadAll().then(function(data){
+    ALL_OFFERS = data.offers;
+    LATEST_DATE = ALL_OFFERS.reduce(function(max, o){
+      return (o.last_seen && o.last_seen > max) ? o.last_seen : max;
+    }, '');
 
-  async function init(){
-    try{
-      const [offersText, historyText] = await Promise.all([
-        fetchFirst(DATA_PATHS, FALLBACK_DATA),
-        fetchFirst(HISTORY_PATHS, FALLBACK_HISTORY).catch(()=> "")
-      ]);
+    statusText.textContent = 'ცოცხალი — ' + (LATEST_DATE || '');
+    lastSyncEl.textContent = 'ბოლო სინქრონიზაცია: ' + (LATEST_DATE || '—');
 
-      const offersObj = JSON.parse(offersText);
-      ALL_OFFERS = Object.values(offersObj);
-      const history = historyText ? parseHistory(historyText) : [];
+    C.renderSchemaWarning(document.getElementById('bannerHost'), data);
+    renderSegmentPills();
+    renderStats(ALL_OFFERS);
+    renderTicker(ALL_OFFERS);
+    renderStatusPills();
+    renderCategoryPills();
 
-      LATEST_DATE = ALL_OFFERS.reduce((max,o)=> (o.last_seen && o.last_seen>max) ? o.last_seen : max, '');
-
-      statusText.textContent = `ცოცხალი — ${LATEST_DATE || ''}`;
-      lastSyncEl.textContent = `ბოლო სინქრონიზაცია: ${fmtDate(LATEST_DATE)}`;
-
-      renderStats(ALL_OFFERS, history);
-      renderTicker(ALL_OFFERS);
-      renderCategoryPills(ALL_OFFERS);
-
-      skeletonGrid.style.display = 'none';
-      grid.style.display = 'grid';
-      renderGrid();
-
-    }catch(err){
-      skeletonGrid.style.display = 'none';
-      statusText.textContent = 'შეცდომა';
-      statusPill.querySelector('.status-dot').style.background = '#e2401f';
-      grid.style.display = 'grid';
-      grid.innerHTML = `<div class="error-banner" style="grid-column:1/-1;">
-        მონაცემების ჩატვირთვა ვერ მოხერხდა. დარწმუნდი, რომ ეს გვერდი განთავსებულია იმავე რეპოზიტორიაში, სადაც <code>data/offers.json</code> ფაილია (GitHub Pages), ან შეამოწმე ინტერნეტ კავშირი.<br><br>
-        დეტალები: ${escapeHtml(err.message)}
-      </div>`;
-    }
-  }
-
-  init();
+    skeletonGrid.style.display = 'none';
+    grid.style.display = 'grid';
+    renderGrid();
+  }).catch(function(err){
+    skeletonGrid.style.display = 'none';
+    statusText.textContent = 'შეცდომა';
+    statusPill.querySelector('.status-dot').style.background = '#e2401f';
+    grid.style.display = 'grid';
+    grid.innerHTML = '<div class="error-banner" style="grid-column:1/-1;">' +
+      'მონაცემები ვერ ჩაიტვირთა. გვერდი უნდა იყოს იმავე რეპოზიტორიაში, სადაც ' +
+      '<code>data/offers.json</code> (GitHub Pages), ან შეამოწმე ინტერნეტ კავშირი.<br><br>' +
+      'დეტალები: ' + C.escapeHtml(err.message) + '</div>';
+  });
 })();
 </script>
 </body>

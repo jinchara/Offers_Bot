@@ -2,3 +2,6 @@ __pycache__/
 *.pyc
 .venv/
 venv/
+
+# Chart PNGs are regenerated on every report run; no need to version them.
+data/tmp/

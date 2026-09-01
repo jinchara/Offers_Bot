@@ -29,11 +29,29 @@ except ImportError:  # pragma: no cover - fallback for minimal environments
 
 from telegram_notify import TOKEN, CHAT_ID, API_BASE, send_message
 from state_store import load_state
-from categorize import CATEGORY_KEYWORDS
+from categorize import TBC_CATEGORIES
+from offer_status import ENDING_SOON_DAYS, compute_status
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 OFFSET_FILE = os.path.join(DATA_DIR, "telegram_offset.json")
-ENDING_SOON_THRESHOLD = 3
+
+
+def _live(state: dict) -> list[dict]:
+    """
+    Only offers a customer could use right now.
+
+    offers.json keeps ended campaigns on purpose, for trend and partner
+    history. Every command here answers "what's on offer today", so each
+    one filters first — otherwise /top10 happily returns a 50% deal that
+    finished in November. Status is recomputed rather than read from the
+    record, so a stale file still gives correct answers.
+    """
+    live = []
+    for offer in state.values():
+        status = compute_status(offer)
+        if status["is_live"]:
+            live.append({**offer, **status})
+    return live
 
 
 def _load_offset() -> int:
@@ -75,7 +93,7 @@ def _cmd_help() -> str:
 
 def _cmd_latest(state: dict, n: int = 5) -> str:
     n = max(1, min(n, 30))  # sane bounds so nobody accidentally asks for /latest 99999
-    offers = sorted(state.values(), key=lambda o: o.get("first_seen", ""), reverse=True)[:n]
+    offers = sorted(_live(state), key=lambda o: o.get("first_seen", ""), reverse=True)[:n]
     if not offers:
         return "შეთავაზებები ვერ მოიძებნა."
     lines = [f"🆕 <b>ბოლო {len(offers)} შეთავაზება:</b>"] + [_format_offer_line(o) for o in offers]
@@ -83,7 +101,7 @@ def _cmd_latest(state: dict, n: int = 5) -> str:
 
 
 def _cmd_top10(state: dict) -> str:
-    offers = [o for o in state.values() if o.get("cashback_percent") is not None]
+    offers = [o for o in _live(state) if o.get("cashback_percent") is not None]
     offers.sort(key=lambda o: o["cashback_percent"], reverse=True)
     offers = offers[:10]
     if not offers:
@@ -95,9 +113,9 @@ def _cmd_top10(state: dict) -> str:
 def _cmd_category(state: dict, query: str) -> str:
     query = query.strip().lower()
     if not query:
-        available = ", ".join(sorted(CATEGORY_KEYWORDS.keys()))
+        available = ", ".join(sorted(TBC_CATEGORIES))
         return f"გთხოვთ მიუთითოთ კატეგორია, მაგ:\n{available}"
-    matches = [o for o in state.values() if query in (o.get("category") or "").lower()]
+    matches = [o for o in _live(state) if query in (o.get("category") or "").lower()]
     if not matches:
         return f"'{query}' კატეგორიაში შეთავაზება ვერ მოიძებნა."
     lines = [f"📂 <b>{query}:</b>"] + [_format_offer_line(o) for o in matches[:20]]
@@ -107,16 +125,25 @@ def _cmd_category(state: dict, query: str) -> str:
 
 
 def _cmd_ending(state: dict) -> str:
+    """
+    Offers genuinely about to finish.
+
+    The old version tested `remaining_days <= 3` against a value clamped at
+    zero, so every already-finished campaign in the file was reported as
+    "ending soon" with 0 days left. Requiring days_left >= 0 on a freshly
+    computed status is the fix.
+    """
     offers = [
-        o for o in state.values()
-        if o.get("remaining_days") is not None and o["remaining_days"] <= ENDING_SOON_THRESHOLD
+        o for o in _live(state)
+        if o.get("days_left") is not None and 0 <= o["days_left"] <= ENDING_SOON_DAYS
     ]
-    offers.sort(key=lambda o: o["remaining_days"])
+    offers.sort(key=lambda o: o["days_left"])
     if not offers:
         return "უახლოეს დღეებში არაფერი სრულდება."
     lines = ["⏳ <b>მალე სრულდება:</b>"]
     for o in offers:
-        lines.append(f"• {o.get('title')} — დარჩენილია {o['remaining_days']} დღე")
+        when = "ბოლო დღე" if o["days_left"] == 0 else f"დარჩენილია {o['days_left']} დღე"
+        lines.append(f"• {o.get('title')} — {when}")
     return "\n".join(lines)
 
 

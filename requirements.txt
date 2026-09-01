@@ -1,2 +1,5 @@
 requests>=2.31.0
 matplotlib>=3.8.0
+# Used by reports.py to check whether an installed font actually contains
+# the Georgian block before matplotlib silently falls back to tofu boxes.
+fonttools>=4.40.0
