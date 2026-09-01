@@ -130,6 +130,7 @@ _RAW_BRAND_CATEGORIES = {
     "პენტი": CLOTHING, "ალტერსოქსი": CLOTHING, "მიქსონი": CLOTHING,
     "დრესაპი": CLOTHING, "დოთსი": CLOTHING, "ჰაბადა": CLOTHING,
     "ბიჯი სთორი": CLOTHING, "პანცილიონი": CLOTHING, "სოფიკო": CLOTHING,
+    "ვაიკიკი": CLOTHING,
 
     # --- საბავშვო --------------------------------------------------------
     "ოკაიდი": KIDS, "ჟაკადი": KIDS, "სერჟანტმეიჯორ": KIDS,
@@ -211,10 +212,10 @@ _RAW_BRAND_CATEGORIES = {
 
     # --- შოპინგი ---------------------------------------------------------
     "სითი მოლი": SHOPPING, "გალერია თბილისი": SHOPPING,
-    "კაპიტალ სქვერი": SHOPPING, "მინისო": SHOPPING,
+    "კაპიტალ სქვერი": SHOPPING, "მინისო": SHOPPING, "იოიოსო": SHOPPING,
     "სუვენირების მაღაზია არგო": SHOPPING, "ისთ ფოინთი": SHOPPING,
     "თბილისი მოლი": SHOPPING, "ბიბლუსი": SHOPPING, "საბა": SHOPPING,
-    "ვანპრაისი": SHOPPING,
+    "ვანპრაისი": SHOPPING, "Antaris": SHOPPING, "დიოგენე": SHOPPING, "გამომცემლობა ინტელექტი": SHOPPING,
 
     # --- second pass: brands seen in the live data ------------------------
     # ტანსაცმელი
