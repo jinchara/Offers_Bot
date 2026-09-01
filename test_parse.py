@@ -8,6 +8,35 @@ Every test here corresponds to a bug that was actually in the data, so if
 one of these fails, something real has regressed.
 """
 
+# --- runtime guard (inlined) ----------------------------------------------
+# NOT imported from a helper module on purpose: "console" is also a real
+# package on PyPI, and if it happens to be installed it shadows a local
+# console.py and every script dies with an ImportError. Six lines duplicated
+# beats a name collision that only shows up on some machines.
+#
+# Python 3.10+ is required because the annotations use `date | None`, which
+# is evaluated at import time. On 3.9 you'd get a bare TypeError from deep
+# inside the imports instead of this message.
+#
+# stdout is forced to UTF-8 because on Windows it defaults to the system
+# ANSI code page, which cannot encode Georgian — the first print of
+# ქართული would otherwise raise UnicodeEncodeError after the network calls
+# but before anything is saved.
+import sys
+
+if sys.version_info < (3, 10):
+    sys.exit(
+        "This project needs Python 3.10 or newer — you're on "
+        + ".".join(str(n) for n in sys.version_info[:3])
+    )
+
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError, OSError):
+        pass
+# ---------------------------------------------------------------------------
+
 from datetime import date, timedelta
 
 from categorize import (
@@ -240,7 +269,13 @@ check(extract_date_range("45 აგვისტოს", ref) == (None, None), "i
 # =========================================================================
 # 6. TBC filter taxonomy
 # =========================================================================
-from tbc_taxonomy import CATEGORIES, FACETS, SEGMENT_KEYS, build_ka_lookup
+from tbc_taxonomy import (
+    CATEGORIES,
+    FACETS,
+    SEGMENT_KEYS,
+    build_ka_lookup,
+    derive_slug,
+)
 
 check(len(CATEGORIES) == 19, "all 19 TBC categories are listed")
 check(SEGMENT_KEYS == ["All", "Concept", "ForYouth"], "three audience segments")
@@ -261,17 +296,118 @@ from categorize import TBC_CATEGORIES as CATEGORIZER_CATEGORIES
 for ka, _en, _c in CATEGORIES:
     check(ka in CATEGORIZER_CATEGORIES, f"categorizer knows the category {ka}")
 
-# Multi-word labels are guesses, so they must offer more than one candidate
-# for the resolver to try.
-for ka, en, candidates in CATEGORIES:
-    if " " in en or "&" in en:
-        check(len(candidates) > 1, f"ambiguous label '{en}' has fallback slugs")
+# The slug rule, recovered from two captured requests: capitalise each
+# word of the English label, delete the spaces, keep punctuation as-is.
+# These are the real slugs the live API answered to.
+_slug_rule = [
+    ("Cafe and Restaurant", "CafeAndRestaurant"),
+    ("Online Partners", "OnlinePartners"),
+    ("Beauty & Health", "Beauty&Health"),      # ampersand survives
+    ("Pupil's Card", "Pupil'sCard"),           # apostrophe survives
+    ("For Kids", "ForKids"),
+    ("TBC Concept Card", "TBCConceptCard"),
+    ("Credit Card", "CreditCard"),
+    ("Partner Offers", "PartnerOffers"),
+    ("Shopping", "Shopping"),
+    ("MasterCard", "MasterCard"),
+]
+for _label, _want in _slug_rule:
+    check(derive_slug(_label) == _want, f"derive_slug({_label!r}) == {_want!r}")
 
-# The reverse lookup must survive the resolver picking a non-first candidate.
-lookup = build_ka_lookup({"Category": {"BeautyHealth": "HealthAndBeauty"}})
-check(lookup["Category"]["HealthAndBeauty"] == "ჯანმრთელობა და სილამაზე",
+# Every vocabulary entry must end up able to try the derived form, so a
+# category TBC adds later resolves without anyone editing the file.
+for _facet, _vocab in FACETS.items():
+    for _ka, _en, _candidates in _vocab:
+        check(derive_slug(_en) in _candidates,
+              f"{_facet}.{_en} can try its derived slug")
+
+# The reverse lookup must survive the resolver picking a non-first
+# candidate. Derive the canonical slug rather than hard-coding it — the
+# candidate order changes as slugs get confirmed, and a test that breaks
+# every time the list is reordered is a test nobody trusts.
+_health_ka = "ჯანმრთელობა და სილამაზე"
+_health_canonical = next(c[0] for ka, _en, c in CATEGORIES if ka == _health_ka)
+lookup = build_ka_lookup({"Category": {_health_canonical: "SomeOtherSpelling"}})
+check(lookup["Category"]["SomeOtherSpelling"] == _health_ka,
       "ka labels follow whichever slug the API actually accepted")
 check(lookup["Category"]["Auto"] == "ავტო", "unresolved values fall back to canonical slug")
+
+# Confirmed against the live API — these must not drift.
+_confirmed = {
+    "ავტო": "Auto", "შოპინგი": "Shopping", "ტრანსპორტი": "Transport",
+    "ტანსაცმელი": "Clothes", "კაფე და რესტორანი": "CafeAndRestaurant",
+    "საბავშვო": "ForKids", "ონლაინ პარტნიორები": "OnlinePartners",
+    "ტექნიკა": "Electronics", "სურსათი": "Groceries", "მოგზაურობა": "Travel",
+    # The two that took longest. Both were failing because every guess
+    # sanitised the punctuation away; TBC keeps it verbatim.
+    "ჯანმრთელობა და სილამაზე": "Beauty&Health",
+}
+for _ka, _slug in _confirmed.items():
+    _first = next(c[0] for ka, _en, c in CATEGORIES if ka == _ka)
+    check(_first == _slug, f"{_ka} resolves to the confirmed slug {_slug}")
+
+
+# =========================================================================
+# 7. Filter payload — pinned to a real captured request
+# =========================================================================
+# Captured from the site's own POST when the ტრანსპორტი checkbox is ticked:
+#   {"filter":["Category:Transport"],"locale":"ka-GE","segment":"All",
+#    "pageIndex":0,"pageSize":12}
+# Two details are easy to get wrong and were, for several rounds: the key
+# is `filter` singular (the plural is accepted and silently ignored), and
+# the separator is a colon even though the URL bar shows `!`.
+from unittest.mock import patch
+
+import scraper as _scraper
+
+check(_scraper.FILTER_KEY == "filter", "payload key is `filter`, not `filters`")
+check(_scraper.FILTER_SEPARATOR == ":", "facet separator is a colon, not `!`")
+check(_scraper.make_filter("Category", "Transport") == "Category:Transport",
+      "single-value filter term")
+check(_scraper.make_filter("Category", "Auto", "Shopping") == "Category:Auto,Shopping",
+      "multi-value terms are comma-joined")
+check(_scraper.DEFAULT_FILTERS == [],
+      "default filter is empty — a non-empty one would silently scrape a subset")
+
+
+class _FakeResp:
+    status_code = 200
+
+    def raise_for_status(self):
+        pass
+
+    def json(self):
+        return {"pagingDetails": {"totalCount": 0, "totalPages": 1,
+                                  "isLastPage": True}, "list": []}
+
+
+_sent = {}
+
+
+def _fake_post(url, json=None, headers=None, timeout=None):
+    _sent["url"] = url
+    _sent["body"] = json
+    return _FakeResp()
+
+
+with patch.object(_scraper.requests, "post", _fake_post):
+    _scraper.fetch_offers_page(
+        0, "All", filters=[_scraper.make_filter("Category", "Transport")], page_size=12
+    )
+
+check(_sent["url"] == "https://apigw.tbcbank.ge/api/v1/marketing/entries/offer",
+      "endpoint unchanged")
+check(_sent["body"] == {
+    "filter": ["Category:Transport"],
+    "locale": "ka-GE",
+    "segment": "All",
+    "pageIndex": 0,
+    "pageSize": 12,
+}, "outgoing payload matches the captured browser request exactly")
+
+with patch.object(_scraper.requests, "post", _fake_post):
+    _scraper.fetch_offers_page(0)
+check(_sent["body"]["filter"] == [], "unfiltered fetch sends an empty filter list")
 
 
 print(f"\nALL {passed} TESTS PASSED")

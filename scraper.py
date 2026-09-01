@@ -29,6 +29,35 @@ Run `python scraper.py --discover` to print the raw response shape and see
 exactly which filter spellings the API accepts.
 """
 
+# --- runtime guard (inlined) ----------------------------------------------
+# NOT imported from a helper module on purpose: "console" is also a real
+# package on PyPI, and if it happens to be installed it shadows a local
+# console.py and every script dies with an ImportError. Six lines duplicated
+# beats a name collision that only shows up on some machines.
+#
+# Python 3.10+ is required because the annotations use `date | None`, which
+# is evaluated at import time. On 3.9 you'd get a bare TypeError from deep
+# inside the imports instead of this message.
+#
+# stdout is forced to UTF-8 because on Windows it defaults to the system
+# ANSI code page, which cannot encode Georgian — the first print of
+# ქართული would otherwise raise UnicodeEncodeError after the network calls
+# but before anything is saved.
+import sys
+
+if sys.version_info < (3, 10):
+    sys.exit(
+        "This project needs Python 3.10 or newer — you're on "
+        + ".".join(str(n) for n in sys.version_info[:3])
+    )
+
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError, OSError):
+        pass
+# ---------------------------------------------------------------------------
+
 import json
 import os
 import sys
@@ -36,7 +65,7 @@ from datetime import date, datetime
 
 import requests
 
-from tbc_taxonomy import FACETS, SEGMENT_KEYS, build_ka_lookup
+from tbc_taxonomy import FACETS, SEGMENT_KEYS, build_ka_lookup, segment_key
 
 BASE_URL = "https://tbcbank.ge"
 API_URL = "https://apigw.tbcbank.ge/api/v1/marketing/entries/offer"
@@ -53,9 +82,35 @@ HEADERS = {
 PAGE_SIZE = 48          # fewer round trips than the site's own 12
 REQUEST_TIMEOUT = 25
 
-# The filter the site sends by default. Kept for parity with what a real
-# browser session sends; it does not appear to narrow the result set.
-DEFAULT_FILTERS = ["ProductType!TBCCard"]
+# --- Filtering ------------------------------------------------------------
+# Confirmed by capturing the real request the site makes when a category
+# checkbox is ticked:
+#
+#   POST https://apigw.tbcbank.ge/api/v1/marketing/entries/offer
+#   {"filter":["Category:Transport"],"locale":"ka-GE","segment":"All",
+#    "pageIndex":0,"pageSize":12}
+#
+# Two details cost several rounds of guessing:
+#
+#   * The key is `filter`, SINGULAR. `filters` is accepted and silently
+#     ignored, which is why the original ["ProductType!TBCCard"] appeared
+#     to work — it never filtered anything, it just returned everything.
+#   * The separator is a COLON. The address bar shows `Category!Auto`, but
+#     the API wants `Category:Auto`. Different syntax for the same thing.
+#
+# Values are English PascalCase slugs (`Transport`, `Auto`, `Shopping`).
+FILTER_KEY = "filter"
+FILTER_SEPARATOR = ":"
+
+# Deliberately empty. Now that filtering actually works, sending
+# `ProductType:TBCCard` would quietly return only TBC Card offers instead
+# of the full catalogue — the opposite of what the daily scrape wants.
+DEFAULT_FILTERS: list[str] = []
+
+
+def make_filter(facet: str, *values: str) -> str:
+    """Builds one filter term, e.g. make_filter("Category", "Auto")."""
+    return f"{facet}{FILTER_SEPARATOR}{','.join(values)}"
 
 
 
@@ -95,6 +150,17 @@ def offer_from_api_item(item: dict) -> dict:
     start_date = _iso_or_none(item.get("startDate"))
     end_date = _iso_or_none(item.get("endDate"))
 
+    # Audience tags ride along with every item, so no extra requests are
+    # needed. "All" is implied rather than listed — an offer with no
+    # segments is a general one — so it's added explicitly to keep the
+    # field uniform for the UI's segment switch.
+    raw_segments = item.get("segments") or []
+    segment_labels = [s.get("label") for s in raw_segments if s.get("label")]
+    segments = ["All"] + [segment_key(lbl) for lbl in segment_labels]
+    partner_segment_labels = [
+        s.get("label") for s in (partner.get("segments") or []) if s.get("label")
+    ]
+
     remaining_days = None
     if end_date:
         try:
@@ -115,6 +181,10 @@ def offer_from_api_item(item: dict) -> dict:
         # NOTE: can be negative. Negative means the offer already ended.
         "remaining_days": remaining_days,
         "description": item.get("description"),
+        "segments": list(dict.fromkeys(segments)),      # de-duped, order kept
+        "segment_labels": segment_labels,               # exactly as TBC wrote them
+        "hidden_segments": [s.get("label") for s in raw_segments if s.get("isHidden")],
+        "partner_segments": partner_segment_labels,
     }
 
 
@@ -128,7 +198,7 @@ def fetch_offers_page(
     payload = {
         "locale": "ka-GE",
         "segment": segment,
-        "filters": DEFAULT_FILTERS if filters is None else filters,
+        FILTER_KEY: DEFAULT_FILTERS if filters is None else filters,
         "pageSize": page_size,
         "pageIndex": page_index,
     }
@@ -203,7 +273,7 @@ def _try_filter(facet: str, slug: str, segment: str = "All"):
     genuine subset.
     """
     try:
-        resp = fetch_offers_page(0, segment, filters=[f"{facet}!{slug}"], page_size=1)
+        resp = fetch_offers_page(0, segment, filters=[make_filter(facet, slug)], page_size=1)
     except requests.RequestException:
         return None
     return _total_count(resp)
@@ -228,11 +298,20 @@ def resolve_facet_values(verbose: bool = True, use_cache: bool = True) -> dict:
         try:
             with open(FACET_MAP_FILE, "r", encoding="utf-8") as f:
                 cached = json.load(f)
-            if cached.get("resolved"):
+            resolved_cache = cached.get("resolved") or {}
+            # A cache from a failed probe looks like {"Category": {}, ...}:
+            # truthy at the top level, empty underneath. Reusing that would
+            # silently skip facet tagging forever with no error, which is
+            # exactly what happened after the wrong payload format was
+            # cached. Only trust a cache that resolved something.
+            if any(values for values in resolved_cache.values()):
                 if verbose:
-                    print(f"Using cached facet map from {FACET_MAP_FILE} "
-                          f"(delete it to re-probe).")
-                return cached["resolved"]
+                    total = sum(len(v) for v in resolved_cache.values())
+                    print(f"Using cached facet map ({total} values) from "
+                          f"{FACET_MAP_FILE} — delete it to re-probe.")
+                return resolved_cache
+            if verbose:
+                print("Cached facet map resolved nothing — re-probing.")
         except (json.JSONDecodeError, OSError):
             pass
 
@@ -306,7 +385,7 @@ def fetch_facet_tags(resolved: dict, segment: str = "All",
         for canonical, working in mapping.items():
             label = ka_lookup[facet].get(working, working)
             try:
-                items = list(_paginate(segment, [f"{facet}!{working}"]))
+                items = list(_paginate(segment, [make_filter(facet, working)]))
             except requests.RequestException as e:
                 if verbose:
                     print(f"  {facet}.{label}: request failed ({e}) — skipped")

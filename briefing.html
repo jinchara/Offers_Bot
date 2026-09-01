@@ -211,7 +211,8 @@
     <table class="grid" id="pressure">
       <thead><tr>
         <th>კატეგორია</th><th>აქტიური</th><th>საშ. ქეშბექი</th>
-        <th>მაქს.</th><th>ბრენდი</th><th style="width:130px">წონა</th>
+        <th>განაკვეთი ცნობილია</th><th>მაქს.</th><th>ბრენდი</th>
+        <th style="width:120px">წონა</th>
       </tr></thead>
       <tbody></tbody>
     </table>
@@ -457,6 +458,10 @@
         cat: cat,
         count: bucket.offers.length,
         avg: avg,
+        /* Standing partner offers publish only a brand name, so a category
+           can show a confident-looking average drawn from a couple of
+           offers. Carry the coverage so the table can say so. */
+        known: cbs.length,
         max: cbs.length ? Math.max.apply(null, cbs) : 0,
         brands: Object.keys(bucket.brands).length,
         weight: bucket.offers.length * Math.max(avg, 1)
@@ -466,9 +471,17 @@
     var maxWeight = rows.length ? rows[0].weight : 1;
     el('pressure').querySelector('tbody').innerHTML = rows.map(function(r){
       var pct = Math.max(2, Math.round(100 * r.weight / maxWeight));
+      var coverage = Math.round(100 * r.known / r.count);
+      /* Below a third, the average is anecdote rather than measurement. */
+      var thin = r.known > 0 && coverage < 34;
+      var avgCell = r.avg
+        ? (thin ? '<span class="muted">~' + r.avg.toFixed(1) + '%</span>'
+                : r.avg.toFixed(1) + '%')
+        : '<span class="muted">არ არის მითითებული</span>';
       return '<tr><td>' + C.escapeHtml(r.cat) + '</td>' +
         '<td class="num">' + r.count + '</td>' +
-        '<td class="num">' + (r.avg ? r.avg.toFixed(1) + '%' : '<span class="muted">—</span>') + '</td>' +
+        '<td class="num">' + avgCell + '</td>' +
+        '<td class="num' + (thin ? ' muted' : '') + '">' + r.known + '/' + r.count + '</td>' +
         '<td class="num">' + (r.max ? r.max + '%' : '<span class="muted">—</span>') + '</td>' +
         '<td class="num">' + r.brands + '</td>' +
         '<td><span class="bar" style="width:' + pct + '%"></span></td></tr>';

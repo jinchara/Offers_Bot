@@ -1,7 +1,4 @@
 {"date": "2026-08-11", "offer_count": 0}
-{"date": "2026-08-17", "offer_count": 0}
-{"date": "2026-08-17", "offer_count": 534}
-{"date": "2026-08-17", "offer_count": 534}
 {"date": "2026-08-17", "offer_count": 534}
 {"date": "2026-08-18", "offer_count": 535}
 {"date": "2026-08-19", "offer_count": 540}
@@ -9,3 +6,4 @@
 {"date": "2026-08-21", "offer_count": 544}
 {"date": "2026-08-22", "offer_count": 541}
 {"date": "2026-08-23", "offer_count": 541}
+{"date": "2026-09-01", "total_known": 568, "live": 438, "upcoming": 21, "ended": 109, "evergreen": 323, "new_today": 0, "delisted_today": 0, "archived_total": 54, "offer_count": 438}

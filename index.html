@@ -613,7 +613,11 @@
   var SEGMENTS = [
     { key: 'All',      label: 'ყველა შეთავაზება' },
     { key: 'Concept',  label: 'კონცეპტი' },
-    { key: 'ForYouth', label: 'ახალი თაობისთვის' }
+    { key: 'ForYouth', label: 'ახალი თაობისთვის' },
+    /* Not a tab on TBC's own site — this audience is flagged isHidden in
+       their API and has no public filter. Visible here because it's in the
+       data and worth knowing about. */
+    { key: 'Expats',   label: 'ექსპატები' }
   ];
 
   function offerSegments(o){
@@ -633,11 +637,14 @@
     });
     /* Hide the control entirely when nothing has been segment-tagged yet —
        three buttons all reading the same number is just noise. */
-    if(counts.Concept === 0 && counts.ForYouth === 0){
+    if(counts.Concept === 0 && counts.ForYouth === 0 && counts.Expats === 0){
       segmentRow.style.display = 'none';
       return;
     }
-    segmentRow.innerHTML = SEGMENTS.map(function(seg){
+    segmentRow.innerHTML = SEGMENTS.filter(function(seg){
+      /* Don't render a tab for an audience with nothing in it. */
+      return seg.key === 'All' || counts[seg.key] > 0;
+    }).map(function(seg){
       var on = seg.key === state.segment;
       return '<button class="pill' + (on ? ' status-on' : '') + '" data-seg="' + seg.key + '"' +
              ' aria-pressed="' + on + '">' + C.escapeHtml(seg.label) +

@@ -74,6 +74,11 @@ TBC_CATEGORIES = [
 OVERRIDES_FILE = os.path.join(
     os.path.dirname(__file__), "data", "category_overrides.json"
 )
+# Written by html_categories.py — TBC's own categorisation, scraped from
+# their rendered listing because their JSON API cannot filter.
+CATEGORY_MAP_FILE = os.path.join(
+    os.path.dirname(__file__), "data", "category_map.json"
+)
 
 
 # =========================================================================
@@ -549,6 +554,30 @@ def score_categories(offer: dict) -> dict[str, int]:
 # =========================================================================
 
 _overrides_cache = None
+_category_map_cache = None
+
+
+def load_category_map() -> dict:
+    """
+    {offer_slug: [category, ...]} as scraped from TBC's own filters.
+
+    Returns {} when the file is missing, which is the normal state until
+    html_categories.py has been run — everything then falls through to the
+    brand dictionary and keyword layer exactly as before.
+    """
+    global _category_map_cache
+    if _category_map_cache is not None:
+        return _category_map_cache
+    if not os.path.exists(CATEGORY_MAP_FILE):
+        _category_map_cache = {}
+        return _category_map_cache
+    try:
+        with open(CATEGORY_MAP_FILE, "r", encoding="utf-8") as f:
+            _category_map_cache = json.load(f).get("categories", {})
+    except (json.JSONDecodeError, OSError) as e:
+        print(f"[categorize] Ignoring unreadable category map: {e}")
+        _category_map_cache = {}
+    return _category_map_cache
 
 
 def load_overrides() -> dict:
@@ -671,7 +700,14 @@ def classify(offer: dict, api_categories: list[str] | None = None) -> dict:
         return {**result, "category": overrides["by_brand"][brand_key],
                 "category_source": "override", "category_confidence": "high"}
 
-    # 2. TBC's own tag, when the scraper could read it
+    # 2a. TBC's own tag from the scraped listing. Beats anything we infer,
+    # because it is their categorisation rather than a guess about it.
+    if not api_categories and slug:
+        scraped = load_category_map().get(slug)
+        if scraped:
+            api_categories = scraped
+
+    # 2b. TBC's own tag, however we obtained it
     if api_categories:
         return {**result, "category": api_categories[0],
                 "category_source": "api", "category_confidence": "high",

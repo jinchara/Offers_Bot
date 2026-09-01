@@ -18,6 +18,35 @@ Run standalone for a text audit:
     python analytics.py
 """
 
+# --- runtime guard (inlined) ----------------------------------------------
+# NOT imported from a helper module on purpose: "console" is also a real
+# package on PyPI, and if it happens to be installed it shadows a local
+# console.py and every script dies with an ImportError. Six lines duplicated
+# beats a name collision that only shows up on some machines.
+#
+# Python 3.10+ is required because the annotations use `date | None`, which
+# is evaluated at import time. On 3.9 you'd get a bare TypeError from deep
+# inside the imports instead of this message.
+#
+# stdout is forced to UTF-8 because on Windows it defaults to the system
+# ANSI code page, which cannot encode Georgian — the first print of
+# ქართული would otherwise raise UnicodeEncodeError after the network calls
+# but before anything is saved.
+import sys
+
+if sys.version_info < (3, 10):
+    sys.exit(
+        "This project needs Python 3.10 or newer — you're on "
+        + ".".join(str(n) for n in sys.version_info[:3])
+    )
+
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError, OSError):
+        pass
+# ---------------------------------------------------------------------------
+
 import statistics
 from collections import Counter, defaultdict
 from datetime import date, timedelta
@@ -61,10 +90,18 @@ def _was_running_between(offer, start: date, end: date) -> bool:
 
 
 def split_by_status(offers, today: date | None = None):
-    """Returns (live, upcoming, ended)."""
+    """
+    Returns (live, upcoming, ended).
+
+    Status is always recomputed from the raw dates rather than read off the
+    stored `status` field. That field was written by whichever run last
+    touched the record, so on a file that's a few days old it still says
+    "ending_soon" for offers that have since finished. The dates don't go
+    stale; a derived label does.
+    """
     live, upcoming, ended = [], [], []
     for offer in offers:
-        status = offer.get("status") or compute_status(offer, today)["status"]
+        status = compute_status(offer, today)["status"]
         if status == "ended":
             ended.append(offer)
         elif status == "upcoming":
@@ -120,6 +157,13 @@ def category_breakdown(live_merchant):
             "avg_cashback": _mean(cashbacks),
             "max_cashback": max(cashbacks) if cashbacks else None,
             "distinct_brands": len({o.get("brand") for o in bucket if o.get("brand")}),
+            # How much of the average is actually based on anything. Standing
+            # partner offers list only a brand name — "Converse" / "Columbia"
+            # — with the terms on the detail page, so whole categories can
+            # have almost no published rate. An average over 1 of 81 offers
+            # must not be presented like an average over all 81.
+            "offers_with_rate": len(cashbacks),
+            "rate_coverage": round(100 * len(cashbacks) / len(bucket)) if bucket else 0,
         })
     rows.sort(key=lambda r: r["live_offers"], reverse=True)
 
@@ -355,14 +399,21 @@ def print_report(insights: dict) -> None:
     print(f"Live: {snap['live']}   Upcoming: {snap['upcoming']}   Ended: {snap['ended']}")
     print(f"Live merchant offers: {snap['live_merchant_offers']} "
           f"(+{snap['live_bank_product_offers']} TBC product promos)")
+    # Always state the denominator. Most standing partner offers publish no
+    # rate at all, so an unqualified "avg 16.1%" implies far more coverage
+    # than actually exists.
     print(f"Cashback among live: avg {snap['avg_cashback']}%  "
-          f"median {snap['median_cashback']}%  max {snap['max_cashback']}%")
+          f"median {snap['median_cashback']}%  max {snap['max_cashback']}%  "
+          f"[from {snap['offers_with_cashback']}/{snap['live_merchant_offers']} "
+          f"offers that publish a rate]")
 
     print("\nTop categories (live merchant offers):")
     for row in insights["categories"]["rows"][:8]:
         if row["live_offers"]:
-            print(f"  {row['live_offers']:4d}  {row['category']:<28} "
-                  f"avg {row['avg_cashback'] or '-'}%")
+            rate = (f"avg {row['avg_cashback']}% "
+                    f"({row['offers_with_rate']}/{row['live_offers']})"
+                    if row["avg_cashback"] else "no published rate")
+            print(f"  {row['live_offers']:4d}  {row['category']:<28} {rate}")
     if insights["categories"]["uncovered"]:
         print("  No live offers at all in:", ", ".join(insights["categories"]["uncovered"]))
 
