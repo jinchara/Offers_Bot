@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-09-05T09:38:01",
-  "as_of": "2026-09-05",
+  "generated_at": "2026-09-06T09:53:30",
+  "as_of": "2026-09-06",
   "snapshot": {
-    "live": 448,
-    "upcoming": 17,
-    "ended": 112,
-    "live_merchant_offers": 407,
+    "live": 446,
+    "upcoming": 16,
+    "ended": 115,
+    "live_merchant_offers": 405,
     "live_bank_product_offers": 41,
-    "avg_cashback": 17.3,
+    "avg_cashback": 17.5,
     "median_cashback": 15,
     "max_cashback": 40,
     "offers_with_cashback": 59,
     "unlimited_cap_share": 0.7,
-    "avg_cap_amount": 768,
-    "median_cap_amount": 200
+    "avg_cap_amount": 711,
+    "median_cap_amount": 150
   },
   "categories": {
     "rows": [
       {
         "category": "ტანსაცმელი",
         "live_offers": 98,
-        "share": 24.1,
+        "share": 24.2,
         "avg_cashback": null,
         "max_cashback": null,
         "distinct_brands": 97,
@@ -40,7 +40,7 @@
       {
         "category": "კაფე და რესტორანი",
         "live_offers": 31,
-        "share": 7.6,
+        "share": 7.7,
         "avg_cashback": 17.5,
         "max_cashback": 20,
         "distinct_brands": 31,
@@ -70,7 +70,7 @@
       {
         "category": "მოგზაურობა",
         "live_offers": 27,
-        "share": 6.6,
+        "share": 6.7,
         "avg_cashback": 20.0,
         "max_cashback": 20,
         "distinct_brands": 27,
@@ -109,13 +109,13 @@
       },
       {
         "category": "შოპინგი",
-        "live_offers": 15,
-        "share": 3.7,
-        "avg_cashback": 20.0,
+        "live_offers": 14,
+        "share": 3.5,
+        "avg_cashback": 21.0,
         "max_cashback": 40,
-        "distinct_brands": 13,
-        "offers_with_rate": 9,
-        "rate_coverage": 60
+        "distinct_brands": 12,
+        "offers_with_rate": 10,
+        "rate_coverage": 71
       },
       {
         "category": "პარფიუმერია",
@@ -130,7 +130,7 @@
       {
         "category": "დეველოპერები",
         "live_offers": 12,
-        "share": 2.9,
+        "share": 3.0,
         "avg_cashback": 7.2,
         "max_cashback": 10,
         "distinct_brands": 12,
@@ -169,13 +169,13 @@
       },
       {
         "category": "ტექნიკა",
-        "live_offers": 6,
-        "share": 1.5,
-        "avg_cashback": 25.0,
+        "live_offers": 5,
+        "share": 1.2,
+        "avg_cashback": 30.0,
         "max_cashback": 30,
-        "distinct_brands": 6,
-        "offers_with_rate": 2,
-        "rate_coverage": 33
+        "distinct_brands": 5,
+        "offers_with_rate": 1,
+        "rate_coverage": 20
       },
       {
         "category": "სურსათი",
@@ -255,15 +255,15 @@
         "offers": 4
       },
       {
-        "brand": "დრესაპი",
+        "brand": "ბიბლუსი",
+        "offers": 3
+      },
+      {
+        "brand": "მეგატექნიკა",
         "offers": 3
       },
       {
         "brand": "აი სი არ ტრეიდი",
-        "offers": 3
-      },
-      {
-        "brand": "ბიბლუსი",
         "offers": 3
       }
     ],
@@ -362,12 +362,12 @@
   },
   "last_7_days": {
     "window_days": 7,
-    "since": "2026-08-29",
-    "launched": 22,
-    "ended": 51,
-    "net_change": -29,
-    "offers_running_in_window": 496,
-    "avg_cashback_in_window": 17.7,
+    "since": "2026-08-30",
+    "launched": 23,
+    "ended": 56,
+    "net_change": -33,
+    "offers_running_in_window": 497,
+    "avg_cashback_in_window": 17.8,
     "top_categories": [
       {
         "label": "ტანსაცმელი",
@@ -393,12 +393,12 @@
   },
   "last_30_days": {
     "window_days": 30,
-    "since": "2026-08-06",
-    "launched": 37,
-    "ended": 60,
-    "net_change": -23,
-    "offers_running_in_window": 505,
-    "avg_cashback_in_window": 18.3,
+    "since": "2026-08-07",
+    "launched": 38,
+    "ended": 65,
+    "net_change": -27,
+    "offers_running_in_window": 506,
+    "avg_cashback_in_window": 18.4,
     "top_categories": [
       {
         "label": "ტანსაცმელი",
@@ -426,36 +426,12 @@
   "pipeline": {
     "ending_within_7_days": [
       {
-        "brand": "დრესაპი",
-        "title": "Dressup - Back 2 School",
-        "category": "შოპინგი",
-        "cashback_percent": null,
-        "url": "https://tbcbank.ge/ka/offers/all-offers/dressup-b2s",
-        "days_left": 0
-      },
-      {
-        "brand": "ალტა",
-        "title": "ალტა",
-        "category": "ტექნიკა",
-        "cashback_percent": 20,
-        "url": "https://tbcbank.ge/ka/offers/all-offers/alta-b2s",
-        "days_left": 0
-      },
-      {
-        "brand": "აი სი არ ტრეიდი",
-        "title": "ICR – Back 2 School",
-        "category": "შოპინგი",
-        "cashback_percent": null,
-        "url": "https://tbcbank.ge/ka/offers/all-offers/icr-b2s",
-        "days_left": 0
-      },
-      {
         "brand": "ვაიკიკი",
         "title": "დაიბრუნე 40%, მაქს. 150₾ ",
         "category": "შოპინგი",
         "cashback_percent": 40,
         "url": "https://tbcbank.ge/ka/offers/all-offers/lc-waikiki-b2s",
-        "days_left": 1
+        "days_left": 0
       },
       {
         "brand": "Mastercard",
@@ -463,7 +439,7 @@
         "category": "შოპინგი",
         "cashback_percent": 40,
         "url": "https://tbcbank.ge/ka/offers/all-offers/b2s-cashback",
-        "days_left": 1
+        "days_left": 0
       },
       {
         "brand": "ბიბლუსი",
@@ -471,7 +447,7 @@
         "category": "შოპინგი",
         "cashback_percent": 40,
         "url": "https://tbcbank.ge/ka/offers/all-offers/biblusi-b2s",
-        "days_left": 1
+        "days_left": 0
       },
       {
         "brand": "აგროჰაბი",
@@ -479,7 +455,7 @@
         "category": "სურსათი",
         "cashback_percent": 20,
         "url": "https://tbcbank.ge/ka/offers/all-offers/agrohub-qeshbeqi",
-        "days_left": 1
+        "days_left": 0
       },
       {
         "brand": "მეგატექნიკა",
@@ -487,7 +463,7 @@
         "category": "ტექნიკა",
         "cashback_percent": 30,
         "url": "https://tbcbank.ge/ka/offers/all-offers/ganatsileba-megatechnica",
-        "days_left": 1
+        "days_left": 0
       },
       {
         "brand": "კეფი",
@@ -495,25 +471,49 @@
         "category": "სხვა",
         "cashback_percent": 20,
         "url": "https://tbcbank.ge/ka/offers/all-offers/kefi-qeshbeqi",
-        "days_left": 2
-      }
-    ],
-    "starting_soon": [
+        "days_left": 1
+      },
       {
         "brand": "აი სი არ ტრეიდი",
         "title": "🛍️ 6-7 სექტემბერს ICR-ის მაღაზიებში დაიბრუნე 30%",
         "category": "შოპინგი",
         "cashback_percent": 30,
         "url": "https://tbcbank.ge/ka/offers/all-offers/icr-b2s-ganatsileba",
-        "days_until_start": 1
+        "days_left": 1
       },
+      {
+        "brand": "თიბისი",
+        "title": "დაიბრუნე 40%-მდე მომენტალურად",
+        "category": "შოპინგი",
+        "cashback_percent": 40,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/b2s",
+        "days_left": 7
+      },
+      {
+        "brand": "Tsinandali Estate Hotel",
+        "title": "წინანდლის ფესტივალი",
+        "category": "დასვენება",
+        "cashback_percent": null,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/tsinandali-festival-shetavazeba",
+        "days_left": 7
+      },
+      {
+        "brand": "განაწილება",
+        "title": "🛍️ 5-6 და 12-13 სექტემბერს თელავი მოლში დაიბრუნე 30%",
+        "category": "შოპინგი",
+        "cashback_percent": 30,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/telavi-mall-b2s",
+        "days_left": 7
+      }
+    ],
+    "starting_soon": [
       {
         "brand": "იოიოსო",
         "title": "დაიბრუნე 40%, მაქს. 150₾ ",
         "category": "შოპინგი",
         "cashback_percent": 40,
         "url": "https://tbcbank.ge/ka/offers/all-offers/yoyoso-b2s",
-        "days_until_start": 2
+        "days_until_start": 1
       },
       {
         "brand": "Antaris ",
@@ -521,7 +521,7 @@
         "category": "შოპინგი",
         "cashback_percent": 40,
         "url": "https://tbcbank.ge/ka/offers/all-offers/antaris-b2s",
-        "days_until_start": 2
+        "days_until_start": 1
       },
       {
         "brand": "დიოგენე",
@@ -529,7 +529,7 @@
         "category": "შოპინგი",
         "cashback_percent": 40,
         "url": "https://tbcbank.ge/ka/offers/all-offers/diogene-b2s",
-        "days_until_start": 2
+        "days_until_start": 1
       },
       {
         "brand": "თიბისი",
@@ -537,7 +537,7 @@
         "category": "შოპინგი",
         "cashback_percent": 40,
         "url": "https://tbcbank.ge/ka/offers/all-offers/santa-esperansa-b2s",
-        "days_until_start": 2
+        "days_until_start": 1
       },
       {
         "brand": "თიბისი",
@@ -545,7 +545,7 @@
         "category": "შოპინგი",
         "cashback_percent": 40,
         "url": "https://tbcbank.ge/ka/offers/all-offers/aden-cosmetics-b2s",
-        "days_until_start": 2
+        "days_until_start": 1
       },
       {
         "brand": "ფლორმარი",
@@ -553,7 +553,7 @@
         "category": "შოპინგი",
         "cashback_percent": 40,
         "url": "https://tbcbank.ge/ka/offers/all-offers/flormar-b2s",
-        "days_until_start": 2
+        "days_until_start": 1
       },
       {
         "brand": "გამომცემლობა ინტელექტი",
@@ -561,7 +561,7 @@
         "category": "შოპინგი",
         "cashback_percent": 40,
         "url": "https://tbcbank.ge/ka/offers/all-offers/intelekti-publishing-b2s",
-        "days_until_start": 2
+        "days_until_start": 1
       },
       {
         "brand": "Galleria Tbilisi",
@@ -569,7 +569,7 @@
         "category": "შოპინგი",
         "cashback_percent": null,
         "url": "https://tbcbank.ge/ka/offers/all-offers/galleria-tbilisi-shetavazeba",
-        "days_until_start": 3
+        "days_until_start": 2
       },
       {
         "brand": "ნიუ ბალანსი",
@@ -577,7 +577,7 @@
         "category": "შოპინგი",
         "cashback_percent": 30,
         "url": "https://tbcbank.ge/ka/offers/all-offers/b2s-new-balance",
-        "days_until_start": 3
+        "days_until_start": 2
       },
       {
         "brand": "EA7 ემპორიო არმანი",
@@ -585,7 +585,7 @@
         "category": "შოპინგი",
         "cashback_percent": 30,
         "url": "https://tbcbank.ge/ka/offers/all-offers/b2s-emporio-armani",
-        "days_until_start": 3
+        "days_until_start": 2
       },
       {
         "brand": "ბიბლუსი",
@@ -593,7 +593,7 @@
         "category": "შოპინგი",
         "cashback_percent": null,
         "url": "https://tbcbank.ge/ka/offers/all-offers/biblusi-pay-later",
-        "days_until_start": 4
+        "days_until_start": 3
       },
       {
         "brand": "მინისო",
@@ -601,7 +601,7 @@
         "category": "შოპინგი",
         "cashback_percent": 40,
         "url": "https://tbcbank.ge/ka/offers/all-offers/miniso-b2s",
-        "days_until_start": 7
+        "days_until_start": 6
       },
       {
         "brand": "სუპერდრაი",
@@ -609,7 +609,7 @@
         "category": "შოპინგი",
         "cashback_percent": 40,
         "url": "https://tbcbank.ge/ka/offers/all-offers/superdry-b2s",
-        "days_until_start": 7
+        "days_until_start": 6
       },
       {
         "brand": "თიბისი",
@@ -617,7 +617,7 @@
         "category": "შოპინგი",
         "cashback_percent": null,
         "url": "https://tbcbank.ge/ka/offers/all-offers/ovs-matalan-penti-b2s",
-        "days_until_start": 7
+        "days_until_start": 6
       },
       {
         "brand": "Salamander, Wortmann",
@@ -625,7 +625,7 @@
         "category": "შოპინგი",
         "cashback_percent": null,
         "url": "https://tbcbank.ge/ka/offers/all-offers/salamander-wortmann-b2s",
-        "days_until_start": 7
+        "days_until_start": 6
       },
       {
         "brand": "Cenomi",
@@ -633,18 +633,18 @@
         "category": "შოპინგი",
         "cashback_percent": null,
         "url": "https://tbcbank.ge/ka/offers/all-offers/cenomi-group-b2s",
-        "days_until_start": 7
+        "days_until_start": 6
       }
     ]
   },
   "channels": [
     {
       "label": "instore",
-      "value": 375
+      "value": 374
     },
     {
       "label": "online",
-      "value": 31
+      "value": 30
     },
     {
       "label": "both",
@@ -661,12 +661,12 @@
       "value": 53
     },
     {
-      "label": "cashback",
+      "label": "installment",
       "value": 15
     },
     {
-      "label": "installment",
-      "value": 15
+      "label": "cashback",
+      "value": 13
     }
   ],
   "data_quality": {
