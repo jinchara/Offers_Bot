@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-09-16T10:28:31",
-  "as_of": "2026-09-16",
+  "generated_at": "2026-09-17T10:38:19",
+  "as_of": "2026-09-17",
   "snapshot": {
     "live": 446,
     "upcoming": 3,
-    "ended": 150,
+    "ended": 151,
     "live_merchant_offers": 408,
     "live_bank_product_offers": 38,
-    "avg_cashback": 16.6,
-    "median_cashback": 15.0,
+    "avg_cashback": 16.4,
+    "median_cashback": 15,
     "max_cashback": 50,
-    "offers_with_cashback": 60,
+    "offers_with_cashback": 61,
     "unlimited_cap_share": 1.0,
-    "avg_cap_amount": 1064,
-    "median_cap_amount": 90
+    "avg_cap_amount": 1368,
+    "median_cap_amount": 30
   },
   "categories": {
     "rows": [
@@ -109,13 +109,13 @@
       },
       {
         "category": "დეველოპერები",
-        "live_offers": 17,
-        "share": 4.2,
-        "avg_cashback": 7.8,
+        "live_offers": 18,
+        "share": 4.4,
+        "avg_cashback": 7.6,
         "max_cashback": 10,
-        "distinct_brands": 17,
-        "offers_with_rate": 13,
-        "rate_coverage": 76
+        "distinct_brands": 18,
+        "offers_with_rate": 14,
+        "rate_coverage": 78
       },
       {
         "category": "პარფიუმერია",
@@ -169,11 +169,11 @@
       },
       {
         "category": "ტექნიკა",
-        "live_offers": 5,
-        "share": 1.2,
+        "live_offers": 4,
+        "share": 1.0,
         "avg_cashback": null,
         "max_cashback": null,
-        "distinct_brands": 5,
+        "distinct_brands": 4,
         "offers_with_rate": 0,
         "rate_coverage": 0
       },
@@ -224,7 +224,7 @@
     ]
   },
   "merchants": {
-    "distinct_brands": 464,
+    "distinct_brands": 465,
     "top_partners": [
       {
         "brand": "განაწილება",
@@ -270,7 +270,7 @@
     "top10_share": 16.5,
     "repeat_partner_count": 52,
     "repeat_partner_share": 11.2,
-    "one_off_partners": 412
+    "one_off_partners": 413
   },
   "campaigns": {
     "dated_campaigns": 166,
@@ -362,12 +362,12 @@
   },
   "last_7_days": {
     "window_days": 7,
-    "since": "2026-09-09",
+    "since": "2026-09-10",
     "launched": 17,
-    "ended": 27,
-    "net_change": -10,
+    "ended": 26,
+    "net_change": -9,
     "offers_running_in_window": 472,
-    "avg_cashback_in_window": 20.8,
+    "avg_cashback_in_window": 20.7,
     "top_categories": [
       {
         "label": "ტანსაცმელი",
@@ -383,7 +383,7 @@
       },
       {
         "label": "შოპინგი",
-        "value": 35
+        "value": 34
       },
       {
         "label": "კაფე და რესტორანი",
@@ -393,12 +393,12 @@
   },
   "last_30_days": {
     "window_days": 30,
-    "since": "2026-08-17",
-    "launched": 71,
+    "since": "2026-08-18",
+    "launched": 72,
     "ended": 95,
-    "net_change": -24,
-    "offers_running_in_window": 540,
-    "avg_cashback_in_window": 20.4,
+    "net_change": -23,
+    "offers_running_in_window": 541,
+    "avg_cashback_in_window": 20.3,
     "top_categories": [
       {
         "label": "ტანსაცმელი",
@@ -426,20 +426,12 @@
   "pipeline": {
     "ending_within_7_days": [
       {
-        "brand": "აისითი",
-        "title": "iCity",
-        "category": "ტექნიკა",
-        "cashback_percent": null,
-        "url": "https://tbcbank.ge/ka/offers/all-offers/cashback-icity",
-        "days_left": 0
-      },
-      {
         "brand": "TEMPS",
         "title": "გიორგი გიგაშვილი & ნინი ნუცუბიძე - GEORGIAN ON MY MIND",
         "category": "მოგზაურობა",
         "cashback_percent": null,
         "url": "https://tbcbank.ge/ka/offers/all-offers/georgian-on-my-mind-shetavazeba",
-        "days_left": 2
+        "days_left": 1
       }
     ],
     "starting_soon": [
@@ -449,7 +441,7 @@
         "category": "სურსათი",
         "cashback_percent": null,
         "url": "https://tbcbank.ge/ka/offers/all-offers/cashback-at-agrohub",
-        "days_until_start": 3
+        "days_until_start": 2
       },
       {
         "brand": "გრანდ ელექტრონიქსი",
@@ -457,7 +449,7 @@
         "category": "სახლი",
         "cashback_percent": 20,
         "url": "https://tbcbank.ge/ka/offers/all-offers/grand-electronics-offer",
-        "days_until_start": 3
+        "days_until_start": 2
       },
       {
         "brand": "Concept Star",
@@ -465,7 +457,7 @@
         "category": "შოპინგი",
         "cashback_percent": 40,
         "url": "https://tbcbank.ge/ka/offers/all-offers/concept-star-shetavazeba",
-        "days_until_start": 4
+        "days_until_start": 3
       }
     ]
   },
@@ -490,7 +482,7 @@
     },
     {
       "label": "discount",
-      "value": 59
+      "value": 60
     },
     {
       "label": "installment",
@@ -498,20 +490,20 @@
     },
     {
       "label": "cashback",
-      "value": 10
+      "value": 9
     }
   ],
   "data_quality": {
-    "total_offers": 599,
+    "total_offers": 600,
     "by_source": {
-      "api": 490,
       "keywords": 33,
+      "api": 491,
       "fallback": 26,
       "brand": 50
     },
     "by_confidence": {
-      "high": 547,
       "medium": 26,
+      "high": 548,
       "low": 26
     },
     "categorised_share": 95.7,
