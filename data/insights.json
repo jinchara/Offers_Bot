@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-09-17T10:38:19",
-  "as_of": "2026-09-17",
+  "generated_at": "2026-09-18T10:14:07",
+  "as_of": "2026-09-18",
   "snapshot": {
-    "live": 446,
+    "live": 447,
     "upcoming": 3,
-    "ended": 151,
-    "live_merchant_offers": 408,
+    "ended": 150,
+    "live_merchant_offers": 409,
     "live_bank_product_offers": 38,
-    "avg_cashback": 16.4,
-    "median_cashback": 15,
+    "avg_cashback": 16.6,
+    "median_cashback": 15.0,
     "max_cashback": 50,
-    "offers_with_cashback": 61,
+    "offers_with_cashback": 62,
     "unlimited_cap_share": 1.0,
-    "avg_cap_amount": 1368,
-    "median_cap_amount": 30
+    "avg_cap_amount": 1051,
+    "median_cap_amount": 65
   },
   "categories": {
     "rows": [
@@ -39,18 +39,18 @@
       },
       {
         "category": "კაფე და რესტორანი",
-        "live_offers": 32,
-        "share": 7.8,
-        "avg_cashback": 18.3,
-        "max_cashback": 20,
-        "distinct_brands": 32,
-        "offers_with_rate": 3,
-        "rate_coverage": 9
+        "live_offers": 33,
+        "share": 8.1,
+        "avg_cashback": 20.0,
+        "max_cashback": 25,
+        "distinct_brands": 33,
+        "offers_with_rate": 4,
+        "rate_coverage": 12
       },
       {
         "category": "აქსესუარები",
         "live_offers": 28,
-        "share": 6.9,
+        "share": 6.8,
         "avg_cashback": null,
         "max_cashback": null,
         "distinct_brands": 28,
@@ -60,7 +60,7 @@
       {
         "category": "სახლი",
         "live_offers": 28,
-        "share": 6.9,
+        "share": 6.8,
         "avg_cashback": 13.3,
         "max_cashback": 15,
         "distinct_brands": 27,
@@ -140,7 +140,7 @@
       {
         "category": "ტრანსპორტი",
         "live_offers": 10,
-        "share": 2.5,
+        "share": 2.4,
         "avg_cashback": 50.0,
         "max_cashback": 50,
         "distinct_brands": 9,
@@ -362,12 +362,12 @@
   },
   "last_7_days": {
     "window_days": 7,
-    "since": "2026-09-10",
-    "launched": 17,
-    "ended": 26,
-    "net_change": -9,
-    "offers_running_in_window": 472,
-    "avg_cashback_in_window": 20.7,
+    "since": "2026-09-11",
+    "launched": 15,
+    "ended": 25,
+    "net_change": -10,
+    "offers_running_in_window": 471,
+    "avg_cashback_in_window": 20.5,
     "top_categories": [
       {
         "label": "ტანსაცმელი",
@@ -382,22 +382,22 @@
         "value": 41
       },
       {
-        "label": "შოპინგი",
+        "label": "კაფე და რესტორანი",
         "value": 34
       },
       {
-        "label": "კაფე და რესტორანი",
-        "value": 33
+        "label": "შოპინგი",
+        "value": 32
       }
     ]
   },
   "last_30_days": {
     "window_days": 30,
-    "since": "2026-08-18",
+    "since": "2026-08-19",
     "launched": 72,
-    "ended": 95,
-    "net_change": -23,
-    "offers_running_in_window": 541,
+    "ended": 96,
+    "net_change": -24,
+    "offers_running_in_window": 542,
     "avg_cashback_in_window": 20.3,
     "top_categories": [
       {
@@ -410,7 +410,7 @@
       },
       {
         "label": "კაფე და რესტორანი",
-        "value": 48
+        "value": 49
       },
       {
         "label": "შოპინგი",
@@ -431,7 +431,7 @@
         "category": "მოგზაურობა",
         "cashback_percent": null,
         "url": "https://tbcbank.ge/ka/offers/all-offers/georgian-on-my-mind-shetavazeba",
-        "days_left": 1
+        "days_left": 0
       }
     ],
     "starting_soon": [
@@ -441,7 +441,7 @@
         "category": "სურსათი",
         "cashback_percent": null,
         "url": "https://tbcbank.ge/ka/offers/all-offers/cashback-at-agrohub",
-        "days_until_start": 2
+        "days_until_start": 1
       },
       {
         "brand": "გრანდ ელექტრონიქსი",
@@ -449,7 +449,7 @@
         "category": "სახლი",
         "cashback_percent": 20,
         "url": "https://tbcbank.ge/ka/offers/all-offers/grand-electronics-offer",
-        "days_until_start": 2
+        "days_until_start": 1
       },
       {
         "brand": "Concept Star",
@@ -457,14 +457,14 @@
         "category": "შოპინგი",
         "cashback_percent": 40,
         "url": "https://tbcbank.ge/ka/offers/all-offers/concept-star-shetavazeba",
-        "days_until_start": 3
+        "days_until_start": 2
       }
     ]
   },
   "channels": [
     {
       "label": "instore",
-      "value": 379
+      "value": 380
     },
     {
       "label": "online",
@@ -490,7 +490,7 @@
     },
     {
       "label": "cashback",
-      "value": 9
+      "value": 10
     }
   ],
   "data_quality": {
