@@ -1,18 +1,18 @@
 {
-  "generated_at": "2026-09-19T09:55:23",
-  "as_of": "2026-09-19",
+  "generated_at": "2026-09-20T10:16:32",
+  "as_of": "2026-09-20",
   "snapshot": {
     "live": 449,
-    "upcoming": 3,
-    "ended": 151,
-    "live_merchant_offers": 411,
-    "live_bank_product_offers": 38,
-    "avg_cashback": 16.8,
+    "upcoming": 1,
+    "ended": 153,
+    "live_merchant_offers": 410,
+    "live_bank_product_offers": 39,
+    "avg_cashback": 17.0,
     "median_cashback": 15.0,
     "max_cashback": 50,
     "offers_with_cashback": 64,
-    "unlimited_cap_share": 1.0,
-    "avg_cap_amount": 686,
+    "unlimited_cap_share": 1.2,
+    "avg_cap_amount": 891,
     "median_cap_amount": 100
   },
   "categories": {
@@ -20,7 +20,7 @@
       {
         "category": "ტანსაცმელი",
         "live_offers": 98,
-        "share": 23.8,
+        "share": 23.9,
         "avg_cashback": null,
         "max_cashback": null,
         "distinct_brands": 97,
@@ -100,7 +100,7 @@
       {
         "category": "დასვენება",
         "live_offers": 24,
-        "share": 5.8,
+        "share": 5.9,
         "avg_cashback": 22.4,
         "max_cashback": 40,
         "distinct_brands": 22,
@@ -131,8 +131,8 @@
         "category": "შოპინგი",
         "live_offers": 12,
         "share": 2.9,
-        "avg_cashback": 16.2,
-        "max_cashback": 30,
+        "avg_cashback": 17.5,
+        "max_cashback": 40,
         "distinct_brands": 11,
         "offers_with_rate": 8,
         "rate_coverage": 67
@@ -150,7 +150,7 @@
       {
         "category": "გართობა",
         "live_offers": 8,
-        "share": 1.9,
+        "share": 2.0,
         "avg_cashback": 15.0,
         "max_cashback": 20,
         "distinct_brands": 8,
@@ -178,16 +178,6 @@
         "rate_coverage": 0
       },
       {
-        "category": "სურსათი",
-        "live_offers": 4,
-        "share": 1.0,
-        "avg_cashback": 5.0,
-        "max_cashback": 5,
-        "distinct_brands": 4,
-        "offers_with_rate": 1,
-        "rate_coverage": 25
-      },
-      {
         "category": "საბავშვო",
         "live_offers": 4,
         "share": 1.0,
@@ -196,6 +186,16 @@
         "distinct_brands": 4,
         "offers_with_rate": 0,
         "rate_coverage": 0
+      },
+      {
+        "category": "სურსათი",
+        "live_offers": 3,
+        "share": 0.7,
+        "avg_cashback": 5.0,
+        "max_cashback": 5,
+        "distinct_brands": 3,
+        "offers_with_rate": 1,
+        "rate_coverage": 33
       },
       {
         "category": "ყვავილები",
@@ -362,12 +362,12 @@
   },
   "last_7_days": {
     "window_days": 7,
-    "since": "2026-09-12",
-    "launched": 16,
-    "ended": 20,
-    "net_change": -4,
+    "since": "2026-09-13",
+    "launched": 9,
+    "ended": 21,
+    "net_change": -12,
     "offers_running_in_window": 467,
-    "avg_cashback_in_window": 19.1,
+    "avg_cashback_in_window": 19.3,
     "top_categories": [
       {
         "label": "ტანსაცმელი",
@@ -383,7 +383,7 @@
       },
       {
         "label": "კაფე და რესტორანი",
-        "value": 34
+        "value": 33
       },
       {
         "label": "სახლი",
@@ -393,12 +393,12 @@
   },
   "last_30_days": {
     "window_days": 30,
-    "since": "2026-08-20",
-    "launched": 73,
-    "ended": 98,
-    "net_change": -25,
-    "offers_running_in_window": 545,
-    "avg_cashback_in_window": 20.4,
+    "since": "2026-08-21",
+    "launched": 75,
+    "ended": 101,
+    "net_change": -26,
+    "offers_running_in_window": 547,
+    "avg_cashback_in_window": 20.6,
     "top_categories": [
       {
         "label": "ტანსაცმელი",
@@ -409,12 +409,12 @@
         "value": 53
       },
       {
-        "label": "კაფე და რესტორანი",
+        "label": "შოპინგი",
         "value": 49
       },
       {
-        "label": "შოპინგი",
-        "value": 48
+        "label": "კაფე და რესტორანი",
+        "value": 49
       },
       {
         "label": "ონლაინ პარტნიორები",
@@ -426,19 +426,11 @@
   "pipeline": {
     "ending_within_7_days": [
       {
-        "brand": "ბოდი შოპი",
-        "title": "The Body Shop",
+        "brand": "Concept Star",
+        "title": "Concept Star ",
         "category": "შოპინგი",
-        "cashback_percent": 30,
-        "url": "https://tbcbank.ge/ka/offers/all-offers/the-body-shop-cashback",
-        "days_left": 0
-      },
-      {
-        "brand": "აგროჰაბი",
-        "title": "Agrohub",
-        "category": "სურსათი",
-        "cashback_percent": null,
-        "url": "https://tbcbank.ge/ka/offers/all-offers/cashback-at-agrohub",
+        "cashback_percent": 40,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/concept-star-shetavazeba",
         "days_left": 0
       },
       {
@@ -447,17 +439,7 @@
         "category": "სახლი",
         "cashback_percent": 20,
         "url": "https://tbcbank.ge/ka/offers/all-offers/grand-electronics-offer",
-        "days_left": 1
-      }
-    ],
-    "starting_soon": [
-      {
-        "brand": "Concept Star",
-        "title": "Concept Star ",
-        "category": "შოპინგი",
-        "cashback_percent": 40,
-        "url": "https://tbcbank.ge/ka/offers/all-offers/concept-star-shetavazeba",
-        "days_until_start": 1
+        "days_left": 0
       },
       {
         "brand": "თიბისი",
@@ -465,22 +447,24 @@
         "category": "საბავშვო",
         "cashback_percent": 30,
         "url": "https://tbcbank.ge/ka/offers/all-offers/biblusi-xs-toys-carters",
-        "days_until_start": 1
-      },
+        "days_left": 0
+      }
+    ],
+    "starting_soon": [
       {
         "brand": "ფარმადეპო",
         "title": "ფარმადეპო",
         "category": "ჯანმრთელობა და სილამაზე",
         "cashback_percent": 20,
         "url": "https://tbcbank.ge/ka/offers/all-offers/cashback-pharmadepot",
-        "days_until_start": 3
+        "days_until_start": 2
       }
     ]
   },
   "channels": [
     {
       "label": "instore",
-      "value": 382
+      "value": 381
     },
     {
       "label": "online",
@@ -506,7 +490,7 @@
     },
     {
       "label": "cashback",
-      "value": 13
+      "value": 12
     }
   ],
   "data_quality": {
