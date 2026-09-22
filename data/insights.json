@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-09-21T11:23:50",
-  "as_of": "2026-09-21",
+  "generated_at": "2026-09-22T10:33:01",
+  "as_of": "2026-09-22",
   "snapshot": {
-    "live": 448,
-    "upcoming": 1,
+    "live": 450,
+    "upcoming": 2,
     "ended": 156,
-    "live_merchant_offers": 410,
+    "live_merchant_offers": 412,
     "live_bank_product_offers": 38,
     "avg_cashback": 16.9,
     "median_cashback": 15,
     "max_cashback": 50,
-    "offers_with_cashback": 63,
+    "offers_with_cashback": 65,
     "unlimited_cap_share": 1.0,
-    "avg_cap_amount": 848,
-    "median_cap_amount": 35
+    "avg_cap_amount": 710,
+    "median_cap_amount": 32
   },
   "categories": {
     "rows": [
       {
         "category": "ტანსაცმელი",
         "live_offers": 98,
-        "share": 23.9,
+        "share": 23.8,
         "avg_cashback": null,
         "max_cashback": null,
         "distinct_brands": 97,
@@ -68,6 +68,16 @@
         "rate_coverage": 11
       },
       {
+        "category": "ჯანმრთელობა და სილამაზე",
+        "live_offers": 26,
+        "share": 6.3,
+        "avg_cashback": 18.6,
+        "max_cashback": 25,
+        "distinct_brands": 24,
+        "offers_with_rate": 7,
+        "rate_coverage": 27
+      },
+      {
         "category": "ავტო",
         "live_offers": 26,
         "share": 6.3,
@@ -76,16 +86,6 @@
         "distinct_brands": 22,
         "offers_with_rate": 0,
         "rate_coverage": 0
-      },
-      {
-        "category": "ჯანმრთელობა და სილამაზე",
-        "live_offers": 25,
-        "share": 6.1,
-        "avg_cashback": 18.3,
-        "max_cashback": 25,
-        "distinct_brands": 24,
-        "offers_with_rate": 6,
-        "rate_coverage": 24
       },
       {
         "category": "მოგზაურობა",
@@ -100,7 +100,7 @@
       {
         "category": "დასვენება",
         "live_offers": 24,
-        "share": 5.9,
+        "share": 5.8,
         "avg_cashback": 22.4,
         "max_cashback": 40,
         "distinct_brands": 22,
@@ -150,7 +150,7 @@
       {
         "category": "გართობა",
         "live_offers": 8,
-        "share": 2.0,
+        "share": 1.9,
         "avg_cashback": 15.0,
         "max_cashback": 20,
         "distinct_brands": 8,
@@ -209,12 +209,12 @@
       },
       {
         "category": "განათლება",
-        "live_offers": 1,
-        "share": 0.2,
-        "avg_cashback": 10.0,
-        "max_cashback": 10,
-        "distinct_brands": 1,
-        "offers_with_rate": 1,
+        "live_offers": 2,
+        "share": 0.5,
+        "avg_cashback": 12.5,
+        "max_cashback": 15,
+        "distinct_brands": 2,
+        "offers_with_rate": 2,
         "rate_coverage": 100
       }
     ],
@@ -224,7 +224,7 @@
     ]
   },
   "merchants": {
-    "distinct_brands": 466,
+    "distinct_brands": 468,
     "top_partners": [
       {
         "brand": "განაწილება",
@@ -259,26 +259,26 @@
         "offers": 4
       },
       {
-        "brand": "Lotus",
+        "brand": "EA7 ემპორიო არმანი",
         "offers": 3
       },
       {
-        "brand": "ჭიტა",
+        "brand": "Lotus",
         "offers": 3
       }
     ],
-    "top10_share": 16.5,
+    "top10_share": 16.4,
     "repeat_partner_count": 55,
     "repeat_partner_share": 11.8,
-    "one_off_partners": 411
+    "one_off_partners": 413
   },
   "campaigns": {
-    "dated_campaigns": 169,
+    "dated_campaigns": 171,
     "evergreen_offers": 324,
-    "avg_duration_days": 65.1,
+    "avg_duration_days": 64.3,
     "median_duration_days": 5,
-    "flash_campaigns": 71,
-    "flash_share": 42.0,
+    "flash_campaigns": 73,
+    "flash_share": 42.7,
     "launches_by_weekday": [
       {
         "label": "ორშ",
@@ -290,7 +290,7 @@
       },
       {
         "label": "ოთხ",
-        "value": 14
+        "value": 15
       },
       {
         "label": "ხუთ",
@@ -302,7 +302,7 @@
       },
       {
         "label": "შაბ",
-        "value": 39
+        "value": 40
       },
       {
         "label": "კვი",
@@ -356,17 +356,17 @@
       },
       {
         "label": "2026-09",
-        "value": 49
+        "value": 51
       }
     ]
   },
   "last_7_days": {
     "window_days": 7,
-    "since": "2026-09-14",
-    "launched": 11,
-    "ended": 9,
-    "net_change": 2,
-    "offers_running_in_window": 457,
+    "since": "2026-09-15",
+    "launched": 13,
+    "ended": 10,
+    "net_change": 3,
+    "offers_running_in_window": 459,
     "avg_cashback_in_window": 17.7,
     "top_categories": [
       {
@@ -393,12 +393,12 @@
   },
   "last_30_days": {
     "window_days": 30,
-    "since": "2026-08-22",
+    "since": "2026-08-23",
     "launched": 73,
-    "ended": 101,
-    "net_change": -28,
-    "offers_running_in_window": 549,
-    "avg_cashback_in_window": 20.7,
+    "ended": 102,
+    "net_change": -29,
+    "offers_running_in_window": 551,
+    "avg_cashback_in_window": 20.6,
     "top_categories": [
       {
         "label": "ტანსაცმელი",
@@ -426,12 +426,20 @@
   "pipeline": {
     "ending_within_7_days": [
       {
+        "brand": "ფარმადეპო",
+        "title": "ფარმადეპო",
+        "category": "ჯანმრთელობა და სილამაზე",
+        "cashback_percent": 20,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/cashback-pharmadepot",
+        "days_left": 0
+      },
+      {
         "brand": "Trendyol",
         "title": "35% ფასდაკლება Trendyol -ზე ",
         "category": "შოპინგი",
         "cashback_percent": 35,
         "url": "https://tbcbank.ge/ka/offers/all-offers/trendyol-cashback",
-        "days_left": 6
+        "days_left": 5
       },
       {
         "brand": "მაკდონალდსი",
@@ -439,28 +447,36 @@
         "category": "კაფე და რესტორანი",
         "cashback_percent": 25,
         "url": "https://tbcbank.ge/ka/offers/all-offers/mcdonalds-25%-qeshbeqi",
-        "days_left": 7
+        "days_left": 6
       }
     ],
     "starting_soon": [
       {
-        "brand": "ფარმადეპო",
-        "title": "ფარმადეპო",
-        "category": "ჯანმრთელობა და სილამაზე",
+        "brand": "EA7 ემპორიო არმანი",
+        "title": "EA7 Emporio Armani",
+        "category": "შოპინგი",
         "cashback_percent": 20,
-        "url": "https://tbcbank.ge/ka/offers/all-offers/cashback-pharmadepot",
+        "url": "https://tbcbank.ge/ka/offers/all-offers/emporio-armani-qeshbeqi",
         "days_until_start": 1
+      },
+      {
+        "brand": "Tbilisi Outlet Village",
+        "title": "თბილისი აუთლეტ ვილიჯი",
+        "category": "შოპინგი",
+        "cashback_percent": 30,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/tbilisi-outlet-village-shetavazeba",
+        "days_until_start": 4
       }
     ]
   },
   "channels": [
     {
       "label": "instore",
-      "value": 381
+      "value": 382
     },
     {
       "label": "online",
-      "value": 28
+      "value": 29
     },
     {
       "label": "both",
@@ -474,7 +490,7 @@
     },
     {
       "label": "discount",
-      "value": 61
+      "value": 62
     },
     {
       "label": "installment",
@@ -482,19 +498,19 @@
     },
     {
       "label": "cashback",
-      "value": 10
+      "value": 11
     }
   ],
   "data_quality": {
-    "total_offers": 605,
+    "total_offers": 608,
     "by_source": {
       "brand": 51,
-      "api": 495,
+      "api": 498,
       "fallback": 26,
       "keywords": 33
     },
     "by_confidence": {
-      "high": 553,
+      "high": 556,
       "low": 26,
       "medium": 26
     },
