@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-10-01T12:01:57",
-  "as_of": "2026-10-01",
+  "generated_at": "2026-10-02T11:33:38",
+  "as_of": "2026-10-02",
   "snapshot": {
-    "live": 436,
+    "live": 439,
     "upcoming": 2,
     "ended": 195,
-    "live_merchant_offers": 401,
+    "live_merchant_offers": 404,
     "live_bank_product_offers": 35,
-    "avg_cashback": 16.3,
-    "median_cashback": 15.0,
+    "avg_cashback": 17.1,
+    "median_cashback": 20,
     "max_cashback": 50,
-    "offers_with_cashback": 50,
-    "unlimited_cap_share": 1.0,
-    "avg_cap_amount": 1368,
-    "median_cap_amount": 30
+    "offers_with_cashback": 53,
+    "unlimited_cap_share": 1.2,
+    "avg_cap_amount": 1101,
+    "median_cap_amount": 165
   },
   "categories": {
     "rows": [
       {
         "category": "ტანსაცმელი",
         "live_offers": 98,
-        "share": 24.4,
+        "share": 24.3,
         "avg_cashback": null,
         "max_cashback": null,
         "distinct_brands": 97,
@@ -30,7 +30,7 @@
       {
         "category": "ონლაინ პარტნიორები",
         "live_offers": 41,
-        "share": 10.2,
+        "share": 10.1,
         "avg_cashback": null,
         "max_cashback": null,
         "distinct_brands": 41,
@@ -39,28 +39,28 @@
       },
       {
         "category": "კაფე და რესტორანი",
-        "live_offers": 32,
-        "share": 8.0,
-        "avg_cashback": 18.3,
-        "max_cashback": 20,
-        "distinct_brands": 32,
-        "offers_with_rate": 3,
-        "rate_coverage": 9
+        "live_offers": 33,
+        "share": 8.2,
+        "avg_cashback": 21.2,
+        "max_cashback": 30,
+        "distinct_brands": 33,
+        "offers_with_rate": 4,
+        "rate_coverage": 12
       },
       {
         "category": "სახლი",
-        "live_offers": 29,
-        "share": 7.2,
-        "avg_cashback": 16.2,
-        "max_cashback": 20,
-        "distinct_brands": 28,
-        "offers_with_rate": 4,
-        "rate_coverage": 14
+        "live_offers": 30,
+        "share": 7.4,
+        "avg_cashback": 19.0,
+        "max_cashback": 30,
+        "distinct_brands": 29,
+        "offers_with_rate": 5,
+        "rate_coverage": 17
       },
       {
         "category": "აქსესუარები",
         "live_offers": 28,
-        "share": 7.0,
+        "share": 6.9,
         "avg_cashback": null,
         "max_cashback": null,
         "distinct_brands": 28,
@@ -99,13 +99,13 @@
       },
       {
         "category": "დასვენება",
-        "live_offers": 20,
-        "share": 5.0,
-        "avg_cashback": 20.7,
+        "live_offers": 21,
+        "share": 5.2,
+        "avg_cashback": 21.3,
         "max_cashback": 30,
-        "distinct_brands": 19,
-        "offers_with_rate": 14,
-        "rate_coverage": 70
+        "distinct_brands": 20,
+        "offers_with_rate": 15,
+        "rate_coverage": 71
       },
       {
         "category": "პარფიუმერია",
@@ -224,7 +224,7 @@
     ]
   },
   "merchants": {
-    "distinct_brands": 480,
+    "distinct_brands": 483,
     "top_partners": [
       {
         "brand": "განაწილება",
@@ -267,18 +267,18 @@
         "offers": 3
       }
     ],
-    "top10_share": 17.1,
+    "top10_share": 17.0,
     "repeat_partner_count": 59,
-    "repeat_partner_share": 12.3,
-    "one_off_partners": 421
+    "repeat_partner_share": 12.2,
+    "one_off_partners": 424
   },
   "campaigns": {
-    "dated_campaigns": 184,
+    "dated_campaigns": 185,
     "evergreen_offers": 331,
-    "avg_duration_days": 60.8,
-    "median_duration_days": 5.0,
+    "avg_duration_days": 60.6,
+    "median_duration_days": 5,
     "flash_campaigns": 81,
-    "flash_share": 44.0,
+    "flash_share": 43.8,
     "launches_by_weekday": [
       {
         "label": "ორშ",
@@ -286,7 +286,7 @@
       },
       {
         "label": "სამ",
-        "value": 36
+        "value": 37
       },
       {
         "label": "ოთხ",
@@ -356,18 +356,18 @@
       },
       {
         "label": "2026-10",
-        "value": 4
+        "value": 5
       }
     ]
   },
   "last_7_days": {
     "window_days": 7,
-    "since": "2026-09-24",
-    "launched": 20,
+    "since": "2026-09-25",
+    "launched": 21,
     "ended": 39,
-    "net_change": -19,
-    "offers_running_in_window": 475,
-    "avg_cashback_in_window": 20.4,
+    "net_change": -18,
+    "offers_running_in_window": 478,
+    "avg_cashback_in_window": 20.7,
     "top_categories": [
       {
         "label": "ტანსაცმელი",
@@ -383,22 +383,22 @@
       },
       {
         "label": "კაფე და რესტორანი",
-        "value": 35
+        "value": 36
       },
       {
         "label": "სახლი",
-        "value": 30
+        "value": 31
       }
     ]
   },
   "last_30_days": {
     "window_days": 30,
-    "since": "2026-09-01",
-    "launched": 90,
-    "ended": 86,
-    "net_change": 4,
-    "offers_running_in_window": 522,
-    "avg_cashback_in_window": 23.5,
+    "since": "2026-09-02",
+    "launched": 86,
+    "ended": 85,
+    "net_change": 1,
+    "offers_running_in_window": 524,
+    "avg_cashback_in_window": 23.7,
     "top_categories": [
       {
         "label": "ტანსაცმელი",
@@ -418,7 +418,7 @@
       },
       {
         "label": "კაფე და რესტორანი",
-        "value": 36
+        "value": 37
       }
     ]
   },
@@ -434,15 +434,24 @@
     }
   ],
   "pipeline": {
-    "ending_within_7_days": [],
-    "starting_soon": [
+    "ending_within_7_days": [
       {
         "brand": "Paragraph Spa Tbilisi",
         "title": "Paragraph Spa Tbilisi ",
         "category": "დასვენება",
         "cashback_percent": 30,
         "url": "https://tbcbank.ge/ka/offers/all-offers/paragraph-spa-tbilisi-qeshbeqi",
-        "days_until_start": 1
+        "days_left": 2
+      }
+    ],
+    "starting_soon": [
+      {
+        "brand": "თეატრი “სახელოსნო 42”",
+        "title": "საბავშვო ტური - თეატრი “სახელოსნო 42”",
+        "category": "საბავშვო",
+        "cashback_percent": 20,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/teatri-sakhelosno-42-fasdakleba",
+        "days_until_start": 4
       },
       {
         "brand": "Rooms Batumi",
@@ -450,14 +459,14 @@
         "category": "დასვენება",
         "cashback_percent": null,
         "url": "https://tbcbank.ge/ka/offers/all-offers/shetavazeba-rooms-batumi",
-        "days_until_start": 5
+        "days_until_start": 4
       }
     ]
   },
   "channels": [
     {
       "label": "instore",
-      "value": 371
+      "value": 374
     },
     {
       "label": "online",
@@ -483,19 +492,19 @@
     },
     {
       "label": "cashback",
-      "value": 7
+      "value": 10
     }
   ],
   "data_quality": {
-    "total_offers": 633,
+    "total_offers": 636,
     "by_source": {
-      "api": 518,
+      "api": 521,
       "fallback": 30,
       "brand": 51,
       "keywords": 34
     },
     "by_confidence": {
-      "high": 576,
+      "high": 579,
       "low": 30,
       "medium": 27
     },
