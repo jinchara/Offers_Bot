@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-10-02T11:33:38",
-  "as_of": "2026-10-02",
+  "generated_at": "2026-10-03T10:47:37",
+  "as_of": "2026-10-03",
   "snapshot": {
-    "live": 439,
-    "upcoming": 2,
+    "live": 441,
+    "upcoming": 3,
     "ended": 195,
-    "live_merchant_offers": 404,
+    "live_merchant_offers": 406,
     "live_bank_product_offers": 35,
-    "avg_cashback": 17.1,
+    "avg_cashback": 17.4,
     "median_cashback": 20,
     "max_cashback": 50,
-    "offers_with_cashback": 53,
+    "offers_with_cashback": 55,
     "unlimited_cap_share": 1.2,
     "avg_cap_amount": 1101,
     "median_cap_amount": 165
@@ -20,7 +20,7 @@
       {
         "category": "ტანსაცმელი",
         "live_offers": 98,
-        "share": 24.3,
+        "share": 24.1,
         "avg_cashback": null,
         "max_cashback": null,
         "distinct_brands": 97,
@@ -40,7 +40,7 @@
       {
         "category": "კაფე და რესტორანი",
         "live_offers": 33,
-        "share": 8.2,
+        "share": 8.1,
         "avg_cashback": 21.2,
         "max_cashback": 30,
         "distinct_brands": 33,
@@ -89,13 +89,13 @@
       },
       {
         "category": "ჯანმრთელობა და სილამაზე",
-        "live_offers": 25,
-        "share": 6.2,
-        "avg_cashback": 18.3,
+        "live_offers": 26,
+        "share": 6.4,
+        "avg_cashback": 17.1,
         "max_cashback": 25,
-        "distinct_brands": 24,
-        "offers_with_rate": 6,
-        "rate_coverage": 24
+        "distinct_brands": 25,
+        "offers_with_rate": 7,
+        "rate_coverage": 27
       },
       {
         "category": "დასვენება",
@@ -158,21 +158,21 @@
         "rate_coverage": 38
       },
       {
+        "category": "სხვა",
+        "live_offers": 6,
+        "share": 1.5,
+        "avg_cashback": 27.5,
+        "max_cashback": 40,
+        "distinct_brands": 6,
+        "offers_with_rate": 2,
+        "rate_coverage": 33
+      },
+      {
         "category": "საბავშვო",
         "live_offers": 5,
         "share": 1.2,
         "avg_cashback": 25.0,
         "max_cashback": 25,
-        "distinct_brands": 5,
-        "offers_with_rate": 1,
-        "rate_coverage": 20
-      },
-      {
-        "category": "სხვა",
-        "live_offers": 5,
-        "share": 1.2,
-        "avg_cashback": 15.0,
-        "max_cashback": 15,
         "distinct_brands": 5,
         "offers_with_rate": 1,
         "rate_coverage": 20
@@ -224,7 +224,7 @@
     ]
   },
   "merchants": {
-    "distinct_brands": 483,
+    "distinct_brands": 485,
     "top_partners": [
       {
         "brand": "განაწილება",
@@ -267,18 +267,18 @@
         "offers": 3
       }
     ],
-    "top10_share": 17.0,
-    "repeat_partner_count": 59,
-    "repeat_partner_share": 12.2,
-    "one_off_partners": 424
+    "top10_share": 16.9,
+    "repeat_partner_count": 60,
+    "repeat_partner_share": 12.4,
+    "one_off_partners": 425
   },
   "campaigns": {
-    "dated_campaigns": 185,
+    "dated_campaigns": 186,
     "evergreen_offers": 331,
-    "avg_duration_days": 60.6,
-    "median_duration_days": 5,
+    "avg_duration_days": 60.4,
+    "median_duration_days": 5.0,
     "flash_campaigns": 81,
-    "flash_share": 43.8,
+    "flash_share": 43.5,
     "launches_by_weekday": [
       {
         "label": "ორშ",
@@ -294,7 +294,7 @@
       },
       {
         "label": "ხუთ",
-        "value": 23
+        "value": 24
       },
       {
         "label": "პარ",
@@ -356,18 +356,18 @@
       },
       {
         "label": "2026-10",
-        "value": 5
+        "value": 6
       }
     ]
   },
   "last_7_days": {
     "window_days": 7,
-    "since": "2026-09-25",
+    "since": "2026-09-26",
     "launched": 21,
-    "ended": 39,
-    "net_change": -18,
-    "offers_running_in_window": 478,
-    "avg_cashback_in_window": 20.7,
+    "ended": 36,
+    "net_change": -15,
+    "offers_running_in_window": 477,
+    "avg_cashback_in_window": 20.6,
     "top_categories": [
       {
         "label": "ტანსაცმელი",
@@ -393,11 +393,11 @@
   },
   "last_30_days": {
     "window_days": 30,
-    "since": "2026-09-02",
-    "launched": 86,
+    "since": "2026-09-03",
+    "launched": 88,
     "ended": 85,
-    "net_change": 1,
-    "offers_running_in_window": 524,
+    "net_change": 3,
+    "offers_running_in_window": 526,
     "avg_cashback_in_window": 23.7,
     "top_categories": [
       {
@@ -441,7 +441,39 @@
         "category": "დასვენება",
         "cashback_percent": 30,
         "url": "https://tbcbank.ge/ka/offers/all-offers/paragraph-spa-tbilisi-qeshbeqi",
-        "days_left": 2
+        "days_left": 1
+      },
+      {
+        "brand": "Demir Dokum",
+        "title": "Demir Dokum",
+        "category": "სახლი",
+        "cashback_percent": 20,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/demir-dokum-fasdakleba",
+        "days_left": 7
+      },
+      {
+        "brand": "ბლოქსი ორთაჭალა",
+        "title": "ბლოქსი ორთაჭალა",
+        "category": "დეველოპერები",
+        "cashback_percent": null,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/blox-ortachala-shetavazeba",
+        "days_left": 7
+      },
+      {
+        "brand": "ბლოქსი კრწანისი",
+        "title": "ბლოქსი კრწანისი",
+        "category": "დეველოპერები",
+        "cashback_percent": 10,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/blox-krtsanisi-shetavazeba",
+        "days_left": 7
+      },
+      {
+        "brand": "ბლოქსი სარაჯიშვილი",
+        "title": "ბლოქსი სარაჯიშვილი ",
+        "category": "დეველოპერები",
+        "cashback_percent": null,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/blox-sarajishvili-shetavazeba",
+        "days_left": 7
       }
     ],
     "starting_soon": [
@@ -451,7 +483,7 @@
         "category": "საბავშვო",
         "cashback_percent": 20,
         "url": "https://tbcbank.ge/ka/offers/all-offers/teatri-sakhelosno-42-fasdakleba",
-        "days_until_start": 4
+        "days_until_start": 3
       },
       {
         "brand": "Rooms Batumi",
@@ -459,14 +491,22 @@
         "category": "დასვენება",
         "cashback_percent": null,
         "url": "https://tbcbank.ge/ka/offers/all-offers/shetavazeba-rooms-batumi",
-        "days_until_start": 4
+        "days_until_start": 3
+      },
+      {
+        "brand": "Miles&Smiles",
+        "title": "Status Miles კონვერტაცია - სამოგზაურო ბარათის კამპანია",
+        "category": "მოგზაურობა",
+        "cashback_percent": null,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/status-miles-konvertatsia",
+        "days_until_start": 12
       }
     ]
   },
   "channels": [
     {
       "label": "instore",
-      "value": 374
+      "value": 376
     },
     {
       "label": "online",
@@ -484,7 +524,7 @@
     },
     {
       "label": "discount",
-      "value": 50
+      "value": 51
     },
     {
       "label": "installment",
@@ -492,23 +532,23 @@
     },
     {
       "label": "cashback",
-      "value": 10
+      "value": 11
     }
   ],
   "data_quality": {
-    "total_offers": 636,
+    "total_offers": 639,
     "by_source": {
-      "api": 521,
-      "fallback": 30,
+      "api": 523,
+      "fallback": 31,
       "brand": 51,
       "keywords": 34
     },
     "by_confidence": {
-      "high": 579,
-      "low": 30,
+      "high": 581,
+      "low": 31,
       "medium": 27
     },
-    "categorised_share": 95.3,
+    "categorised_share": 95.1,
     "missing_end_date": 331,
     "unresolved_sample": [
       {
@@ -660,6 +700,11 @@
         "brand": "სივრცე ზეტი",
         "title": "სივრცე ზეტი",
         "slug": "/space-z"
+      },
+      {
+        "brand": "ფოქსპრეპი",
+        "title": "დაიბრუნე 40% მომენტალურად ",
+        "slug": "foxprep-qeshbeqi"
       }
     ]
   }
