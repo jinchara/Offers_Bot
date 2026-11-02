@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-01T12:17:02",
-  "as_of": "2026-11-01",
+  "generated_at": "2026-11-02T14:08:59",
+  "as_of": "2026-11-02",
   "snapshot": {
     "live": 464,
     "upcoming": 2,
@@ -12,7 +12,7 @@
     "max_cashback": 50,
     "offers_with_cashback": 65,
     "unlimited_cap_share": 1.7,
-    "avg_cap_amount": 762,
+    "avg_cap_amount": 1230,
     "median_cap_amount": 125
   },
   "categories": {
@@ -362,12 +362,12 @@
   },
   "last_7_days": {
     "window_days": 7,
-    "since": "2026-10-25",
-    "launched": 20,
-    "ended": 35,
-    "net_change": -15,
-    "offers_running_in_window": 499,
-    "avg_cashback_in_window": 20.3,
+    "since": "2026-10-26",
+    "launched": 16,
+    "ended": 28,
+    "net_change": -12,
+    "offers_running_in_window": 492,
+    "avg_cashback_in_window": 19.8,
     "top_categories": [
       {
         "label": "ტანსაცმელი",
@@ -375,7 +375,7 @@
       },
       {
         "label": "მოგზაურობა",
-        "value": 53
+        "value": 52
       },
       {
         "label": "ონლაინ პარტნიორები",
@@ -393,10 +393,10 @@
   },
   "last_30_days": {
     "window_days": 30,
-    "since": "2026-10-02",
-    "launched": 91,
+    "since": "2026-10-03",
+    "launched": 88,
     "ended": 68,
-    "net_change": 23,
+    "net_change": 20,
     "offers_running_in_window": 532,
     "avg_cashback_in_window": 21.5,
     "top_categories": [
@@ -441,7 +441,7 @@
         "category": "შოპინგი",
         "cashback_percent": 30,
         "url": "https://tbcbank.ge/ka/offers/all-offers/gallery-accent-sport-gallery-vero-moda-qeshbeqi",
-        "days_left": 2
+        "days_left": 1
       },
       {
         "brand": "Rooms Batumi",
@@ -449,7 +449,7 @@
         "category": "დასვენება",
         "cashback_percent": null,
         "url": "https://tbcbank.ge/ka/offers/all-offers/shetavazeba-rooms-batumi",
-        "days_left": 4
+        "days_left": 3
       },
       {
         "brand": "Nail Sunny",
@@ -457,7 +457,7 @@
         "category": "ჯანმრთელობა და სილამაზე",
         "cashback_percent": 15,
         "url": "https://tbcbank.ge/ka/offers/all-offers/nail-sunny-qeshbeqi",
-        "days_left": 5
+        "days_left": 4
       },
       {
         "brand": "iPlus",
@@ -465,7 +465,7 @@
         "category": "ტექნიკა",
         "cashback_percent": null,
         "url": "https://tbcbank.ge/ka/offers/all-offers/iplus-shetavazeba",
-        "days_left": 6
+        "days_left": 5
       },
       {
         "brand": "რობერტო ბრავო",
@@ -473,7 +473,7 @@
         "category": "შოპინგი",
         "cashback_percent": 30,
         "url": "https://tbcbank.ge/ka/offers/all-offers/roberto-bravo-qeshbeqi",
-        "days_left": 6
+        "days_left": 5
       },
       {
         "brand": "Ford",
@@ -481,7 +481,7 @@
         "category": "ავტო",
         "cashback_percent": null,
         "url": "https://tbcbank.ge/ka/offers/all-offers/ford-shetavazeba",
-        "days_left": 7
+        "days_left": 6
       }
     ],
     "starting_soon": [
@@ -491,7 +491,7 @@
         "category": "სხვა",
         "cashback_percent": 30,
         "url": "https://tbcbank.ge/ka/offers/all-offers/nisse-shetavazeba",
-        "days_until_start": 5
+        "days_until_start": 4
       },
       {
         "brand": "Rooms Batumi",
@@ -499,7 +499,7 @@
         "category": "დასვენება",
         "cashback_percent": null,
         "url": "https://tbcbank.ge/ka/offers/all-offers/supernatural-fasdakleba",
-        "days_until_start": 6
+        "days_until_start": 5
       }
     ]
   },
@@ -718,6 +718,11 @@
       },
       {
         "brand": "თიბისი",
+        "title": "დაიწყე ინვესტირება კიდევ უფრო მარტივად",
+        "slug": "start-investing-with-added-confidence"
+      },
+      {
+        "brand": "თიბისი",
         "title": "კრიპტოთი ვაჭრობის ბონუსი ბიტკოინში ",
         "slug": "crypto-trading-bonus"
       },
@@ -725,11 +730,6 @@
         "brand": "თიბისი",
         "title": "დაიბრუნე 40%, მაქს. 100₾ ",
         "slug": "yoyoso-miniso-olivander-qeshbeqi"
-      },
-      {
-        "brand": "თიბისი",
-        "title": "დაიწყე ინვესტირება კიდევ უფრო მარტივად",
-        "slug": "start-investing-with-added-confidence"
       },
       {
         "brand": "კავეა.ჯი",
