@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-11-03T13:13:41",
-  "as_of": "2026-11-03",
+  "generated_at": "2026-11-04T13:27:57",
+  "as_of": "2026-11-04",
   "snapshot": {
-    "live": 467,
-    "upcoming": 3,
-    "ended": 258,
-    "live_merchant_offers": 423,
+    "live": 468,
+    "upcoming": 5,
+    "ended": 259,
+    "live_merchant_offers": 424,
     "live_bank_product_offers": 44,
-    "avg_cashback": 15.6,
-    "median_cashback": 15,
+    "avg_cashback": 15.7,
+    "median_cashback": 15.0,
     "max_cashback": 50,
-    "offers_with_cashback": 67,
+    "offers_with_cashback": 68,
     "unlimited_cap_share": 1.7,
     "avg_cap_amount": 1230,
     "median_cap_amount": 125
@@ -20,7 +20,7 @@
       {
         "category": "ტანსაცმელი",
         "live_offers": 98,
-        "share": 23.2,
+        "share": 23.1,
         "avg_cashback": null,
         "max_cashback": null,
         "distinct_brands": 97,
@@ -99,13 +99,13 @@
       },
       {
         "category": "დასვენება",
-        "live_offers": 21,
-        "share": 5.0,
-        "avg_cashback": 19.3,
+        "live_offers": 22,
+        "share": 5.2,
+        "avg_cashback": 19.7,
         "max_cashback": 25,
-        "distinct_brands": 20,
-        "offers_with_rate": 14,
-        "rate_coverage": 67
+        "distinct_brands": 21,
+        "offers_with_rate": 15,
+        "rate_coverage": 68
       },
       {
         "category": "დეველოპერები",
@@ -224,7 +224,7 @@
     ]
   },
   "merchants": {
-    "distinct_brands": 526,
+    "distinct_brands": 529,
     "top_partners": [
       {
         "brand": "განაწილება",
@@ -232,7 +232,7 @@
       },
       {
         "brand": "თიბისი",
-        "offers": 27
+        "offers": 28
       },
       {
         "brand": "Visa",
@@ -269,16 +269,16 @@
     ],
     "top10_share": 16.9,
     "repeat_partner_count": 78,
-    "repeat_partner_share": 14.8,
-    "one_off_partners": 448
+    "repeat_partner_share": 14.7,
+    "one_off_partners": 451
   },
   "campaigns": {
-    "dated_campaigns": 234,
+    "dated_campaigns": 236,
     "evergreen_offers": 333,
-    "avg_duration_days": 49.0,
+    "avg_duration_days": 48.7,
     "median_duration_days": 4.0,
-    "flash_campaigns": 115,
-    "flash_share": 49.1,
+    "flash_campaigns": 116,
+    "flash_share": 49.2,
     "launches_by_weekday": [
       {
         "label": "ორშ",
@@ -298,11 +298,11 @@
       },
       {
         "label": "პარ",
-        "value": 41
+        "value": 42
       },
       {
         "label": "შაბ",
-        "value": 50
+        "value": 51
       },
       {
         "label": "კვი",
@@ -356,17 +356,17 @@
       },
       {
         "label": "2026-11",
-        "value": 7
+        "value": 9
       }
     ]
   },
   "last_7_days": {
     "window_days": 7,
-    "since": "2026-10-27",
-    "launched": 17,
+    "since": "2026-10-28",
+    "launched": 18,
     "ended": 29,
-    "net_change": -12,
-    "offers_running_in_window": 495,
+    "net_change": -11,
+    "offers_running_in_window": 497,
     "avg_cashback_in_window": 19.7,
     "top_categories": [
       {
@@ -393,12 +393,12 @@
   },
   "last_30_days": {
     "window_days": 30,
-    "since": "2026-10-04",
-    "launched": 89,
-    "ended": 69,
-    "net_change": 20,
-    "offers_running_in_window": 535,
-    "avg_cashback_in_window": 21.4,
+    "since": "2026-10-05",
+    "launched": 91,
+    "ended": 68,
+    "net_change": 23,
+    "offers_running_in_window": 536,
+    "avg_cashback_in_window": 21.3,
     "top_categories": [
       {
         "label": "ტანსაცმელი",
@@ -436,20 +436,12 @@
   "pipeline": {
     "ending_within_7_days": [
       {
-        "brand": "თიბისი",
-        "title": "ისარგებლე შეთავზებით Gallery Accent, Sport Gallery, Vero Moda -ში და დაიბრუნე 30%",
-        "category": "შოპინგი",
-        "cashback_percent": 30,
-        "url": "https://tbcbank.ge/ka/offers/all-offers/gallery-accent-sport-gallery-vero-moda-qeshbeqi",
-        "days_left": 0
-      },
-      {
         "brand": "Rooms Batumi",
         "title": " 1+1 Rooms ბათუმი - სამოგზაურო ბარათის შეთავაზება",
         "category": "დასვენება",
         "cashback_percent": null,
         "url": "https://tbcbank.ge/ka/offers/all-offers/shetavazeba-rooms-batumi",
-        "days_left": 2
+        "days_left": 1
       },
       {
         "brand": "Nail Sunny",
@@ -457,7 +449,7 @@
         "category": "ჯანმრთელობა და სილამაზე",
         "cashback_percent": 15,
         "url": "https://tbcbank.ge/ka/offers/all-offers/nail-sunny-qeshbeqi",
-        "days_left": 3
+        "days_left": 2
       },
       {
         "brand": "iPlus",
@@ -465,7 +457,7 @@
         "category": "ტექნიკა",
         "cashback_percent": null,
         "url": "https://tbcbank.ge/ka/offers/all-offers/iplus-shetavazeba",
-        "days_left": 4
+        "days_left": 3
       },
       {
         "brand": "რობერტო ბრავო",
@@ -473,7 +465,7 @@
         "category": "შოპინგი",
         "cashback_percent": 30,
         "url": "https://tbcbank.ge/ka/offers/all-offers/roberto-bravo-qeshbeqi",
-        "days_left": 4
+        "days_left": 3
       },
       {
         "brand": "Ford",
@@ -481,7 +473,7 @@
         "category": "ავტო",
         "cashback_percent": null,
         "url": "https://tbcbank.ge/ka/offers/all-offers/ford-shetavazeba",
-        "days_left": 5
+        "days_left": 4
       }
     ],
     "starting_soon": [
@@ -491,7 +483,7 @@
         "category": "ტექნიკა",
         "cashback_percent": null,
         "url": "https://tbcbank.ge/ka/offers/all-offers/icity-iphone-duo-qeshbeqi",
-        "days_until_start": 2
+        "days_until_start": 1
       },
       {
         "brand": "ნისე",
@@ -499,6 +491,22 @@
         "category": "სხვა",
         "cashback_percent": 30,
         "url": "https://tbcbank.ge/ka/offers/all-offers/nisse-shetavazeba",
+        "days_until_start": 2
+      },
+      {
+        "brand": "Kiketi Farm",
+        "title": "Kiketi Farm",
+        "category": "დასვენება",
+        "cashback_percent": null,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/kiketi-farm-shetavazeba",
+        "days_until_start": 2
+      },
+      {
+        "brand": "Noa Store",
+        "title": "Noa Store",
+        "category": "შოპინგი",
+        "cashback_percent": 30,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/noa-store-cashback",
         "days_until_start": 3
       },
       {
@@ -507,14 +515,14 @@
         "category": "დასვენება",
         "cashback_percent": null,
         "url": "https://tbcbank.ge/ka/offers/all-offers/supernatural-fasdakleba",
-        "days_until_start": 4
+        "days_until_start": 3
       }
     ]
   },
   "channels": [
     {
       "label": "instore",
-      "value": 392
+      "value": 393
     },
     {
       "label": "online",
@@ -532,7 +540,7 @@
     },
     {
       "label": "discount",
-      "value": 60
+      "value": 61
     },
     {
       "label": "installment",
@@ -544,15 +552,15 @@
     }
   ],
   "data_quality": {
-    "total_offers": 728,
+    "total_offers": 732,
     "by_source": {
-      "api": 596,
+      "api": 599,
       "fallback": 43,
-      "keywords": 37,
+      "keywords": 38,
       "brand": 52
     },
     "by_confidence": {
-      "high": 656,
+      "high": 660,
       "low": 43,
       "medium": 29
     },
@@ -666,13 +674,13 @@
       },
       {
         "brand": "განაწილება",
-        "title": "6 თვიანი უპროცენტო განაწილება",
-        "slug": "6-tviani-uprotsento-ganatsileba-shetavazeba"
+        "title": "🎒 გადაანაწილე სასკოლო ფორმის საფასური 4 თვეზე, გაძვირების გარეშე",
+        "slug": "saskolo-forma-ganatsileba"
       },
       {
         "brand": "განაწილება",
-        "title": "🎒 გადაანაწილე სასკოლო ფორმის საფასური 4 თვეზე, გაძვირების გარეშე",
-        "slug": "saskolo-forma-ganatsileba"
+        "title": "6 თვიანი უპროცენტო განაწილება",
+        "slug": "6-tviani-uprotsento-ganatsileba-shetavazeba"
       },
       {
         "brand": "განვადება",
@@ -726,11 +734,6 @@
       },
       {
         "brand": "თიბისი",
-        "title": "კრიპტოთი ვაჭრობის ბონუსი ბიტკოინში ",
-        "slug": "crypto-trading-bonus"
-      },
-      {
-        "brand": "თიბისი",
         "title": "დაიბრუნე 40%, მაქს. 100₾ ",
         "slug": "yoyoso-miniso-olivander-qeshbeqi"
       },
@@ -738,6 +741,11 @@
         "brand": "თიბისი",
         "title": "დაიწყე ინვესტირება კიდევ უფრო მარტივად",
         "slug": "start-investing-with-added-confidence"
+      },
+      {
+        "brand": "თიბისი",
+        "title": "კრიპტოთი ვაჭრობის ბონუსი ბიტკოინში ",
+        "slug": "crypto-trading-bonus"
       },
       {
         "brand": "კავეა.ჯი",
