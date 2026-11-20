@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-11-19T14:53:46",
-  "as_of": "2026-11-19",
+  "generated_at": "2026-11-20T14:34:47",
+  "as_of": "2026-11-20",
   "snapshot": {
-    "live": 489,
-    "upcoming": 14,
-    "ended": 291,
+    "live": 490,
+    "upcoming": 47,
+    "ended": 293,
     "live_merchant_offers": 444,
-    "live_bank_product_offers": 45,
+    "live_bank_product_offers": 46,
     "avg_cashback": 17.1,
     "median_cashback": 15,
     "max_cashback": 50,
     "offers_with_cashback": 79,
-    "unlimited_cap_share": 1.6,
-    "avg_cap_amount": 1599,
-    "median_cap_amount": 75
+    "unlimited_cap_share": 1.4,
+    "avg_cap_amount": 1507,
+    "median_cap_amount": 50
   },
   "categories": {
     "rows": [
@@ -88,6 +88,16 @@
         "rate_coverage": 63
       },
       {
+        "category": "ჯანმრთელობა და სილამაზე",
+        "live_offers": 27,
+        "share": 6.1,
+        "avg_cashback": 19.2,
+        "max_cashback": 30,
+        "distinct_brands": 24,
+        "offers_with_rate": 6,
+        "rate_coverage": 22
+      },
+      {
         "category": "მოგზაურობა",
         "live_offers": 27,
         "share": 6.1,
@@ -96,16 +106,6 @@
         "distinct_brands": 27,
         "offers_with_rate": 2,
         "rate_coverage": 7
-      },
-      {
-        "category": "ჯანმრთელობა და სილამაზე",
-        "live_offers": 26,
-        "share": 5.9,
-        "avg_cashback": 17.0,
-        "max_cashback": 25,
-        "distinct_brands": 24,
-        "offers_with_rate": 5,
-        "rate_coverage": 19
       },
       {
         "category": "დეველოპერები",
@@ -179,13 +179,13 @@
       },
       {
         "category": "ტექნიკა",
-        "live_offers": 5,
-        "share": 1.1,
-        "avg_cashback": 30.0,
-        "max_cashback": 30,
-        "distinct_brands": 5,
-        "offers_with_rate": 1,
-        "rate_coverage": 20
+        "live_offers": 4,
+        "share": 0.9,
+        "avg_cashback": null,
+        "max_cashback": null,
+        "distinct_brands": 4,
+        "offers_with_rate": 0,
+        "rate_coverage": 0
       },
       {
         "category": "სურსათი",
@@ -224,7 +224,7 @@
     ]
   },
   "merchants": {
-    "distinct_brands": 554,
+    "distinct_brands": 561,
     "top_partners": [
       {
         "brand": "განაწილება",
@@ -236,11 +236,11 @@
       },
       {
         "brand": "Visa",
-        "offers": 23
+        "offers": 24
       },
       {
         "brand": "Mastercard",
-        "offers": 9
+        "offers": 10
       },
       {
         "brand": "მაკდონალდსი",
@@ -248,6 +248,10 @@
       },
       {
         "brand": "ჯიპისი",
+        "offers": 5
+      },
+      {
+        "brand": "დრესაპი",
         "offers": 5
       },
       {
@@ -261,24 +265,20 @@
       {
         "brand": "პსპ",
         "offers": 4
-      },
-      {
-        "brand": "ფარმადეპო",
-        "offers": 4
       }
     ],
-    "top10_share": 16.9,
-    "repeat_partner_count": 96,
-    "repeat_partner_share": 17.3,
-    "one_off_partners": 458
+    "top10_share": 16.5,
+    "repeat_partner_count": 110,
+    "repeat_partner_share": 19.6,
+    "one_off_partners": 451
   },
   "campaigns": {
-    "dated_campaigns": 271,
+    "dated_campaigns": 306,
     "evergreen_offers": 338,
-    "avg_duration_days": 43.4,
-    "median_duration_days": 3,
-    "flash_campaigns": 141,
-    "flash_share": 52.0,
+    "avg_duration_days": 38.5,
+    "median_duration_days": 3.0,
+    "flash_campaigns": 177,
+    "flash_share": 57.8,
     "launches_by_weekday": [
       {
         "label": "ორშ",
@@ -298,7 +298,7 @@
       },
       {
         "label": "პარ",
-        "value": 50
+        "value": 86
       },
       {
         "label": "შაბ",
@@ -356,18 +356,18 @@
       },
       {
         "label": "2026-11",
-        "value": 44
+        "value": 80
       }
     ]
   },
   "last_7_days": {
     "window_days": 7,
-    "since": "2026-11-12",
+    "since": "2026-11-13",
     "launched": 23,
-    "ended": 20,
-    "net_change": 3,
-    "offers_running_in_window": 508,
-    "avg_cashback_in_window": 20.6,
+    "ended": 28,
+    "net_change": -5,
+    "offers_running_in_window": 510,
+    "avg_cashback_in_window": 20.5,
     "top_categories": [
       {
         "label": "ტანსაცმელი",
@@ -386,19 +386,19 @@
         "value": 38
       },
       {
-        "label": "ავტო",
-        "value": 34
+        "label": "აქსესუარები",
+        "value": 33
       }
     ]
   },
   "last_30_days": {
     "window_days": 30,
-    "since": "2026-10-20",
-    "launched": 105,
-    "ended": 81,
-    "net_change": 24,
-    "offers_running_in_window": 569,
-    "avg_cashback_in_window": 22.4,
+    "since": "2026-10-21",
+    "launched": 104,
+    "ended": 89,
+    "net_change": 15,
+    "offers_running_in_window": 571,
+    "avg_cashback_in_window": 22.5,
     "top_categories": [
       {
         "label": "ტანსაცმელი",
@@ -410,14 +410,14 @@
       },
       {
         "label": "კაფე და რესტორანი",
-        "value": 43
+        "value": 42
       },
       {
         "label": "ონლაინ პარტნიორები",
         "value": 41
       },
       {
-        "label": "აქსესუარები",
+        "label": "ჯანმრთელობა და სილამაზე",
         "value": 36
       }
     ]
@@ -436,20 +436,12 @@
   "pipeline": {
     "ending_within_7_days": [
       {
-        "brand": "გეიმ ზონა",
-        "title": "შეიძინე GTA 6 Game Zone-ში ან gamezone.ge-ზე და დაიბრუნე 30% ულიმიტოდ",
-        "category": "ტექნიკა",
-        "cashback_percent": 30,
-        "url": "https://tbcbank.ge/ka/offers/all-offers/gta-6-game-zone-cashback",
-        "days_left": 0
-      },
-      {
         "brand": "თიბისი",
         "title": "თიბისის და მეტროპოლის სპეციალური შეთავაზება ემიგრანტებისთვის",
         "category": "დეველოპერები",
         "cashback_percent": 19,
         "url": "https://tbcbank.ge/ka/offers/all-offers/metropol-offer-for-emigrants",
-        "days_left": 1
+        "days_left": 0
       },
       {
         "brand": "ომნიბუსი",
@@ -457,7 +449,7 @@
         "category": "მოგზაურობა",
         "cashback_percent": 20,
         "url": "https://tbcbank.ge/ka/offers/all-offers/omnibus-qeshbeqi",
-        "days_left": 1
+        "days_left": 0
       },
       {
         "brand": "Nuage",
@@ -465,7 +457,7 @@
         "category": "ჯანმრთელობა და სილამაზე",
         "cashback_percent": 15,
         "url": "https://tbcbank.ge/ka/offers/all-offers/nuage-fasdakleba",
-        "days_left": 1
+        "days_left": 0
       },
       {
         "brand": "ინვესტიციები",
@@ -473,7 +465,7 @@
         "category": "სხვა",
         "cashback_percent": null,
         "url": "https://tbcbank.ge/ka/offers/all-offers/miighe-google-aktsiebi-sachukrad",
-        "days_left": 1
+        "days_left": 0
       },
       {
         "brand": "ერთგული საკრედიტო ბარათი",
@@ -481,7 +473,7 @@
         "category": "სხვა",
         "cashback_percent": 50,
         "url": "https://tbcbank.ge/ka/offers/all-offers/ertguli-barati-shetavazeba",
-        "days_left": 1
+        "days_left": 0
       },
       {
         "brand": "Visa",
@@ -489,7 +481,7 @@
         "category": "მოგზაურობა",
         "cashback_percent": 30,
         "url": "https://tbcbank.ge/ka/offers/all-offers/aviabiletebi-qeshbeqi",
-        "days_left": 1
+        "days_left": 0
       },
       {
         "brand": "გამომცემლობა პალიტრა",
@@ -497,7 +489,15 @@
         "category": "სხვა",
         "cashback_percent": 30,
         "url": "https://tbcbank.ge/ka/offers/all-offers/palitra-l-shetavazeba",
-        "days_left": 1
+        "days_left": 0
+      },
+      {
+        "brand": "პსპ",
+        "title": "PSP ",
+        "category": "ჯანმრთელობა და სილამაზე",
+        "cashback_percent": 30,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/psp-black-friday",
+        "days_left": 0
       },
       {
         "brand": "Glovo Prime",
@@ -505,7 +505,7 @@
         "category": "შოპინგი",
         "cashback_percent": null,
         "url": "https://tbcbank.ge/ka/offers/all-offers/glovo-prime-12-tve-upasod",
-        "days_left": 3
+        "days_left": 2
       },
       {
         "brand": "მაკდონალდსი",
@@ -513,7 +513,7 @@
         "category": "კაფე და რესტორანი",
         "cashback_percent": 25,
         "url": "https://tbcbank.ge/ka/offers/all-offers/isargeble-shetavzebit-makdonaldsis-aplikatsiashi",
-        "days_left": 3
+        "days_left": 2
       },
       {
         "brand": "მაკდონალდსი",
@@ -521,7 +521,7 @@
         "category": "კაფე და რესტორანი",
         "cashback_percent": 25,
         "url": "https://tbcbank.ge/ka/offers/all-offers/mcdonalds-app-qeshbeqi",
-        "days_left": 3
+        "days_left": 2
       },
       {
         "brand": "მაჯესტიკი",
@@ -529,7 +529,7 @@
         "category": "აქსესუარები",
         "cashback_percent": 10,
         "url": "https://tbcbank.ge/ka/offers/all-offers/majestic-qeshbeqi",
-        "days_left": 4
+        "days_left": 3
       },
       {
         "brand": "Central Figure",
@@ -537,25 +537,7 @@
         "category": "ტანსაცმელი",
         "cashback_percent": 30,
         "url": "https://tbcbank.ge/ka/offers/all-offers/central-figure-qeshbeqi",
-        "days_left": 5
-      }
-    ],
-    "starting_soon": [
-      {
-        "brand": "პსპ",
-        "title": "დააააუუუუჯერებელი Black Friday-ს ფარგლებში ისარგებლე ქეშბექით PSP‑ში",
-        "category": "ჯანმრთელობა და სილამაზე",
-        "cashback_percent": 30,
-        "url": "https://tbcbank.ge/ka/offers/all-offers/psp-black-friday",
-        "days_until_start": 1
-      },
-      {
-        "brand": "M.T.A",
-        "title": "M.T.A",
-        "category": "სხვა",
-        "cashback_percent": 30,
-        "url": "https://tbcbank.ge/ka/offers/all-offers/mta-qeshbeqi",
-        "days_until_start": 1
+        "days_left": 4
       },
       {
         "brand": "თიბისი",
@@ -563,31 +545,25 @@
         "category": "შოპინგი",
         "cashback_percent": null,
         "url": "https://tbcbank.ge/ka/offers/all-offers/daujerebeli-black-friday",
-        "days_until_start": 1
+        "days_left": 7
       },
       {
+        "brand": "TEDx British University Georgia",
+        "title": "TEDx British University Georgia",
+        "category": "განათლება",
+        "cashback_percent": 33,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/tedx-british-university-georgia",
+        "days_left": 7
+      }
+    ],
+    "starting_soon": [
+      {
         "brand": "Impex",
-        "title": "დააააუუუუჯერებელი Black Friday-ს ფარგლებში ისარგებლე ქეშბექით IMPEX-ში და Myimpex.ge-ზე",
+        "title": "IMPEX",
         "category": "ჯანმრთელობა და სილამაზე",
         "cashback_percent": 40,
         "url": "https://tbcbank.ge/ka/offers/all-offers/impex-black-friday",
-        "days_until_start": 2
-      },
-      {
-        "brand": "Kontakt Home",
-        "title": "დააააუუუუჯერებელი Black Friday-ს ფარგლებში ისარგებლე ქეშბექით Kontak Home-ში და Kontakt.ge-ზე ",
-        "category": "ტექნიკა",
-        "cashback_percent": 20,
-        "url": "https://tbcbank.ge/ka/offers/all-offers/kontakt-home-black-friday",
-        "days_until_start": 4
-      },
-      {
-        "brand": "კენარი",
-        "title": "დააააუუუუჯერებელი Black Friday-ს ფარგლებში ისარგებლე ქეშბექით კენარის ფიზიკურ და ონლაინ მაღაზიებში",
-        "category": "აქსესუარები",
-        "cashback_percent": 30,
-        "url": "https://tbcbank.ge/ka/offers/all-offers/kenari-black-friday",
-        "days_until_start": 4
+        "days_until_start": 1
       },
       {
         "brand": "ფლორმარი",
@@ -595,55 +571,71 @@
         "category": "ჯანმრთელობა და სილამაზე",
         "cashback_percent": 40,
         "url": "https://tbcbank.ge/ka/offers/all-offers/flormar-black-friday",
+        "days_until_start": 3
+      },
+      {
+        "brand": "კენარი",
+        "title": "Kenari ",
+        "category": "აქსესუარები",
+        "cashback_percent": 30,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/kenari-black-friday",
+        "days_until_start": 3
+      },
+      {
+        "brand": "Kontakt Home",
+        "title": "Kontakt Home",
+        "category": "ტექნიკა",
+        "cashback_percent": 20,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/kontakt-home-black-friday",
+        "days_until_start": 3
+      },
+      {
+        "brand": "დელფოსი",
+        "title": "Delfos ",
+        "category": "აქსესუარები",
+        "cashback_percent": 30,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/delfos-black-friday",
         "days_until_start": 4
       },
       {
         "brand": "ბოდი შოპი",
-        "title": "დააააუუუუჯერებელი Black Friday-ს ფარგლებში ისარგებლე ქეშბექით The Body Shop-ის ფიზიკურ მაღაზიებში",
+        "title": "The Body Shop",
         "category": "ჯანმრთელობა და სილამაზე",
         "cashback_percent": 30,
         "url": "https://tbcbank.ge/ka/offers/all-offers/the-body-shop-black-friday",
-        "days_until_start": 5
+        "days_until_start": 4
       },
       {
-        "brand": "დელფოსი",
-        "title": "დააააუუუუჯერებელი Black Friday-ს ფარგლებში ისარგებლე ქეშბექით Delfos‑ის ფიზიკურ მაღაზიებში",
-        "category": "აქსესუარები",
-        "cashback_percent": 30,
-        "url": "https://tbcbank.ge/ka/offers/all-offers/delfos-black-friday",
+        "brand": "ალტა",
+        "title": "Alta",
+        "category": "ტექნიკა",
+        "cashback_percent": 25,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/alta-black-friday",
         "days_until_start": 5
       },
       {
         "brand": "ფარმადეპო",
-        "title": "დააააუუუუჯერებელი Black Friday-ს ფარგლებში ისარგებლე ქეშბექით Pharmadepot -ში ",
+        "title": "Pharmadepot ",
         "category": "ჯანმრთელობა და სილამაზე",
         "cashback_percent": 30,
         "url": "https://tbcbank.ge/ka/offers/all-offers/pharmadepot-black-friday",
-        "days_until_start": 6
+        "days_until_start": 5
       },
       {
-        "brand": "ალტა",
-        "title": "დააააუუუუჯერებელი Black Friday-ს ფარგლებში ისარგებლე ქეშბექით Alta-ში და Alta.ge-ზე  ",
-        "category": "ტექნიკა",
-        "cashback_percent": 25,
-        "url": "https://tbcbank.ge/ka/offers/all-offers/alta-black-friday",
+        "brand": "ჯიპისი",
+        "title": "GPC ",
+        "category": "ჯანმრთელობა და სილამაზე",
+        "cashback_percent": 30,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/gpc-black-friday",
         "days_until_start": 6
       },
       {
         "brand": "ვიშლისტი",
-        "title": "დააააუუუუჯერებელი Black Friday-ს ფარგლებში ისარგებლე ქეშბექით ვიშლისტის ფიზიკურ და ონლაინ მაღაზიებში",
-        "category": "ონლაინ პარტნიორები",
+        "title": "Wishlist ",
+        "category": "სხვა",
         "cashback_percent": 30,
         "url": "https://tbcbank.ge/ka/offers/all-offers/wishlist-black-friday",
-        "days_until_start": 7
-      },
-      {
-        "brand": "ჯიპისი",
-        "title": "დააააუუუუჯერებელი Black Friday-ს ფარგლებში ისარგებლე ქეშბექით GPC‑ის ფიზიკურ აფთიაქებში და ონლაინ gpc.ge/My GPC app",
-        "category": "ჯანმრთელობა და სილამაზე",
-        "cashback_percent": 30,
-        "url": "https://tbcbank.ge/ka/offers/all-offers/gpc-black-friday",
-        "days_until_start": 7
+        "days_until_start": 6
       },
       {
         "brand": "კვების ობიექტები",
@@ -651,7 +643,119 @@
         "category": "კაფე და რესტორანი",
         "cashback_percent": 50,
         "url": "https://tbcbank.ge/ka/offers/all-offers/kvebis-obieqtebi-black-friday",
-        "days_until_start": 8
+        "days_until_start": 7
+      },
+      {
+        "brand": "არომატეკა",
+        "title": "Aromateque ",
+        "category": "პარფიუმერია",
+        "cashback_percent": 25,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/aromateque-black-friday",
+        "days_until_start": 7
+      },
+      {
+        "brand": "Artinscent",
+        "title": "Artinscent ",
+        "category": "პარფიუმერია",
+        "cashback_percent": 25,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/artinscent-black-friday",
+        "days_until_start": 7
+      },
+      {
+        "brand": "Jo Malone London",
+        "title": "Jo Malone London ",
+        "category": "პარფიუმერია",
+        "cashback_percent": 25,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/jo-malone-black-friday",
+        "days_until_start": 7
+      },
+      {
+        "brand": "ოკტოპუს ფიტნეს კლუბი",
+        "title": "ოკტოპუსი ",
+        "category": "ჯანმრთელობა და სილამაზე",
+        "cashback_percent": 30,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/oktopus-black-friday",
+        "days_until_start": 7
+      },
+      {
+        "brand": "აი სი არ ტრეიდი",
+        "title": "ICR ",
+        "category": "შოპინგი",
+        "cashback_percent": null,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/icr-black-friday",
+        "days_until_start": 7
+      },
+      {
+        "brand": "დრესაპი",
+        "title": "Dressup",
+        "category": "შოპინგი",
+        "cashback_percent": null,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/dressup-black-friday",
+        "days_until_start": 7
+      },
+      {
+        "brand": "ლუტეცია",
+        "title": "Lutecia",
+        "category": "ჯანმრთელობა და სილამაზე",
+        "cashback_percent": 30,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/lutecia-black-friday",
+        "days_until_start": 7
+      },
+      {
+        "brand": "ვულე-ვუ",
+        "title": "Voulez-Vous",
+        "category": "ჯანმრთელობა და სილამაზე",
+        "cashback_percent": 30,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/voulez-vous-black-friday",
+        "days_until_start": 7
+      },
+      {
+        "brand": "iPlus",
+        "title": "Iplus – Black Friday",
+        "category": "ტექნიკა",
+        "cashback_percent": 30,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/iplus-black-friday",
+        "days_until_start": 7
+      },
+      {
+        "brand": "ვესტელი",
+        "title": "Vestel – Black Friday",
+        "category": "ტექნიკა",
+        "cashback_percent": 30,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/vestel-black-friday",
+        "days_until_start": 7
+      },
+      {
+        "brand": "გრანდ ელექტრონიქსი",
+        "title": "Grand Electronics – Black Friday",
+        "category": "ტექნიკა",
+        "cashback_percent": 20,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/grand-electronics-black-friday",
+        "days_until_start": 7
+      },
+      {
+        "brand": "ბეკო",
+        "title": "Beko – Black Friday",
+        "category": "ტექნიკა",
+        "cashback_percent": 20,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/beko-black-friday",
+        "days_until_start": 7
+      },
+      {
+        "brand": "მისთორი",
+        "title": "Mstore – Black Friday",
+        "category": "ტექნიკა",
+        "cashback_percent": 30,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/mstore-black-friday",
+        "days_until_start": 7
+      },
+      {
+        "brand": "იუსკი",
+        "title": "JYSK – Black Friday",
+        "category": "სახლი",
+        "cashback_percent": 30,
+        "url": "https://tbcbank.ge/ka/offers/all-offers/jysk-black-friday",
+        "days_until_start": 7
       }
     ]
   },
@@ -688,19 +792,19 @@
     }
   ],
   "data_quality": {
-    "total_offers": 794,
+    "total_offers": 830,
     "by_source": {
-      "api": 649,
       "keywords": 42,
-      "fallback": 49,
+      "api": 684,
+      "fallback": 50,
       "brand": 54
     },
     "by_confidence": {
-      "high": 714,
       "medium": 31,
-      "low": 49
+      "high": 749,
+      "low": 50
     },
-    "categorised_share": 93.8,
+    "categorised_share": 94.0,
     "missing_end_date": 338,
     "unresolved_sample": [
       {
@@ -815,6 +919,11 @@
       },
       {
         "brand": "განაწილება",
+        "title": "🎒 გადაანაწილე სასკოლო ფორმის საფასური 4 თვეზე, გაძვირების გარეშე",
+        "slug": "saskolo-forma-ganatsileba"
+      },
+      {
+        "brand": "განაწილება",
         "title": "6 თვიანი უპროცენტო განაწილება",
         "slug": "6-tviani-uprotsento-ganatsileba"
       },
@@ -822,11 +931,6 @@
         "brand": "განაწილება",
         "title": "6 თვიანი უპროცენტო განაწილება",
         "slug": "6-tviani-uprotsento-ganatsileba-shetavazeba"
-      },
-      {
-        "brand": "განაწილება",
-        "title": "🎒 გადაანაწილე სასკოლო ფორმის საფასური 4 თვეზე, გაძვირების გარეშე",
-        "slug": "saskolo-forma-ganatsileba"
       },
       {
         "brand": "განვადება",
@@ -842,6 +946,11 @@
         "brand": "ველქინი",
         "title": "Welkin",
         "slug": "discount-welkin"
+      },
+      {
+        "brand": "ვიშლისტი",
+        "title": "Wishlist ",
+        "slug": "wishlist-black-friday"
       },
       {
         "brand": "ვრეპ მასტერი ",
@@ -892,11 +1001,6 @@
         "brand": "თიბისი",
         "title": "დაიბრუნე 30% გალერია თბილისში, თიბისი განაწილებით გადახდისას.  ",
         "slug": "galleria-bnpl"
-      },
-      {
-        "brand": "თიბისი",
-        "title": "კრიპტოთი ვაჭრობის ბონუსი ბიტკოინში ",
-        "slug": "crypto-trading-bonus"
       },
       {
         "brand": "თიბისი",
